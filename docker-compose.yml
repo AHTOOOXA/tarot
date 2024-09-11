@@ -13,6 +13,8 @@ services:
       - dokploy-network
     command: sh -c "yarn build && yarn start"
     restart: always
+    env_file:
+      - ".env"
     ports:
       - "4173:4173"
 
