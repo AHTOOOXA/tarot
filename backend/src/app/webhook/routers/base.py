@@ -30,3 +30,32 @@ async def book_slot(request: Request, repo: RequestsRepo = Depends(get_repo)):
     parsed_data = parse_init_data(init_data)
     user = parsed_data.get("user")
     return {"user": user}
+
+@router.get("/questions")
+async def get_questions(request: Request, repo: RequestsRepo = Depends(get_repo)):
+    # questions = await repo.get_questions()
+    # return {"questions": questions} 
+
+    # return mock json of questions
+    return [
+        {
+            "question_id": 1,
+            "question_text": "What is the capital of France?",
+            "answers": [
+                {"answer_text": "Paris", "is_correct": True},
+                {"answer_text": "London", "is_correct": False},
+                {"answer_text": "Berlin", "is_correct": False},
+                {"answer_text": "Madrid", "is_correct": False}
+            ]
+        },
+        {
+            "question_id": 2,
+            "question_text": "What is the capital of Germany?",
+            "answers": [
+                {"answer_text": "Paris", "is_correct": False},
+                {"answer_text": "London", "is_correct": False},
+                {"answer_text": "Berlin", "is_correct": True},
+                {"answer_text": "Madrid", "is_correct": False}
+            ]
+        }
+    ]

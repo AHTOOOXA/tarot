@@ -90,3 +90,4 @@ venv.bak/
 .env
 cache/
 ngrok.yml
+nginx.conf
