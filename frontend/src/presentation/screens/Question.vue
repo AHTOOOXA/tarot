@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useTelegram } from '@/application/services'
 import { useQuestions } from '@/domain/services/useQuestions'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 
 const { questions, load } = useQuestions()
 const currentQuestionIndex = ref(0)
-const { showAlert } = useTelegram()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
+const selectedAnswerId = ref<string | null>(null)
 
-const selectAnswer = (answer: string) => {
-  showAlert(`You selected: ${answer}`)
+const selectAnswer = async (answer: string, answerId: string) => {
+  selectedAnswerId.value = answerId
+  
+  // Wait for the animation to complete
+  await new Promise(resolve => setTimeout(resolve, 300))
+  
   if (currentQuestionIndex.value < questions.value.length - 1) {
     currentQuestionIndex.value++
   } else {
-    showAlert('You have completed all questions!')
+    // Handle end of questions if needed
   }
+  
+  // Reset the selected answer
+  selectedAnswerId.value = null
 }
 
 onMounted(async () => {
@@ -65,7 +71,8 @@ const currentQuestion = () => {
             v-for="answer in currentQuestion().answers"
             :key="answer.user_id"
             class="answer-button"
-            @click="selectAnswer(answer.answer_text)"
+            :class="{ 'selected': selectedAnswerId === answer.user_id }"
+            @click="selectAnswer(answer.answer_text, answer.user_id)"
           >
             {{ answer.answer_text }}
           </button>
@@ -108,33 +115,17 @@ const currentQuestion = () => {
   font-size: 16px;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
   height: 100px;
 }
 
-.answer-button:hover {
-  background-color: var(--color-bg-quarternary);
+.answer-button.selected {
+  animation: selectAnimation 0.3s ease-in forwards;
 }
 
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 18px;
-  color: var(--color-text);
-}
-
-.error, .no-questions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 18px;
-  color: var(--color-text);
-}
-
-.error {
-  color: var(--color-error);
+@keyframes selectAnimation {
+  to {
+    background-color: var(--color-success, #4CAF50);
+    transform: scale(1.1);
+  }
 }
 </style>
