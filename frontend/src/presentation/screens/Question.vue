@@ -7,9 +7,9 @@ const { questions, load } = useQuestions()
 const currentQuestionIndex = ref(0)
 const isLoading = ref(true)
 const error = ref<string | null>(null)
-const selectedAnswerId = ref<string | null>(null)
+const selectedAnswerId = ref<number | null>(null)
 
-const selectAnswer = async (answer: string, answerId: string) => {
+const selectAnswer = async (answer: string, answerId: number) => {
   selectedAnswerId.value = answerId
   
   // Wait for the animation to complete
