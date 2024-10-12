@@ -28,6 +28,7 @@ bot = [
     "redis",
     "aiogram-dialog",
     "faker",
+    "watchdog",
 ]
 web = [
     "aiogram",

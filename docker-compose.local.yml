@@ -28,7 +28,7 @@ services:
     restart: always
     env_file:
       - ".env"
-    command: ["/venv/bin/python", "-m", "app.tgbot.bot"]
+    command: ["/venv/bin/python", "hot_reload_bot.py"]
 
   pg_database:
     image: postgres:13-alpine
@@ -47,7 +47,6 @@ services:
         max-file: "10"
 
   webhook:
-    # image: "telegram-fastapi-vue-webhook"
     stop_signal: SIGINT
     build:
       context: ./backend
@@ -59,13 +58,12 @@ services:
     restart: always
     env_file:
       - ".env"
-    command: ["/venv/bin/uvicorn", "app.webhook.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["/venv/bin/uvicorn", "app.webhook.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     logging:
       driver: "json-file"
       options:
         max-size: "200k"
         max-file: "10"
-
 
   redis_cache:
     image: redis:6.2-alpine
