@@ -8,6 +8,10 @@ export interface FetchTransportOptions {
    * Error formatter to create an Error based on status and payload
    */
   errorFormatter?: (status: number, payload: JSONValue, endpoint: string) => Error;
+  /**
+   * Custom headers to be included in all requests
+   */
+  headers?: Record<string, string>;
 }
 
 /**
@@ -27,6 +31,11 @@ export default class FetchTransport {
    * @param options - Transport options
    */
   constructor(private readonly baseUrl: string, private readonly options?: FetchTransportOptions) {
+    if (options?.headers) {
+      Object.entries(options.headers).forEach(([key, value]) => {
+        this.headers.set(key, value)
+      })
+    }
   }
 
   /**

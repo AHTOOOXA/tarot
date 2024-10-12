@@ -8,31 +8,15 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.webhook.utils import (bot, get_repo, parse_init_data,
-                               validate_telegram_data)
+from app.webhook.utils import get_repo
+from app.webhook.auth import TelegramUser, get_twa_user
 
 router = APIRouter()
 
-
-@router.post("/health")
-async def book_slot(request: Request, repo: RequestsRepo = Depends(get_repo)):
-    return {"status": "ok"}
-
-
-@router.post("/repo_health")
-async def book_slot(request: Request, repo: RequestsRepo = Depends(get_repo)):
-    data = await request.json()
-
-    init_data = data.get("userInitData")
-    if init_data and not validate_telegram_data(init_data):
-        raise HTTPException(status_code=400, detail="Invalid initData")
-
-    parsed_data = parse_init_data(init_data)
-    user = parsed_data.get("user")
-    return {"user": user}
-
 @router.get("/questions")
-async def get_questions(request: Request, repo: RequestsRepo = Depends(get_repo)):
+async def get_questions(request: Request, repo: RequestsRepo = Depends(get_repo), user: TelegramUser = Depends(get_twa_user)):
+    print(f"User: {user}")
+    print(f"User id: {user.id}, username: {user.username}, first_name: {user.first_name}, last_name: {user.last_name}, language_code: {user.language_code}, allows_write_to_pm: {user.allows_write_to_pm}, photo_url: {user.photo_url}")
     questions = [
         {
             "question_id": 1,
