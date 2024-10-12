@@ -3,12 +3,17 @@ import json
 import hmac
 import hashlib
 from json import JSONDecodeError
+import dataclasses
+import typing
+import logging
+
 from fastapi import Request, Depends
 
 from app.config import tgbot_config
+from app.infrastructure.database.repo.requests import RequestsRepo
+from app.webhook.utils import get_repo
 
-import dataclasses
-import typing
+logger = logging.getLogger(__name__)
 
 @dataclasses.dataclass
 class TelegramUser:
@@ -143,10 +148,29 @@ def get_telegram_authenticator() -> TelegramAuthenticator:
 
 async def get_twa_user(
     request: Request,
-    telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator)
+    telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
+    repo: RequestsRepo = Depends(get_repo),
 ) -> TelegramUser:
     init_data = request.headers.get("initData")
     if not init_data:
+        logger.error("Init data is missing")
         raise NoInitDataError("Init data is missing")
     user = telegram_authenticator.verify_token(init_data)
+    
+    # Register or update user in the database
+    db_user = await repo.users.get_or_create_user(
+        user_id=user.id,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        username=user.username,
+        is_bot=user.is_bot,
+        language_code=user.language_code,
+        is_premium=user.is_premium,
+        added_to_attachment_menu=user.added_to_attachment_menu,
+        allows_write_to_pm=user.allows_write_to_pm,
+        photo_url=user.photo_url,
+    )
+    
+    logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
+    
     return user

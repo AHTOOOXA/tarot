@@ -2,6 +2,7 @@ version: "3"
 
 services:
   app:
+    image: "glow-app-vue"
     build:
         context: ./frontend
         dockerfile: Dockerfile
@@ -19,6 +20,7 @@ services:
     stop_signal: SIGINT
 
   bot:
+    image: "glow-app-bot"
     stop_signal: SIGINT
     build:
       context: ./backend
@@ -47,6 +49,7 @@ services:
         max-file: "10"
 
   webhook:
+    image: "glow-app-webhook"
     stop_signal: SIGINT
     build:
       context: ./backend
