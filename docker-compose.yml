@@ -15,6 +15,8 @@ services:
     restart: always
     env_file:
       - ".env"
+    depends_on:
+      - webhook
     ports:
       - "4173:4173"
 
@@ -29,7 +31,36 @@ services:
     restart: always
     env_file:
       - ".env"
-    command: ["/venv/bin/python", "-m", "app.tgbot.bot"]
+    depends_on:
+      - pg_database
+      - redis_cache
+    command: >
+      sh -c "
+        /venv/bin/alembic upgrade head &&
+        /venv/bin/python -m app.tgbot.bot
+      "
+
+  webhook:
+    build:
+      context: ./backend
+      dockerfile: ./web.Dockerfile
+    volumes:
+      - ./backend/src:/src
+    networks:
+      - dokploy-network
+    ports:
+      - "3779:8000"
+    restart: always
+    env_file:
+      - ".env"
+    depends_on:
+      - pg_database
+      - redis_cache
+    command: >
+      sh -c "
+        /venv/bin/alembic upgrade head &&
+        /venv/bin/uvicorn app.webhook.app:app --host 0.0.0.0 --port 8000
+      "
 
   pg_database:
     image: postgres:13-alpine
@@ -48,21 +79,6 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
-
-  webhook:
-    build:
-      context: ./backend
-      dockerfile: ./web.Dockerfile
-    volumes:
-      - ./backend/src:/src
-    networks:
-      - dokploy-network
-    ports:
-      - "3779:8000"
-    restart: always
-    env_file:
-      - ".env"
-    command: ["/venv/bin/uvicorn", "app.webhook.app:app", "--host", "0.0.0.0", "--port", "8000"]
 
   redis_cache:
     image: redis:6.2-alpine
