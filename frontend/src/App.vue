@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, onErrorCaptured } from 'vue'
+import { ref, onBeforeMount, onErrorCaptured, watch } from 'vue'
 import { useTelegram } from '@/application/services'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const { colorScheme, expand } = useTelegram()
 
@@ -28,17 +32,27 @@ onBeforeMount(() => {
 const activeTab = ref('Questions') // Default active tab
 
 const tabs = [
-  { name: 'Inbox', icon: '📥' },
-  { name: 'Questions', icon: '❓' },
-  { name: 'Friends', icon: '👥' },
-  { name: 'Profile', icon: '👤' },
+  { name: 'Inbox', icon: '📥', route: 'inbox' },
+  { name: 'Questions', icon: '❓', route: 'questions' },
+  { name: 'Friends', icon: '👥', route: 'friends' },
+  { name: 'Profile', icon: '👤', route: 'profile' },
 ]
 
 function changeTab(tabName: string) {
-  activeTab.value = tabName
-  // Here you would typically handle navigation to the corresponding route
-  // For example: router.push({ name: tabName.toLowerCase() })
+  console.log('changeTab', tabName)
+  const tab = tabs.find(t => t.name === tabName)
+  if (tab) {
+    router.push({ name: tab.route })
+  }
 }
+
+// Update active tab based on current route
+watch(() => route.name, (newRouteName) => {
+  const tab = tabs.find(t => t.route === newRouteName)
+  if (tab) {
+    activeTab.value = tab.name
+  }
+}, { immediate: true })
 </script>
 
 <template>

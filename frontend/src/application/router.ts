@@ -4,12 +4,14 @@ import Hotel from '@/presentation/screens/Hotel.vue'
 import Room from '@/presentation/screens/Room.vue'
 import Location from '@/presentation/screens/Location.vue'
 import Question from '@/presentation/screens/Question.vue'
+import Inbox from '@/presentation/screens/Inbox.vue'
+import Friends from '@/presentation/screens/Friends.vue'
+import Profile from '@/presentation/screens/Profile.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    // component: Home,
-    component: Question
+    redirect: '/questions'
   },
   {
     path: '/home',
@@ -34,6 +36,26 @@ const routes: RouteRecordRaw[] = [
       roomId: parseInt(route.params.roomId as string, 10),
     }),
   },
+  {
+    path: '/questions',
+    name: 'questions',
+    component: Question
+  },
+  {
+    path: '/inbox',
+    name: 'inbox',
+    component: Inbox
+  },
+  {
+    path: '/friends',
+    name: 'friends',
+    component: Friends
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile
+  }
 ]
 
 const router = createRouter({
