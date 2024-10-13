@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
+import useTelegram from '@/application/services/useTelegram'
 
+const { webAppInitData } = useTelegram()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 const friends = ref<any[]>([])
 
+const currentUserId = ref('')
+
 onMounted(async () => {
   try {
     isLoading.value = true
-    // Simulating API call
+    // Parse webAppInitData to get user information
+    const initData = new URLSearchParams(webAppInitData)
+    const user = JSON.parse(initData.get('user') || '{}')
+    currentUserId.value = user.id?.toString() || ''
+
+    // Simulating API call to get friends
     await new Promise(resolve => setTimeout(resolve, 1000))
     friends.value = [
       { id: 1, name: 'Alice Johnson', status: 'online' },
@@ -22,6 +31,14 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+const inviteFriends = () => {
+  const baseUrl = 'https://t.me/anton_local_dev_bot/start'
+  const friendParam = `friend=${currentUserId.value}`
+  const textParam = encodeURIComponent('Добавь меня в друзья в Glow App')
+  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(`${baseUrl}?${friendParam}`)}&text=${textParam}`
+  window.open(shareUrl, '_blank')
+}
 </script>
 
 <template>
@@ -41,13 +58,18 @@ onMounted(async () => {
         </Placeholder>
       </Section>
       <Section padded>
-        <div v-if="friends.length > 0" class="friend-list">
-          <div v-for="friend in friends" :key="friend.id" class="friend-item">
-            <h3>{{ friend.name }}</h3>
-            <p>Status: {{ friend.status }}</p>
+        <div>
+          <div v-if="friends.length > 0" class="friends-content">
+            <div class="invite-friends-button" @click="inviteFriends">
+              Invite Friends
+            </div>
+            <div v-for="friend in friends" :key="friend.id" class="friend-item">
+              <h3>{{ friend.name }}</h3>
+              <p>Status: {{ friend.status }}</p>
+            </div>
           </div>
+          <div v-else class="no-friends">No friends available.</div>
         </div>
-        <div v-else class="no-friends">No friends available.</div>
       </Section>
     </Sections>
   </div>
@@ -69,10 +91,20 @@ onMounted(async () => {
   justify-content: center;
 }
 
-.friend-list {
+.friends-content {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-10);
+}
+
+.invite-friends-button {
+  padding: var(--spacing-10);
+  background-color: #4CAF50; /* Green color */
+  border-radius: var(--size-border-radius-medium);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .friend-item {

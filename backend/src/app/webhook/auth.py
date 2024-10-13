@@ -175,8 +175,8 @@ async def get_twa_user(
                 photo_url=user_db.photo_url,
             )
         raise NoInitDataError("Init data is missing")
-    user = telegram_authenticator.verify_token(init_data)
 
+    user = telegram_authenticator.verify_token(init_data)
     # Register or update user in the database
     db_user = await repo.users.get_or_create_user(
         user_id=user.id,
@@ -190,7 +190,17 @@ async def get_twa_user(
         allows_write_to_pm=user.allows_write_to_pm,
         photo_url=user.photo_url,
     )
-
     logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
+
+    # # TODO: catch WebAppChat
+    # # Extract WebAppChat info from init data
+    # print(init_data)
+    # # parse init data
+    # init_data = telegram_authenticator._parse_init_data(init_data)
+    # print(init_data)
+    # webapp_chat_info = init_data.get("chat")
+    # if webapp_chat_info:
+    #     webapp_chat_info = json.loads(webapp_chat_info)
+    #     print(telegram_authenticator._parse_user_data(webapp_chat_info))
 
     return user
