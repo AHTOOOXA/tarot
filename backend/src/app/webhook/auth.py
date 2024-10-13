@@ -1,13 +1,13 @@
-from urllib.parse import unquote, parse_qsl
-import json
-import hmac
-import hashlib
-from json import JSONDecodeError
 import dataclasses
-import typing
+import hashlib
+import hmac
+import json
 import logging
+import typing
+from json import JSONDecodeError
+from urllib.parse import parse_qsl, unquote
 
-from fastapi import Request, Depends
+from fastapi import Depends, Request
 
 from app.config import tgbot_config
 from app.infrastructure.database.repo.requests import RequestsRepo
@@ -119,9 +119,7 @@ class TelegramAuthenticator:
         """
         init_data = self._parse_init_data(token)
         token = "\n".join(
-            f"{key}={val}"
-            for key, val in sorted(init_data.items(), key=lambda item: item[0])
-            if key != "hash"
+            f"{key}={val}" for key, val in sorted(init_data.items(), key=lambda item: item[0]) if key != "hash"
         )
         token = unquote(token)
         hash_ = init_data.get("hash")
@@ -160,6 +158,20 @@ async def get_twa_user(
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
     repo: RequestsRepo = Depends(get_repo),
 ) -> TelegramUser:
+    if tgbot_config.debug:
+        user_db = await repo.users.get_user_by_username("anton_whatever")
+        return TelegramUser(
+            id=user_db.user_id,
+            first_name=user_db.first_name,
+            username=user_db.username,
+            is_bot=user_db.is_bot,
+            language_code=user_db.language_code,
+            is_premium=user_db.is_premium,
+            added_to_attachment_menu=user_db.added_to_attachment_menu,
+            allows_write_to_pm=user_db.allows_write_to_pm,
+            photo_url=user_db.photo_url,
+        )
+
     init_data = request.headers.get("initData")
     if not init_data:
         logger.error("Init data is missing")
@@ -180,8 +192,6 @@ async def get_twa_user(
         photo_url=user.photo_url,
     )
 
-    logger.info(
-        f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered"
-    )
+    logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
 
     return user

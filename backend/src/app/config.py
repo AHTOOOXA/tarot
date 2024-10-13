@@ -62,9 +62,7 @@ class DbConfig:
         user = env.str("POSTGRES_USER")
         database = env.str("POSTGRES_DB")
         port = env.int("DB_PORT", 5432)
-        return DbConfig(
-            host=host, password=password, user=user, database=database, port=port
-        )
+        return DbConfig(host=host, password=password, user=user, database=database, port=port)
 
 
 @dataclass
@@ -77,6 +75,7 @@ class TgBot:
     admin_ids: list[int]
     use_redis: bool
     web_app_domain: str
+    debug: bool
 
     @staticmethod
     def from_env(env: Env):
@@ -87,11 +86,13 @@ class TgBot:
         admin_ids = list(map(int, env.list("ADMINS")))
         use_redis = env.bool("USE_REDIS")
         web_app_domain = env.str("FRONTEND_URL")
+        debug = env.bool("DEBUG")
         return TgBot(
             token=token,
             admin_ids=admin_ids,
             use_redis=use_redis,
             web_app_domain=web_app_domain,
+            debug=debug,
         )
 
 
@@ -132,9 +133,7 @@ class RedisConfig:
         redis_port = env.int("REDIS_PORT")
         redis_host = env.str("REDIS_HOST")
 
-        return RedisConfig(
-            redis_pass=redis_pass, redis_port=redis_port, redis_host=redis_host
-        )
+        return RedisConfig(redis_pass=redis_pass, redis_port=redis_port, redis_host=redis_host)
 
 
 def _load_config(path: str = None):
