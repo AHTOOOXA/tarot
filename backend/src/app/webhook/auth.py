@@ -15,6 +15,7 @@ from app.webhook.utils import get_repo
 
 logger = logging.getLogger(__name__)
 
+
 @dataclasses.dataclass
 class TelegramUser:
     """Represents a Telegram user.
@@ -34,6 +35,7 @@ class TelegramUser:
     allows_write_to_pm: typing.Optional[bool] = None
     photo_url: typing.Optional[str] = None
 
+
 def generate_secret_key(token: str) -> bytes:
     """Generates a secret key from a Telegram token.
 
@@ -49,6 +51,7 @@ def generate_secret_key(token: str) -> bytes:
     base = "WebAppData".encode("utf-8")
     token_enc = token.encode("utf-8")
     return hmac.digest(base, token_enc, hashlib.sha256)
+
 
 class TelegramAuthenticator:
     def __init__(self, secret: bytes):
@@ -116,7 +119,9 @@ class TelegramAuthenticator:
         """
         init_data = self._parse_init_data(token)
         token = "\n".join(
-            f"{key}={val}" for key, val in sorted(init_data.items(), key=lambda item: item[0]) if key != "hash"
+            f"{key}={val}"
+            for key, val in sorted(init_data.items(), key=lambda item: item[0])
+            if key != "hash"
         )
         token = unquote(token)
         hash_ = init_data.get("hash")
@@ -136,15 +141,19 @@ class TelegramAuthenticator:
         user_data = self._parse_user_data(user_data)
         return TelegramUser(**user_data)
 
+
 class NoInitDataError(Exception):
     pass
+
 
 class InvalidInitDataError(Exception):
     pass
 
+
 def get_telegram_authenticator() -> TelegramAuthenticator:
     secret_key = generate_secret_key(tgbot_config.token)
     return TelegramAuthenticator(secret_key)
+
 
 async def get_twa_user(
     request: Request,
@@ -156,7 +165,7 @@ async def get_twa_user(
         logger.error("Init data is missing")
         raise NoInitDataError("Init data is missing")
     user = telegram_authenticator.verify_token(init_data)
-    
+
     # Register or update user in the database
     db_user = await repo.users.get_or_create_user(
         user_id=user.id,
@@ -170,7 +179,9 @@ async def get_twa_user(
         allows_write_to_pm=user.allows_write_to_pm,
         photo_url=user.photo_url,
     )
-    
-    logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
-    
+
+    logger.info(
+        f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered"
+    )
+
     return user

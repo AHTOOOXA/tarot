@@ -1,21 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
+import { useProfile } from '@/domain/services/useProfile'
 
+const { profile, load } = useProfile()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
-const profile = ref<any | null>(null)
 
 onMounted(async () => {
   try {
     isLoading.value = true
-    // Simulating API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    profile.value = {
-      name: 'John Doe',
-      email: 'john@example.com',
-      bio: 'I love answering questions!',
-    }
+    await load()
+    console.log('Loaded profile:', profile.value)
   } catch (e) {
     error.value = 'Failed to load profile. Please try again later.'
     console.error('Error loading profile:', e)
@@ -32,19 +28,23 @@ onMounted(async () => {
     <Sections v-else-if="profile">
       <Section standalone>
         <Placeholder
-          :title="profile.name"
-          caption="Your profile"
+          :title="profile.first_name + (profile.last_name ? ' ' + profile.last_name : '')"
+          :caption="profile.username ? '@' + profile.username : 'Your profile'"
           standalone
         >
           <template #picture>
-            <div class="profile-icon">👤</div>
+            <img v-if="profile.photo_url" :src="profile.photo_url" alt="Profile Picture" class="profile-picture">
+            <div v-else class="profile-icon">👤</div>
           </template>
         </Placeholder>
       </Section>
       <Section padded>
         <div class="profile-details">
-          <p><strong>Email:</strong> {{ profile.email }}</p>
-          <p><strong>Bio:</strong> {{ profile.bio }}</p>
+          <p><strong>User ID:</strong> {{ profile.user_id }}</p>
+          <p v-if="profile.username"><strong>Username:</strong> @{{ profile.username }}</p>
+          <p><strong>First Name:</strong> {{ profile.first_name }}</p>
+          <p v-if="profile.last_name"><strong>Last Name:</strong> {{ profile.last_name }}</p>
+          <p v-if="profile.language_code"><strong>Language:</strong> {{ profile.language_code }}</p>
         </div>
       </Section>
     </Sections>
@@ -76,5 +76,12 @@ onMounted(async () => {
 
 .profile-details p {
   margin: var(--spacing-5) 0;
+}
+
+.profile-picture {
+  width: var(--size-avatar-big);
+  height: var(--size-avatar-big);
+  border-radius: 50%;
+  object-fit: cover;
 }
 </style>

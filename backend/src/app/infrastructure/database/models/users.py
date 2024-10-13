@@ -46,4 +46,6 @@ class User(Base, TimestampMixin, TableNameMixin):
     photo_url: Mapped[Optional[str]] = mapped_column(String(255))
 
     def __repr__(self):
-        return f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
+        return (
+            f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
+        )

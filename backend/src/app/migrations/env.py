@@ -19,10 +19,7 @@ if config.config_file_name is not None:
 
 url = db_config.construct_sqlalchemy_url()
 
-config.set_main_option(
-    "sqlalchemy.url",
-    url
-)
+config.set_main_option("sqlalchemy.url", url)
 
 # add your model's MetaData object here
 # for 'autogenerate' support

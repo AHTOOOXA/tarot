@@ -4,13 +4,14 @@ from watchdog.events import FileSystemEventHandler
 import subprocess
 import sys
 
+
 class RestartHandler(FileSystemEventHandler):
     def __init__(self):
         self.process = None
         self.start_bot()
 
     def on_any_event(self, event):
-        if event.src_path.endswith('.py'):
+        if event.src_path.endswith(".py"):
             print(f"Detected change in {event.src_path}. Restarting bot...")
             self.restart_bot()
 
@@ -23,8 +24,9 @@ class RestartHandler(FileSystemEventHandler):
             self.process.wait()
         self.start_bot()
 
+
 if __name__ == "__main__":
-    path = '.'
+    path = "."
     event_handler = RestartHandler()
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
