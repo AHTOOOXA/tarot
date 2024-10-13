@@ -57,6 +57,7 @@ const currentQuestion = () => {
       <Section standalone>
         <Placeholder
           :title="currentQuestion().text"
+          caption="чиназес"
           standalone
         >
           <template #picture>
