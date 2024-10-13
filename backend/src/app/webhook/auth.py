@@ -162,7 +162,7 @@ async def get_twa_user(
     if not init_data:
         logger.error("Init data is missing")
         if tgbot_config.debug:
-            user_db = await repo.users.get_user_by_username("anton_whatever")
+            user_db = await repo.users.get_user_by_username(tgbot_config.debug_username)
             return TelegramUser(
                 id=user_db.user_id,
                 first_name=user_db.first_name,
