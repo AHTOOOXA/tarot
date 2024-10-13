@@ -56,11 +56,11 @@ const currentQuestion = () => {
     <Sections v-else-if="questions.length > 0">
       <Section standalone>
         <Placeholder
-          :title="currentQuestion().question_text"
+          :title="currentQuestion().text"
           standalone
         >
           <template #picture>
-            <div class="question-emoji">{{ currentQuestion().question_emoji }}</div>
+            <div class="question-emoji">{{ currentQuestion().emoji }}</div>
           </template>
         </Placeholder>
       </Section>

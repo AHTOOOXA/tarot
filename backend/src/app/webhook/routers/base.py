@@ -26,9 +26,9 @@ async def get_questions(
     # Convert questions to the desired format
     formatted_questions = [
         {
-            "question_id": question.id,
-            "question_text": question.text,
-            "question_emoji": question.emoji,
+            "id": question.id,
+            "text": question.text,
+            "emoji": question.emoji,
             "answers": [
                 {"user_id": 13, "user_name": "gennady", "answer_text": "Геннадий"},
                 {"user_id": 14, "user_name": "andrey", "answer_text": "Андрей"},

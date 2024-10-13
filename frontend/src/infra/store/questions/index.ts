@@ -20,8 +20,8 @@ export function getQuestions(): Question[] {
  *
  * @param id - Question id
  */
-export function getQuestionById(id: Question['question_id']): Question | undefined {
-  return questions.find((q) => q.question_id === id)
+export function getQuestionById(id: Question['id']): Question | undefined {
+  return questions.find((q) => q.id === id)
 }
 
 /**
