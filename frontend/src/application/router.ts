@@ -7,11 +7,34 @@ import Question from '@/presentation/screens/Question.vue'
 import Inbox from '@/presentation/screens/Inbox.vue'
 import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
+import Onboarding from '@/presentation/screens/Onboarding.vue'
+import axios from 'axios'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/questions'
+    redirect: '/onboarding'
+  },
+  {
+    path: '/start',
+    beforeEnter: async (to, from, next) => {
+      try {
+        // Send POST request to backend
+        // TODO: implement
+        // Redirect to onboarding
+        next('/onboarding')
+      } catch (error) {
+        // TODO: implement proper error handling
+        console.error('Error in /start route:', error)
+        next('/onboarding')
+      }
+    }
+  },
+  {
+    path: '/onboarding',
+    name: 'onboarding',
+    component: Onboarding
+    // TODO: redirect to questions if user is already onboarded
   },
   {
     path: '/home',
