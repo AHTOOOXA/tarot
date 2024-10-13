@@ -5,7 +5,8 @@ export interface UserAnswer {
 }
 
 export default interface Question {
-  question_id: number;
-  question_text: string;
+  id: number;
+  text: string;
+  emoji: string;
   answers: UserAnswer[];
 }

@@ -11,16 +11,16 @@ const selectedAnswerId = ref<number | null>(null)
 
 const selectAnswer = async (answer: string, answerId: number) => {
   selectedAnswerId.value = answerId
-  
+
   // Wait for the animation to complete
   await new Promise(resolve => setTimeout(resolve, 300))
-  
+
   if (currentQuestionIndex.value < questions.value.length - 1) {
     currentQuestionIndex.value++
   } else {
     // Handle end of questions if needed
   }
-  
+
   // Reset the selected answer
   selectedAnswerId.value = null
 }
@@ -57,11 +57,10 @@ const currentQuestion = () => {
       <Section standalone>
         <Placeholder
           :title="currentQuestion().question_text"
-          caption="Choose the correct answer"
           standalone
         >
           <template #picture>
-            <div class="question-icon">❓</div>
+            <div class="question-emoji">{{ currentQuestion().question_emoji }}</div>
           </template>
         </Placeholder>
       </Section>
@@ -91,9 +90,9 @@ const currentQuestion = () => {
   transform: translateZ(0);
 }
 
-.question-icon {
+.question-emoji {
   font-size: 48px;
-  width: var(--size-avatar-big);
+  width: var(--size-avatar-big) * 3;
   height: var(--size-avatar-big);
   display: flex;
   align-items: center;
