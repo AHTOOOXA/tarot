@@ -158,23 +158,22 @@ async def get_twa_user(
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
     repo: RequestsRepo = Depends(get_repo),
 ) -> TelegramUser:
-    if tgbot_config.debug:
-        user_db = await repo.users.get_user_by_username("anton_whatever")
-        return TelegramUser(
-            id=user_db.user_id,
-            first_name=user_db.first_name,
-            username=user_db.username,
-            is_bot=user_db.is_bot,
-            language_code=user_db.language_code,
-            is_premium=user_db.is_premium,
-            added_to_attachment_menu=user_db.added_to_attachment_menu,
-            allows_write_to_pm=user_db.allows_write_to_pm,
-            photo_url=user_db.photo_url,
-        )
-
     init_data = request.headers.get("initData")
     if not init_data:
         logger.error("Init data is missing")
+        if tgbot_config.debug:
+            user_db = await repo.users.get_user_by_username("anton_whatever")
+            return TelegramUser(
+                id=user_db.user_id,
+                first_name=user_db.first_name,
+                username=user_db.username,
+                is_bot=user_db.is_bot,
+                language_code=user_db.language_code,
+                is_premium=user_db.is_premium,
+                added_to_attachment_menu=user_db.added_to_attachment_menu,
+                allows_write_to_pm=user_db.allows_write_to_pm,
+                photo_url=user_db.photo_url,
+            )
         raise NoInitDataError("Init data is missing")
     user = telegram_authenticator.verify_token(init_data)
 
