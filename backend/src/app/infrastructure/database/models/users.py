@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import BIGINT, Boolean, String, text, true
+from sqlalchemy import BIGINT, Boolean, String, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import Base, TableNameMixin, TimestampMixin
@@ -14,8 +14,15 @@ class User(Base, TimestampMixin, TableNameMixin):
 
     Attributes:
         user_id (Mapped[int]): The unique identifier of the user.
+        first_name (Mapped[str]): The first name of the user.
+        last_name (Mapped[Optional[str]]): The last name of the user.
         username (Mapped[Optional[str]]): The username of the user.
-        full_name (Mapped[str]): The full name of the user.
+        is_bot (Mapped[Optional[bool]]): Whether the user is a bot.
+        language_code (Mapped[Optional[str]]): The user's language code.
+        is_premium (Mapped[Optional[bool]]): Whether the user is a premium user.
+        added_to_attachment_menu (Mapped[Optional[bool]]): Whether the user is added to attachment menu.
+        allows_write_to_pm (Mapped[Optional[bool]]): Whether the user allows write to PM.
+        photo_url (Mapped[Optional[str]]): The user's photo URL.
 
     Methods:
         __repr__(): Returns a string representation of the User object.
@@ -25,12 +32,20 @@ class User(Base, TimestampMixin, TableNameMixin):
 
     Inherited Methods:
         Inherits methods from Base, TimestampMixin, and TableNameMixin classes, which provide additional functionality.
-
     """
 
     user_id: Mapped[int] = mapped_column(BIGINT, primary_key=True, autoincrement=False)
-    username: Mapped[Optional[str]] = mapped_column(String(128))
-    full_name: Mapped[str] = mapped_column(String(128))
+    first_name: Mapped[str] = mapped_column(String(64))
+    last_name: Mapped[Optional[str]] = mapped_column(String(64))
+    username: Mapped[Optional[str]] = mapped_column(String(32))
+    is_bot: Mapped[Optional[bool]] = mapped_column(Boolean)
+    language_code: Mapped[Optional[str]] = mapped_column(String(8))
+    is_premium: Mapped[Optional[bool]] = mapped_column(Boolean)
+    added_to_attachment_menu: Mapped[Optional[bool]] = mapped_column(Boolean)
+    allows_write_to_pm: Mapped[Optional[bool]] = mapped_column(Boolean)
+    photo_url: Mapped[Optional[str]] = mapped_column(String(255))
 
     def __repr__(self):
-        return f"<User {self.user_id} {self.username} {self.full_name}>"
+        return (
+            f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
+        )

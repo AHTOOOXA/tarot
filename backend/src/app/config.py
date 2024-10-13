@@ -75,6 +75,7 @@ class TgBot:
     admin_ids: list[int]
     use_redis: bool
     web_app_domain: str
+    debug: bool
 
     @staticmethod
     def from_env(env: Env):
@@ -85,11 +86,13 @@ class TgBot:
         admin_ids = list(map(int, env.list("ADMINS")))
         use_redis = env.bool("USE_REDIS")
         web_app_domain = env.str("FRONTEND_URL")
+        debug = env.bool("DEBUG")
         return TgBot(
             token=token,
             admin_ids=admin_ids,
             use_redis=use_redis,
             web_app_domain=web_app_domain,
+            debug=debug,
         )
 
 

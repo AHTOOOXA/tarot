@@ -11,5 +11,3 @@ FROM python:3.11-slim
 WORKDIR /src
 COPY --from=builder /venv /venv
 COPY src /src/src
-
-CMD  ["/venv/bin/python", "-m", "app.tgbot.bot"]

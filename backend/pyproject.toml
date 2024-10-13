@@ -6,41 +6,41 @@ build-backend = "setuptools.build_meta"
 package-dir = { "" = "src" }
 
 [project]
-name = "MedSyncWebApp"
+name = "GlowApp"
 version = "0.0.1"
 
-description = "MedSyncWebApp - Mini web app in Telegram"
+description = "GlowApp - Mini web app in Telegram"
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "sqlalchemy~=2.0",
+    "sqlalchemy",
     "asyncpg",
-    "alembic~=1.0",
-    "environs~=9.0",
-    "betterlogging~=0.2",
+    "alembic",
+    "environs",
+    "betterlogging",
 ]
 [project.optional-dependencies]
 bot = [
-    "aiogram~=3.0",
-    "redis~=5.0",
-    "aiogram-dialog~=2.0",
+    "aiogram",
+    "redis",
+    "aiogram-dialog",
     "faker",
+    "watchdog",
 ]
 web = [
-    "aiogram~=3.0",
-    "uvicorn~=0.23",
-    "fastapi~=0.102",
+    "aiogram",
+    "uvicorn",
+    "fastapi",
     "python-dateutil",
     "sqladmin",
 ]
 
 
 [project.urls]
-"Homepage" = "https://github.com/Latand/MedSyncWebApp/"
-"Bug Tracker" = "https://github.com/Latand/MedSyncWebApp/issues"
+
 
 [tool.black]
 line-length = 120

@@ -18,6 +18,7 @@ interface useTelegramComposableState {
   platform: 'android' | 'android_x' | 'ios' | 'macos' | 'tdesktop' | 'web' | 'weba' | 'webk' | 'unigram' | 'unknown';
   headerColor: string;
   setHeaderColor: (color: 'bg_color' | 'secondary_bg_color' | `#${string}`) => void;
+  webAppInitData: string;
 }
 
 /**
@@ -255,6 +256,11 @@ export default function useTelegram(): useTelegramComposableState {
    */
   const headerColor = WebApp.headerColor
 
+  /**
+   * The initial data received from Telegram
+   */
+  const webAppInitData = WebApp.initData || ''
+
   return {
     showMainButton,
     hideMainButton,
@@ -272,5 +278,6 @@ export default function useTelegram(): useTelegramComposableState {
     platform,
     headerColor,
     setHeaderColor,
+    webAppInitData,
   }
 }

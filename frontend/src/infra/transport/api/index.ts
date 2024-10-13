@@ -3,6 +3,8 @@ import type { ApiErrorResponse } from './types/response.ts'
 import NotFoundError from '@/domain/entities/errors/NotFound.ts'
 import UnauthorizedError from '@/domain/entities/errors/Unauthorized.ts'
 import FetchTransport from '../fetch/index.ts'
+import { API_HOST } from '@/infra/config/api'
+import { useTelegram } from '@/application/services'
 
 /**
  * Api transport — wrapper around FetchTransport working with our API formats
@@ -14,7 +16,12 @@ export default class ApiTransport extends FetchTransport {
    * @param baseUrl - Base URL
    */
   constructor(baseUrl: string) {
+    const { webAppInitData } = useTelegram()
+
     super(baseUrl, {
+      headers: {
+        'initData': webAppInitData,
+      },
       /**
        * Method for creating an Error based on API response
        *
@@ -78,3 +85,6 @@ export default class ApiTransport extends FetchTransport {
     return response as Payload
   }
 }
+
+// Export a default instance
+export const apiTransport = new ApiTransport(API_HOST)
