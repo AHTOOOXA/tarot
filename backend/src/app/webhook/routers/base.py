@@ -74,3 +74,16 @@ async def get_friendlist(
         print(type(friend))
         print(friend.username)
     return friends
+
+
+@router.post("/add_friend")
+async def add_friend(
+    request: Request,
+    repo: RequestsRepo = Depends(get_repo),
+    user: User = Depends(get_twa_user),
+):
+    request_data = await request.json()
+    friend_id = request_data.get("friend")
+    friend = await repo.users.get_user_by_id(friend_id)
+    await user.add_friend(friend)
+    return {"status": "success"}

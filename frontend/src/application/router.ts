@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
     path: '/start',
     beforeEnter: async (to, from, next) => {
       try {
-        // Send POST request to backend
+        // Send POST request to backend to /add_friend with friend as parameter from url parameters
         // TODO: implement
         // Redirect to onboarding
         next('/onboarding')
