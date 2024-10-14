@@ -4,7 +4,12 @@ import Inbox from '@/presentation/screens/Inbox.vue'
 import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
 import Onboarding from '@/presentation/screens/Onboarding.vue'
-import axios from 'axios'
+import { defineComponent } from 'vue'
+
+// Add this dummy component
+const DummyComponent = defineComponent({
+  render: () => null
+})
 
 const routes: RouteRecordRaw[] = [
   {
@@ -13,6 +18,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/start',
+    component: DummyComponent,
     beforeEnter: async (to, from, next) => {
       try {
         // Send POST request to backend to /add_friend with friend as parameter from url parameters
