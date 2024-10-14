@@ -33,7 +33,7 @@ onMounted(async () => {
 })
 
 const inviteFriends = () => {
-  const baseUrl = 'https://t.me/anton_local_dev_bot/start'
+  const baseUrl = 'https://t.me/anton_local_dev_bot/app/start'
   const friendParam = `friend=${currentUserId.value}`
   const textParam = encodeURIComponent('Добавь меня в друзья в Glow App')
   const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(`${baseUrl}?${friendParam}`)}&text=${textParam}`

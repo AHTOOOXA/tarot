@@ -51,7 +51,7 @@ async def get_profile(
 ):
     # Create a profile object using the TelegramUser data
     profile = {
-        "user_id": user.id,
+        "user_id": user.user_id,
         "username": user.username,
         "first_name": user.first_name,
         "last_name": user.last_name,
@@ -59,7 +59,7 @@ async def get_profile(
         "photo_url": user.photo_url,
     }
 
-    print(f"Returning profile for user: {user.id}")
+    print(f"Returning profile for user: {user.user_id}")
     return profile
 
 
