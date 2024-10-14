@@ -1,9 +1,10 @@
-from typing import Optional
+from typing import List, Optional
 
-from sqlalchemy import BIGINT, Boolean, String, text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import BIGINT, Boolean, String, or_
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, TableNameMixin, TimestampMixin
+from .friendships import Friendship
 
 
 class User(Base, TimestampMixin, TableNameMixin):
@@ -23,6 +24,7 @@ class User(Base, TimestampMixin, TableNameMixin):
         added_to_attachment_menu (Mapped[Optional[bool]]): Whether the user is added to attachment menu.
         allows_write_to_pm (Mapped[Optional[bool]]): Whether the user allows write to PM.
         photo_url (Mapped[Optional[str]]): The user's photo URL.
+        friendships (Mapped[List["Friendship"]]): List of friendships associated with this user.
 
     Methods:
         __repr__(): Returns a string representation of the User object.
@@ -45,7 +47,17 @@ class User(Base, TimestampMixin, TableNameMixin):
     allows_write_to_pm: Mapped[Optional[bool]] = mapped_column(Boolean)
     photo_url: Mapped[Optional[str]] = mapped_column(String(255))
 
+    friendships: Mapped[List["Friendship"]] = relationship(
+        "Friendship",
+        primaryjoin="or_(User.user_id==Friendship.user_id1, User.user_id==Friendship.user_id2)",
+        viewonly=True,
+    )
+
     def __repr__(self):
-        return (
-            f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
-        )
+        return f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
+
+    async def get_friends(self) -> List["User"]:
+        return [
+            (friendship.user2 if friendship.user1.user_id == self.user_id else friendship.user1)
+            for friendship in self.friendships
+        ]

@@ -7,8 +7,9 @@ from aiogram.utils.markdown import hbold, hcode
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
+from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.webhook.auth import TelegramUser, get_twa_user
+from app.webhook.auth import get_twa_user
 from app.webhook.utils import get_repo
 
 router = APIRouter()
@@ -18,7 +19,7 @@ router = APIRouter()
 async def get_questions(
     request: Request,
     repo: RequestsRepo = Depends(get_repo),
-    user: TelegramUser = Depends(get_twa_user),
+    user: User = Depends(get_twa_user),
 ):
     # Fetch 10 random questions from the database
     questions = await repo.questions.get_random_questions(limit=10)
@@ -46,7 +47,7 @@ async def get_questions(
 async def get_profile(
     request: Request,
     repo: RequestsRepo = Depends(get_repo),
-    user: TelegramUser = Depends(get_twa_user),
+    user: User = Depends(get_twa_user),
 ):
     # Create a profile object using the TelegramUser data
     profile = {
@@ -60,3 +61,16 @@ async def get_profile(
 
     print(f"Returning profile for user: {user.id}")
     return profile
+
+
+@router.get("/friendlist")
+async def get_friendlist(
+    request: Request,
+    repo: RequestsRepo = Depends(get_repo),
+    user: User = Depends(get_twa_user),
+):
+    friends = await user.get_friends()
+    for friend in friends:
+        print(type(friend))
+        print(friend.username)
+    return friends

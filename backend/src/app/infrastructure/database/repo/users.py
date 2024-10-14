@@ -71,6 +71,11 @@ class UserRepo(BaseRepo):
         await self.session.commit()
         return result.scalar_one()
 
+    async def get_user_by_id(self, user_id: int) -> Optional[User]:
+        stmt = select(User).where(User.user_id == user_id)
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
     async def get_user_by_username(self, username: str) -> Optional[User]:
         stmt = select(User).where(User.username == username)
         result = await self.session.execute(stmt)

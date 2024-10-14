@@ -10,6 +10,7 @@ from urllib.parse import parse_qsl, unquote
 from fastapi import Depends, Request
 
 from app.config import tgbot_config
+from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
 from app.webhook.utils import get_repo
 
@@ -157,7 +158,7 @@ async def get_twa_user(
     request: Request,
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
     repo: RequestsRepo = Depends(get_repo),
-) -> TelegramUser:
+) -> User:
     init_data = request.headers.get("initData")
     if not init_data:
         logger.error("Init data is missing")
@@ -203,4 +204,4 @@ async def get_twa_user(
     #     webapp_chat_info = json.loads(webapp_chat_info)
     #     print(telegram_authenticator._parse_user_data(webapp_chat_info))
 
-    return user
+    return db_user
