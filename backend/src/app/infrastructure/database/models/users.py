@@ -4,7 +4,6 @@ from sqlalchemy import BIGINT, Boolean, String, or_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, TableNameMixin, TimestampMixin
-from .friendships import Friendship
 
 
 class User(Base, TimestampMixin, TableNameMixin):

@@ -2,7 +2,6 @@ from sqlalchemy import BIGINT, Boolean, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, TableNameMixin, TimestampMixin
-from .users import User
 
 
 class Friendship(Base, TimestampMixin, TableNameMixin):
@@ -32,8 +31,8 @@ class Friendship(Base, TimestampMixin, TableNameMixin):
     user_id2: Mapped[int] = mapped_column(BIGINT, ForeignKey("users.user_id"), index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    user1: Mapped[User] = relationship("User", foreign_keys=[user_id1], back_populates="friendships")
-    user2: Mapped[User] = relationship("User", foreign_keys=[user_id2], back_populates="friendships")
+    user1: Mapped["User"] = relationship("User", foreign_keys=[user_id1], back_populates="friendships")
+    user2: Mapped["User"] = relationship("User", foreign_keys=[user_id2], back_populates="friendships")
 
     __table_args__ = (UniqueConstraint("user_id1", "user_id2", name="uq_friendship"),)
 

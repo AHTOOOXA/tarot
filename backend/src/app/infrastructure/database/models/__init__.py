@@ -1,3 +1,4 @@
 from .base import Base
+from .friendships import Friendship
 from .questions import Question
 from .users import User
