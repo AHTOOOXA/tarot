@@ -1,8 +1,4 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import Home from '@/presentation/screens/Home.vue'
-import Hotel from '@/presentation/screens/Hotel.vue'
-import Room from '@/presentation/screens/Room.vue'
-import Location from '@/presentation/screens/Location.vue'
 import Question from '@/presentation/screens/Question.vue'
 import Inbox from '@/presentation/screens/Inbox.vue'
 import Friends from '@/presentation/screens/Friends.vue'
@@ -35,29 +31,6 @@ const routes: RouteRecordRaw[] = [
     name: 'onboarding',
     component: Onboarding
     // TODO: redirect to questions if user is already onboarded
-  },
-  {
-    path: '/home',
-    component: Home,
-  },
-  {
-    path: '/location',
-    component: Location,
-  },
-  {
-    path: '/hotel/:id',
-    component: Hotel,
-    props: route => ({
-      id: parseInt(route.params.id as string, 10),
-    }),
-  },
-  {
-    path: '/room/:hotelId/:roomId',
-    component: Room,
-    props: route => ({
-      hotelId: parseInt(route.params.hotelId as string, 10),
-      roomId: parseInt(route.params.roomId as string, 10),
-    }),
   },
   {
     path: '/questions',
