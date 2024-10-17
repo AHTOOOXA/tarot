@@ -88,15 +88,27 @@ services:
       - webhook
     restart: always
 
-  ngrok:
-    image: ngrok/ngrok:latest
+  zrok:
+    image: openziti/zrok
     restart: unless-stopped
-    environment:
-      - NGROK_CONFIG=/etc/ngrok.yml
+    user: "${UID:-1000}"
     volumes:
-      - ./ngrok.yml:/etc/ngrok.yml
-    expose:
-      - 443
+      - ${HOME:-/home/user}/.zrok:/.zrok
+    environment:
+      - PFXLOG_NO_JSON=true
+    command: share reserved "anton" --headless
+    depends_on:
+      - nginx
+
+  # ngrok:
+  #   image: ngrok/ngrok:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     - NGROK_CONFIG=/etc/ngrok.yml
+  #   volumes:
+  #     - ./ngrok.yml:/etc/ngrok.yml
+  #   expose:
+  #     - 443
 
 volumes:
   pgdata: { }
