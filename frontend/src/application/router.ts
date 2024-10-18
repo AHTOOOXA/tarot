@@ -4,31 +4,27 @@ import Inbox from '@/presentation/screens/Inbox.vue'
 import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
 import Onboarding from '@/presentation/screens/Onboarding.vue'
-import { defineComponent } from 'vue'
+import useTelegram from '@/application/services/useTelegram'
+import { addFriend } from '@/infra/store/friends'
 
-// Add this dummy component
-const DummyComponent = defineComponent({
-  render: () => null
-})
+const { webAppInitData } = useTelegram()
 
+// TODO: redirect to questions if user is already onboarded
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/onboarding'
-  },
-  {
-    path: '/start',
-    component: DummyComponent,
+    component: Onboarding,
     beforeEnter: async (to, from, next) => {
       try {
-        // Send POST request to backend to /add_friend with friend as parameter from url parameters
-        // TODO: implement
-        // Redirect to onboarding
-        next('/onboarding')
+        const initData = new URLSearchParams(webAppInitData)
+        const start_param = JSON.parse(initData.get('start_param') || '{}')
+        if (start_param) {
+          await addFriend(Number(start_param))
+        }
+        next('/questions')
       } catch (error) {
-        // TODO: implement proper error handling
-        console.error('Error in /start route:', error)
-        next('/onboarding')
+        console.error('Error in / route:', error)
+        next('/questions')
       }
     }
   },

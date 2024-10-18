@@ -1,9 +1,9 @@
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import and_, or_, select
 from sqlalchemy.dialects.postgresql import insert
 
-from app.infrastructure.database.models import User
+from app.infrastructure.database.models import Friendship, User
 from app.infrastructure.database.repo.base import BaseRepo
 
 
@@ -80,3 +80,24 @@ class UserRepo(BaseRepo):
         stmt = select(User).where(User.username == username)
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
+
+    async def get_friends(self, user_id: int):
+        stmt = (
+            select(User)
+            .join(
+                Friendship,
+                or_(
+                    and_(Friendship.user_id1 == user_id, User.user_id == Friendship.user_id2),
+                    and_(Friendship.user_id2 == user_id, User.user_id == Friendship.user_id1),
+                ),
+            )
+            .where(Friendship.is_active == True)
+        )
+        result = await self.session.execute(stmt)
+        return result.scalars().all()
+
+    async def add_friend(self, user_id: int, friend_id: int):
+        friendship = Friendship(user_id1=min(user_id, friend_id), user_id2=max(user_id, friend_id))
+        self.session.add(friendship)
+        await self.session.commit()
+        return True

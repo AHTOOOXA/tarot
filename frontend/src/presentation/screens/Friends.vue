@@ -2,11 +2,13 @@
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 import useTelegram from '@/application/services/useTelegram'
+import { useFriends } from '@/domain/services/useFriends'
+import type Friend from '@/domain/entities/Friend'
 
 const { webAppInitData } = useTelegram()
+const { friends, load: loadFriends } = useFriends()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
-const friends = ref<any[]>([])
 
 const currentUserId = ref('')
 
@@ -18,12 +20,7 @@ onMounted(async () => {
     const user = JSON.parse(initData.get('user') || '{}')
     currentUserId.value = user.id?.toString() || ''
 
-    // Simulating API call to get friends
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    friends.value = [
-      { id: 1, name: 'Alice Johnson', status: 'online' },
-      { id: 2, name: 'Bob Williams', status: 'offline' },
-    ]
+    await loadFriends()
   } catch (e) {
     error.value = 'Failed to load friends. Please try again later.'
     console.error('Error loading friends:', e)
@@ -33,8 +30,8 @@ onMounted(async () => {
 })
 
 const inviteFriends = () => {
-  const baseUrl = 'https://t.me/anton_local_dev_bot/app/start'
-  const friendParam = `friend=${currentUserId.value}`
+  const baseUrl = 'https://t.me/anton_local_dev_bot/app'
+  const friendParam = `startapp=${currentUserId.value}`
   const textParam = encodeURIComponent('Добавь меня в друзья в Glow App')
   const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(`${baseUrl}?${friendParam}`)}&text=${textParam}`
   window.open(shareUrl, '_blank')
@@ -59,16 +56,19 @@ const inviteFriends = () => {
       </Section>
       <Section padded>
         <div>
-          <div v-if="friends.length > 0" class="friends-content">
+          <div class="friends-content">
             <div class="invite-friends-button" @click="inviteFriends">
               Invite Friends
             </div>
-            <div v-for="friend in friends" :key="friend.id" class="friend-item">
-              <h3>{{ friend.name }}</h3>
-              <p>Status: {{ friend.status }}</p>
+            <div v-if="friends.length > 0">
+              <div v-for="friend in friends" :key="friend.user_id" class="friend-item">
+                <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
+                <p>Status: {{ friend.status }}</p>
+                <img v-if="friend.photo_url" :src="friend.photo_url" alt="Friend's photo" class="friend-photo">
+              </div>
             </div>
+            <div v-else class="no-friends">No friends available.</div>
           </div>
-          <div v-else class="no-friends">No friends available.</div>
         </div>
       </Section>
     </Sections>
@@ -105,12 +105,16 @@ const inviteFriends = () => {
   text-align: center;
   font-weight: bold;
   transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .friend-item {
   padding: var(--spacing-10);
   background-color: var(--color-bg-tertiary);
   border-radius: var(--size-border-radius-medium);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .friend-item h3 {
@@ -119,5 +123,13 @@ const inviteFriends = () => {
 
 .friend-item p {
   margin: 0;
+}
+
+.friend-photo {
+  width: var(--size-avatar-medium);
+  height: var(--size-avatar-medium);
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: var(--spacing-5);
 }
 </style>

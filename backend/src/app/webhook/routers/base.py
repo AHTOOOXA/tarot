@@ -1,9 +1,6 @@
 import json
 import logging
-from contextlib import suppress
 
-import sqlalchemy.exc
-from aiogram.utils.markdown import hbold, hcode
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
@@ -13,6 +10,8 @@ from app.webhook.auth import get_twa_user
 from app.webhook.utils import get_repo
 
 router = APIRouter()
+
+logger = logging.getLogger(__name__)
 
 
 @router.get("/questions")
@@ -63,16 +62,14 @@ async def get_profile(
     return profile
 
 
-@router.get("/friendlist")
-async def get_friendlist(
+@router.get("/friends")
+async def get_friends(
     request: Request,
     repo: RequestsRepo = Depends(get_repo),
     user: User = Depends(get_twa_user),
 ):
-    friends = await user.get_friends()
-    for friend in friends:
-        print(type(friend))
-        print(friend.username)
+    friends = await repo.users.get_friends(user.user_id)
+    logger.info(f"Returning friends for user: {user.user_id}, friends: {friends}")
     return friends
 
 
@@ -83,7 +80,10 @@ async def add_friend(
     user: User = Depends(get_twa_user),
 ):
     request_data = await request.json()
-    friend_id = request_data.get("friend")
+    logger.info(f"Request data: {request_data}")
+    friend_id = request_data.get("friend_id")
+    logger.info(f"{friend_id} of type {type(friend_id)}")
     friend = await repo.users.get_user_by_id(friend_id)
-    await user.add_friend(friend)
+    await repo.users.add_friend(user.user_id, friend.user_id)
+    logger.info(f"User {user.user_id} added friend {friend.user_id}")
     return {"status": "success"}

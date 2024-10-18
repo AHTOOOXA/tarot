@@ -54,9 +54,3 @@ class User(Base, TimestampMixin, TableNameMixin):
 
     def __repr__(self):
         return f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
-
-    async def get_friends(self) -> List["User"]:
-        return [
-            (friendship.user2 if friendship.user1.user_id == self.user_id else friendship.user1)
-            for friendship in self.friendships
-        ]
