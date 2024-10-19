@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 import useTelegram from '@/application/services/useTelegram'
 import { useFriends } from '@/domain/services/useFriends'
-import type Friend from '@/domain/entities/Friend'
+import type User from '@/domain/entities/User'
 
 const { webAppInitData } = useTelegram()
 const { friends, load: loadFriends } = useFriends()
@@ -63,7 +63,6 @@ const inviteFriends = () => {
             <div v-if="friends.length > 0">
               <div v-for="friend in friends" :key="friend.user_id" class="friend-item">
                 <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
-                <p>Status: {{ friend.status }}</p>
                 <img v-if="friend.photo_url" :src="friend.photo_url" alt="Friend's photo" class="friend-photo">
               </div>
             </div>
