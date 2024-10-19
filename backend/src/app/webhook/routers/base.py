@@ -1,5 +1,6 @@
 import json
 import logging
+import random
 
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
@@ -14,32 +15,26 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.get("/questions")
-async def get_questions(
+@router.get("/quizzes")
+async def get_quizzes(
     request: Request,
     repo: RequestsRepo = Depends(get_repo),
     user: User = Depends(get_twa_user),
 ):
     # Fetch 10 random questions from the database
     questions = await repo.questions.get_random_questions(limit=10)
+    friends = await repo.users.get_friends(user.user_id)
 
     # Convert questions to the desired format
-    formatted_questions = [
+    quizzes = [
         {
-            "id": question.id,
-            "text": question.text,
-            "emoji": question.emoji,
-            "answers": [
-                {"user_id": 13, "user_name": "gennady", "answer_text": "Геннадий"},
-                {"user_id": 14, "user_name": "andrey", "answer_text": "Андрей"},
-                {"user_id": 15, "user_name": "alexander", "answer_text": "Александр"},
-                {"user_id": 16, "user_name": "petr", "answer_text": "Петр"},
-            ],
+            "question": question,
+            "friends": random.sample(friends, 4),
         }
         for question in questions
     ]
 
-    return formatted_questions
+    return quizzes
 
 
 @router.get("/profile")

@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useQuestions } from '@/domain/services/useQuestions'
+import { useQuizzes } from '@/domain/services/useQuizzes'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 
-const { questions, load } = useQuestions()
-const currentQuestionIndex = ref(0)
+const { quizzes, load } = useQuizzes()
+const currentQuizIndex = ref(0)
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 const selectedAnswerId = ref<number | null>(null)
 
-const selectAnswer = async (answer: string, answerId: number) => {
+const selectAnswer = async (answerId: number) => {
   selectedAnswerId.value = answerId
 
   // Wait for the animation to complete
   await new Promise(resolve => setTimeout(resolve, 300))
 
-  if (currentQuestionIndex.value < questions.value.length - 1) {
-    currentQuestionIndex.value++
+  if (currentQuizIndex.value < quizzes.value.length - 1) {
+    currentQuizIndex.value++
   } else {
     // Handle end of questions if needed
   }
@@ -29,23 +29,23 @@ onMounted(async () => {
   try {
     isLoading.value = true
     await load()
-    console.log('Loaded questions:', questions.value)
+    console.log('Loaded quizzes:', quizzes.value)
   } catch (e) {
-    error.value = 'Failed to load questions. Please try again later.'
+    error.value = 'Failed to load quizzes. Please try again later.'
     console.error('Error loading questions:', e)
   } finally {
     isLoading.value = false
   }
 })
 
-watch(questions, (newQuestions) => {
-  console.log('Questions updated:', newQuestions)
+watch(quizzes, (newQuizzes) => {
+  console.log('Quizzes updated:', newQuizzes)
 })
 
-const currentQuestion = () => {
-  const question = questions.value[currentQuestionIndex.value]
-  console.log('Current question:', question)
-  return question
+const currentQuiz = () => {
+  const quiz = quizzes.value[currentQuizIndex.value]
+  console.log('Current quiz:', quiz)
+  return quiz
 }
 </script>
 
@@ -53,28 +53,28 @@ const currentQuestion = () => {
   <div class="question-page">
     <div v-if="isLoading" class="loading">Loading questions...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
-    <Sections v-else-if="questions.length > 0">
+    <Sections v-else-if="quizzes.length > 0">
       <Section standalone>
         <Placeholder
-          :title="currentQuestion().text"
+          :title="currentQuiz().question.text"
           caption="чиназес"
           standalone
         >
           <template #picture>
-            <div class="question-emoji">{{ currentQuestion().emoji }}</div>
+            <div class="question-emoji">{{ currentQuiz().question.emoji }}</div>
           </template>
         </Placeholder>
       </Section>
       <Section padded>
         <div class="answer-grid">
           <button
-            v-for="answer in currentQuestion().answers"
-            :key="answer.user_id"
+            v-for="friend in currentQuiz().friends"
+            :key="friend.user_id"
             class="answer-button"
-            :class="{ 'selected': selectedAnswerId === answer.user_id }"
-            @click="selectAnswer(answer.answer_text, answer.user_id)"
+            :class="{ 'selected': selectedAnswerId === friend.user_id }"
+            @click="selectAnswer(friend.user_id)"
           >
-            {{ answer.answer_text }}
+            {{ friend.first_name + ' ' + friend.last_name || friend.username }}
           </button>
         </div>
       </Section>

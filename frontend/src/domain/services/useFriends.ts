@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import type Friend from '../entities/Friend'
+import type User from '../entities/User'
 import { createSharedComposable } from '@vueuse/core'
 import { getFriends, loadFriends, addFriend } from '@/infra/store/friends'
 
@@ -7,7 +7,7 @@ interface useFriendsComposableState {
   /**
    * Friends list
    */
-  friends: Ref<Friend[]>;
+  friends: Ref<User[]>;
   /**
    * Load friends
    */
@@ -22,7 +22,7 @@ interface useFriendsComposableState {
  * Composable to work with friends list
  */
 export const useFriends = createSharedComposable((): useFriendsComposableState => {
-  const friends = ref<Friend[]>(getFriends())
+  const friends = ref<User[]>(getFriends())
 
   const load = async () => {
     const loadedFriends = await loadFriends()

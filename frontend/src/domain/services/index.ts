@@ -1,7 +1,7 @@
-import { useQuestions } from './useQuestions'
+import { useQuizzes } from './useQuizzes'
 import { useProfile } from './useProfile'
 
 export {
-  useQuestions,
+  useQuizzes,
   useProfile,
 }

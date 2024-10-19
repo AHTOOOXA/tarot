@@ -1,4 +1,4 @@
-import type Friend from '@/domain/entities/Friend'
+import type User from '@/domain/entities/User'
 import { apiTransport } from '@/infra/transport/api'
 
 /**
@@ -6,21 +6,21 @@ import { apiTransport } from '@/infra/transport/api'
  * ---------------------------
  */
 
-let friends: Friend[] = []
+let friends: User[] = []
 
 /**
  * Get friends list
  */
-export function getFriends(): Friend[] {
+export function getFriends(): User[] {
   return friends
 }
 
 /**
  * Load friends from API
  */
-export async function loadFriends(): Promise<Friend[]> {
+export async function loadFriends(): Promise<User[]> {
   try {
-    const response = await apiTransport.get<Friend[]>('/friends')
+    const response = await apiTransport.get<User[]>('/friends')
     console.log('API response:', response)
     friends = response
     return friends
