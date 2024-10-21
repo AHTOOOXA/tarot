@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import TIMESTAMP
@@ -16,7 +17,13 @@ class Base(DeclarativeBase):
 class TableNameMixin:
     @declared_attr.directive
     def __tablename__(cls) -> str:
-        return cls.__name__.lower() + "s"
+        name = re.sub(r"(?<!^)(?=[A-Z])", "_", cls.__name__).lower()
+        if name.endswith("y"):
+            return name[:-1] + "ies"
+        elif name.endswith("s"):
+            return name + "es"
+        else:
+            return name + "s"
 
 
 class TimestampMixin:
