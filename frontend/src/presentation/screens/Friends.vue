@@ -61,7 +61,7 @@ const inviteFriends = () => {
               Invite Friends
             </div>
             <div v-if="friends.length > 0">
-              <div v-for="friend in friends" :key="friend.user_id" class="friend-item">
+              <div v-for="friend in friends" :key="friend.id" class="friend-item">
                 <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
                 <img v-if="friend.photo_url" :src="friend.photo_url" alt="Friend's photo" class="friend-photo">
               </div>

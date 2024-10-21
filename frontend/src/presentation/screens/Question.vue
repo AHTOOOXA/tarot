@@ -70,7 +70,7 @@ const currentQuiz = () => {
         <div class="answer-grid">
           <button
             v-for="friend in currentQuiz().friends"
-            :key="friend.user_id"
+            :key="friend.id"
             class="answer-button"
             :class="{ 'selected': selectedAnswerId === friend.id }"
             @click="selectAnswer(friend.id)"
