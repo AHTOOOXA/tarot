@@ -3,7 +3,7 @@ import random
 from fastapi import Depends
 
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.schemas.quiz import QuestionSchema, QuizListSchema, QuizSchema, UserSchema
+from app.schemas.quizzes import QuestionSchema, QuizListSchema, QuizSchema, UserSchema
 from app.webhook.dependencies.database import get_repo
 
 

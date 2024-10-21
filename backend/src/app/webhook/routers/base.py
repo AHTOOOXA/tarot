@@ -7,7 +7,7 @@ from starlette.requests import Request
 
 from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.schemas.quiz import QuizListSchema
+from app.schemas.quizzes import QuizListSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
 from app.webhook.dependencies.database import get_repo
