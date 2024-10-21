@@ -40,7 +40,10 @@ onMounted(async () => {
       <Section padded>
         <div v-if="messages.length > 0" class="message-list">
           <div v-for="message in messages" :key="message.created_at" class="message-item">
-            <h3>{{ message.question.text }}</h3>
+            <div class="message-header">
+              <p>{{ message.question.emoji }}</p>
+            </div>
+            <p>{{ message.question.text }}</p>
             <p>Taken by: {{ message.taker.first_name + ' ' + message.taker.last_name }}</p>
             <p>Date: {{ new Date(message.created_at).toLocaleString() }}</p>
           </div>
@@ -62,6 +65,13 @@ onMounted(async () => {
   font-size: 48px;
   width: var(--size-avatar-big);
   height: var(--size-avatar-big);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-header {
+  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
