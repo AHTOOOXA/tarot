@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
+import { useInbox } from '@/domain/services/useInbox'
 
+const { messages, load } = useInbox()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
-const messages = ref<any[]>([])
 
 onMounted(async () => {
   try {
     isLoading.value = true
-    // Simulating API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    messages.value = [
-      { id: 1, sender: 'John Doe', content: 'Hello there!' },
-      { id: 2, sender: 'Jane Smith', content: 'How are you?' },
-    ]
+    await load()
+    console.log('Loaded messages:', messages.value)
   } catch (e) {
     error.value = 'Failed to load messages. Please try again later.'
     console.error('Error loading messages:', e)
@@ -42,9 +39,10 @@ onMounted(async () => {
       </Section>
       <Section padded>
         <div v-if="messages.length > 0" class="message-list">
-          <div v-for="message in messages" :key="message.id" class="message-item">
-            <h3>{{ message.sender }}</h3>
-            <p>{{ message.content }}</p>
+          <div v-for="message in messages" :key="message.created_at" class="message-item">
+            <h3>{{ message.question.text }}</h3>
+            <p>Taken by: {{ message.taker.first_name + ' ' + message.taker.last_name }}</p>
+            <p>Date: {{ new Date(message.created_at).toLocaleString() }}</p>
           </div>
         </div>
         <div v-else class="no-messages">No messages available.</div>
