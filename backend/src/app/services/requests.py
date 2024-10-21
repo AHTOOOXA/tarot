@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from app.infrastructure.database.repo.requests import RequestsRepo
+from app.services.inbox import InboxService
 from app.services.quizzes import QuizzesService
 
 
@@ -17,3 +18,7 @@ class RequestsService:
     @property
     def quizzes(self) -> QuizzesService:
         return QuizzesService(self.repo)
+
+    @property
+    def inbox(self) -> InboxService:
+        return InboxService(self.repo)

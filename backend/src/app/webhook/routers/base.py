@@ -18,6 +18,16 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
+@router.get("/inbox")
+async def get_inbox(
+    request: Request,
+    services: RequestsService = Depends(get_services),
+    user: User = Depends(get_twa_user),
+):
+    inbox = await services.inbox.get_inbox_messages(user.user_id)
+    return inbox
+
+
 @router.get("/quizzes")
 async def get_quizzes(
     request: Request,
