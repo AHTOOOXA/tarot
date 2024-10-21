@@ -1,16 +1,10 @@
 import random
 
-from fastapi import Depends
-
-from app.infrastructure.database.repo.requests import RequestsRepo
 from app.schemas.quizzes import QuestionSchema, QuizListSchema, QuizSchema, UserSchema
-from app.webhook.dependencies.database import get_repo
+from app.services.base import BaseService
 
 
-class QuizzesService:
-    def __init__(self, repo: RequestsRepo = Depends(get_repo)):
-        self.repo = repo
-
+class QuizzesService(BaseService):
     async def get_random_quizzes(self, user_id: int, limit: int = 10) -> QuizListSchema:
         questions = await self.repo.questions.get_random_questions(limit)
         friends = await self.repo.users.get_friends(user_id)

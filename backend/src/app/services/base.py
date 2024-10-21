@@ -1,4 +1,7 @@
+from fastapi import Depends
+
 from app.infrastructure.database.repo.requests import RequestsRepo
+from app.webhook.dependencies.database import get_repo
 
 
 class BaseService:
@@ -10,5 +13,5 @@ class BaseService:
 
     """
 
-    def __init__(self, repo: RequestsRepo):
+    def __init__(self, repo: RequestsRepo = Depends(get_repo)):
         self.repo: RequestsRepo = repo

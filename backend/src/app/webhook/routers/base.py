@@ -7,6 +7,7 @@ from starlette.requests import Request
 
 from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
+from app.schemas.inbox import InboxSchema
 from app.schemas.quizzes import QuizListSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
@@ -23,7 +24,7 @@ async def get_inbox(
     request: Request,
     services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
-):
+) -> InboxSchema:
     inbox = await services.inbox.get_inbox_messages(user.user_id)
     return inbox
 

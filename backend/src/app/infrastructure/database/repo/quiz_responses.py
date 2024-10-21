@@ -28,21 +28,7 @@ class QuizResponsesRepo(BaseRepo):
         await self.session.refresh(quiz_response)
         return quiz_response
 
-    async def get_quiz_responses_by_taker(self, taker_id: int) -> list[QuizResponse]:
-        """
-        Get all quiz responses for a specific taker.
-
-        Args:
-            taker_id (int): The ID of the user whose responses we want to retrieve.
-
-        Returns:
-            list[QuizResponse]: A list of QuizResponse objects for the given taker.
-        """
-        query = select(QuizResponse).where(QuizResponse.taker_id == taker_id)
-        result = await self.session.execute(query)
-        return result.scalars().all()
-
-    async def get_answered_quizzes_for_user(self, user_id: int) -> list[QuizResponse]:
+    async def get_answers_for_user(self, user_id: int) -> list[QuizResponse]:
         """
         Get all quiz responses for a user, including associated questions and taker users.
 
@@ -54,7 +40,7 @@ class QuizResponsesRepo(BaseRepo):
         """
         query = (
             select(QuizResponse)
-            .where(QuizResponse.taker_id == user_id)
+            .where(QuizResponse.answer_id == user_id)
             .options(joinedload(QuizResponse.question), joinedload(QuizResponse.taker))
         )
         result = await self.session.execute(query)
