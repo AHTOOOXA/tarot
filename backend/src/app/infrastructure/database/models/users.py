@@ -24,6 +24,8 @@ class User(Base, TimestampMixin, TableNameMixin):
         allows_write_to_pm (Mapped[Optional[bool]]): Whether the user allows write to PM.
         photo_url (Mapped[Optional[str]]): The user's photo URL.
         friendships (Mapped[List["Friendship"]]): List of friendships associated with this user.
+        taken_quizzes (Mapped[List["QuizResponse"]]): List of quiz responses where this user is the taker.
+        answered_quizzes (Mapped[List["QuizResponse"]]): List of quiz responses where this user is the answer.
 
     Methods:
         __repr__(): Returns a string representation of the User object.
@@ -50,6 +52,13 @@ class User(Base, TimestampMixin, TableNameMixin):
         "Friendship",
         primaryjoin="or_(User.user_id==Friendship.user_id1, User.user_id==Friendship.user_id2)",
         viewonly=True,
+    )
+
+    taken_quizzes: Mapped[List["QuizResponse"]] = relationship(
+        "QuizResponse", foreign_keys="[QuizResponse.taker_id]", back_populates="taker"
+    )
+    answered_quizzes: Mapped[List["QuizResponse"]] = relationship(
+        "QuizResponse", foreign_keys="[QuizResponse.answer_id]", back_populates="answer"
     )
 
     def __repr__(self):

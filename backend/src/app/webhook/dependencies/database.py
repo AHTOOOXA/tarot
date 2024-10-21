@@ -1,9 +1,3 @@
-import hashlib
-import hmac
-import logging
-import time
-from urllib.parse import parse_qsl, unquote
-
 from aiogram import Bot
 
 from app.config import db_config, tgbot_config

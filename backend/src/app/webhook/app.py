@@ -5,7 +5,7 @@ from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 
 from app.webhook import admin, routers
-from app.webhook.utils import engine
+from app.webhook.dependencies.database import engine
 
 app = FastAPI()
 prefix_router = APIRouter(prefix="/api")

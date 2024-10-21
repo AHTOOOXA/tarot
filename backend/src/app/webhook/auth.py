@@ -12,7 +12,7 @@ from fastapi import Depends, Request
 from app.config import tgbot_config
 from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.webhook.utils import get_repo
+from app.webhook.dependencies.database import get_repo
 
 logger = logging.getLogger(__name__)
 
