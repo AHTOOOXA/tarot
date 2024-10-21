@@ -12,7 +12,7 @@ let quizzes: Quiz[] = []
  * Get all quizzes
  */
 export function getQuizzes(): Quiz[] {
-  return quizzes
+  return [...quizzes]
 }
 
 /**
@@ -21,15 +21,28 @@ export function getQuizzes(): Quiz[] {
 export async function loadQuizzes(): Promise<Quiz[]> {
   try {
     const response = await apiTransport.get<{ quizzes: Quiz[] }>('/quizzes')
-    console.log('API response:', response)
-    quizzes = response.quizzes
-    return quizzes
+    if (Array.isArray(response.quizzes)) {
+      quizzes = response.quizzes
+    } else {
+      console.error('Unexpected response format:', response)
+      quizzes = []
+    }
+    return [...quizzes]
   } catch (error) {
     console.error('Failed to load quizzes:', error)
-    if (error instanceof Error) {
-      console.error('Error message:', error.message)
-    }
     quizzes = []
+    throw error
+  }
+}
+
+/**
+ * Submit a quiz response
+ */
+export async function submitQuizResponse(response: { question_id: number; answer_id: number }): Promise<void> {
+  try {
+    await apiTransport.post('/quiz_response', response)
+  } catch (error) {
+    console.error('Failed to submit quiz response:', error)
     throw error
   }
 }

@@ -28,6 +28,17 @@ async def get_quizzes(
     return quizzes
 
 
+@router.post("/quiz_response")
+async def post_quiz_response(
+    request: Request,
+    services: RequestsService = Depends(get_services),
+    user: User = Depends(get_twa_user),
+):
+    request_data = await request.json()
+    await services.quizzes.create_quiz_response(user.user_id, request_data)
+    return {"status": "success"}
+
+
 @router.get("/profile")
 async def get_profile(
     request: Request,

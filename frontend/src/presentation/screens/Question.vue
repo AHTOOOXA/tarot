@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useQuizzes } from '@/domain/services/useQuizzes'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 
-const { quizzes, load } = useQuizzes()
+const { quizzes, load, submitQuizResponse } = useQuizzes()
 const currentQuizIndex = ref(0)
 const isLoading = ref(true)
 const error = ref<string | null>(null)
@@ -12,6 +12,15 @@ const selectedAnswerId = ref<number | null>(null)
 const selectAnswer = async (answerId: number) => {
   selectedAnswerId.value = answerId
   console.log('Selected answer:', answerId)
+
+  // Start the API request without awaiting it
+  submitQuizResponse({
+    question_id: currentQuiz().question.id,
+    answer_id: answerId
+  }).catch(error => {
+    console.error('Failed to submit quiz response:', error)
+    // Optionally, show an error message to the user
+  })
 
   // Wait for the animation to complete
   await new Promise(resolve => setTimeout(resolve, 300))

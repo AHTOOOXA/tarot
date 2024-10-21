@@ -1,9 +1,9 @@
 import { ref, type Ref } from 'vue'
 import type Quiz from '../entities/Quiz'
 import { createSharedComposable } from '@vueuse/core'
-import { getQuizzes, loadQuizzes } from '@/infra/store/quizzes'
+import { getQuizzes, loadQuizzes, submitQuizResponse as submitQuizResponseToStore } from '@/infra/store/quizzes'
 
-interface useQuizzesComposableState {
+interface UseQuizzesComposableState {
   /**
    * Quizzes
    */
@@ -12,22 +12,29 @@ interface useQuizzesComposableState {
    * Load quizzes
    */
   load: () => Promise<void>;
+  /**
+   * Submit quiz response
+   */
+  submitQuizResponse: (response: { question_id: number; answer_id: number }) => Promise<void>;
 }
 
 /**
  * Composable to work with quizzes
  */
-export const useQuizzes = createSharedComposable((): useQuizzesComposableState => {
+export const useQuizzes = createSharedComposable((): UseQuizzesComposableState => {
   const quizzes = ref<Quiz[]>(getQuizzes())
 
   const load = async () => {
-    const loadedQuizzes = await loadQuizzes()
-    quizzes.value = loadedQuizzes
-    console.log('Quizzes loaded in composable:', quizzes.value)
+    quizzes.value = await loadQuizzes()
+  }
+
+  const submitQuizResponse = async (response: { question_id: number; answer_id: number }) => {
+    await submitQuizResponseToStore(response)
   }
 
   return {
     quizzes,
     load,
+    submitQuizResponse,
   }
 })

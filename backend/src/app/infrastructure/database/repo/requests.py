@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.database.repo.questions import QuestionRepo
+from app.infrastructure.database.repo.quiz_responses import QuizResponsesRepo
 from app.infrastructure.database.repo.users import UserRepo
 
 
@@ -23,3 +24,7 @@ class RequestsRepo:
     @property
     def questions(self) -> QuestionRepo:
         return QuestionRepo(self.session)
+
+    @property
+    def quiz_responses(self) -> QuizResponsesRepo:
+        return QuizResponsesRepo(self.session)
