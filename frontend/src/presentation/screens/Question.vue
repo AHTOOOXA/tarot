@@ -11,6 +11,7 @@ const selectedAnswerId = ref<number | null>(null)
 
 const selectAnswer = async (answerId: number) => {
   selectedAnswerId.value = answerId
+  console.log('Selected answer:', answerId)
 
   // Wait for the animation to complete
   await new Promise(resolve => setTimeout(resolve, 300))
@@ -71,8 +72,8 @@ const currentQuiz = () => {
             v-for="friend in currentQuiz().friends"
             :key="friend.user_id"
             class="answer-button"
-            :class="{ 'selected': selectedAnswerId === friend.user_id }"
-            @click="selectAnswer(friend.user_id)"
+            :class="{ 'selected': selectedAnswerId === friend.id }"
+            @click="selectAnswer(friend.id)"
           >
             {{ friend.first_name + ' ' + friend.last_name || friend.username }}
           </button>

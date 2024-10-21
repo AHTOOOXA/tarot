@@ -20,15 +20,16 @@ export function getQuizzes(): Quiz[] {
  */
 export async function loadQuizzes(): Promise<Quiz[]> {
   try {
-    const response = await apiTransport.get<Quiz[]>('/quizzes')
+    const response = await apiTransport.get<{ quizzes: Quiz[] }>('/quizzes')
     console.log('API response:', response)
-    quizzes = response
+    quizzes = response.quizzes
     return quizzes
   } catch (error) {
     console.error('Failed to load quizzes:', error)
     if (error instanceof Error) {
       console.error('Error message:', error.message)
     }
-    throw error // Re-throw the error to be caught in the component
+    quizzes = []
+    throw error
   }
 }
