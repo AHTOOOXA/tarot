@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import Router from '@/application/router'
 import './presentation/styles/index.css'
-import { loadCities } from '@/infra/store/cities'
 import { useTelegram } from '@/application/services'
 import { getCSSVariable } from './infra/utils/dom'
 import { darkenColor } from './infra/utils/color'
@@ -78,18 +77,15 @@ function handleBrokenVariables(): void {
  * @todo load icons
  * @todo prepare image thumbs
  */
-void loadCities()
-  .then(() => {
-    const app = createApp(App)
+const app = createApp(App)
 
-    app.use(Router)
-    app.mount('#app')
+app.use(Router)
+app.mount('#app')
 
-    requestAnimationFrame(() => {
-      if (platform === 'ios') {
-        handleBrokenVariables()
-      }
+requestAnimationFrame(() => {
+  if (platform === 'ios') {
+    handleBrokenVariables()
+  }
 
-      ready()
-    })
-  })
+  ready()
+})

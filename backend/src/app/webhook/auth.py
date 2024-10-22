@@ -10,8 +10,9 @@ from urllib.parse import parse_qsl, unquote
 from fastapi import Depends, Request
 
 from app.config import tgbot_config
+from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.webhook.utils import get_repo
+from app.webhook.dependencies.database import get_repo
 
 logger = logging.getLogger(__name__)
 
@@ -157,26 +158,16 @@ async def get_twa_user(
     request: Request,
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
     repo: RequestsRepo = Depends(get_repo),
-) -> TelegramUser:
+) -> User:
     init_data = request.headers.get("initData")
     if not init_data:
         logger.error("Init data is missing")
         if tgbot_config.debug:
-            user_db = await repo.users.get_user_by_username("anton_whatever")
-            return TelegramUser(
-                id=user_db.user_id,
-                first_name=user_db.first_name,
-                username=user_db.username,
-                is_bot=user_db.is_bot,
-                language_code=user_db.language_code,
-                is_premium=user_db.is_premium,
-                added_to_attachment_menu=user_db.added_to_attachment_menu,
-                allows_write_to_pm=user_db.allows_write_to_pm,
-                photo_url=user_db.photo_url,
-            )
+            user_db = await repo.users.get_user_by_username(tgbot_config.debug_username)
+            return user_db
         raise NoInitDataError("Init data is missing")
-    user = telegram_authenticator.verify_token(init_data)
 
+    user = telegram_authenticator.verify_token(init_data)
     # Register or update user in the database
     db_user = await repo.users.get_or_create_user(
         user_id=user.id,
@@ -190,7 +181,17 @@ async def get_twa_user(
         allows_write_to_pm=user.allows_write_to_pm,
         photo_url=user.photo_url,
     )
-
     logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
 
-    return user
+    # TODO: catch WebAppChat
+    # Extract WebAppChat info from init data
+    # # parse init data
+    # init_data = telegram_authenticator._parse_init_data(init_data)
+    # logger.info(f"Init data: {init_data}")
+    # webapp_chat_info = init_data.get("chat")
+    # if webapp_chat_info:
+    #     webapp_chat_info = json.loads(webapp_chat_info)
+    #     logger.info(f"WebAppChat info: {webapp_chat_info}")
+    #     logger.info(f"WebAppChat info: {telegram_authenticator._parse_user_data(webapp_chat_info)}")
+
+    return db_user

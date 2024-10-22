@@ -76,6 +76,7 @@ class TgBot:
     use_redis: bool
     web_app_domain: str
     debug: bool
+    debug_username: str
 
     @staticmethod
     def from_env(env: Env):
@@ -87,12 +88,14 @@ class TgBot:
         use_redis = env.bool("USE_REDIS")
         web_app_domain = env.str("FRONTEND_URL")
         debug = env.bool("DEBUG")
+        debug_username = env.str("DEBUG_USERNAME")
         return TgBot(
             token=token,
             admin_ids=admin_ids,
             use_redis=use_redis,
             web_app_domain=web_app_domain,
             debug=debug,
+            debug_username=debug_username,
         )
 
 

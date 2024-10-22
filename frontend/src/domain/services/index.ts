@@ -1,13 +1,7 @@
-import { useCities } from './useCities'
-import { useHotel } from './useHotel'
-import useInvoice from './useInvoice'
-import { useTripDetails } from './useTripDetails'
-import { useQuestions } from './useQuestions'
+import { useQuizzes } from './useQuizzes'
+import { useProfile } from './useProfile'
 
 export {
-  useCities,
-  useHotel,
-  useInvoice,
-  useTripDetails,
-  useQuestions,
+  useQuizzes,
+  useProfile,
 }

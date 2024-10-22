@@ -1,7 +1,7 @@
-from typing import Optional
+from typing import List, Optional
 
-from sqlalchemy import BIGINT, Boolean, String, text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import BIGINT, Boolean, String, or_
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, TableNameMixin, TimestampMixin
 
@@ -23,6 +23,9 @@ class User(Base, TimestampMixin, TableNameMixin):
         added_to_attachment_menu (Mapped[Optional[bool]]): Whether the user is added to attachment menu.
         allows_write_to_pm (Mapped[Optional[bool]]): Whether the user allows write to PM.
         photo_url (Mapped[Optional[str]]): The user's photo URL.
+        friendships (Mapped[List["Friendship"]]): List of friendships associated with this user.
+        taken_quizzes (Mapped[List["QuizResponse"]]): List of quiz responses where this user is the taker.
+        answered_quizzes (Mapped[List["QuizResponse"]]): List of quiz responses where this user is the answer.
 
     Methods:
         __repr__(): Returns a string representation of the User object.
@@ -45,7 +48,18 @@ class User(Base, TimestampMixin, TableNameMixin):
     allows_write_to_pm: Mapped[Optional[bool]] = mapped_column(Boolean)
     photo_url: Mapped[Optional[str]] = mapped_column(String(255))
 
+    friendships: Mapped[List["Friendship"]] = relationship(
+        "Friendship",
+        primaryjoin="or_(User.user_id==Friendship.user_id1, User.user_id==Friendship.user_id2)",
+        viewonly=True,
+    )
+
+    taken_quizzes: Mapped[List["QuizResponse"]] = relationship(
+        "QuizResponse", foreign_keys="[QuizResponse.taker_id]", back_populates="taker"
+    )
+    answered_quizzes: Mapped[List["QuizResponse"]] = relationship(
+        "QuizResponse", foreign_keys="[QuizResponse.answer_id]", back_populates="answer"
+    )
+
     def __repr__(self):
-        return (
-            f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"
-        )
+        return f"<User {self.user_id} {self.username} {self.first_name} {self.last_name}>"

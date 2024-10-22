@@ -1,40 +1,38 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import Home from '@/presentation/screens/Home.vue'
-import Hotel from '@/presentation/screens/Hotel.vue'
-import Room from '@/presentation/screens/Room.vue'
-import Location from '@/presentation/screens/Location.vue'
 import Question from '@/presentation/screens/Question.vue'
 import Inbox from '@/presentation/screens/Inbox.vue'
 import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
+import Onboarding from '@/presentation/screens/Onboarding.vue'
+import useTelegram from '@/application/services/useTelegram'
+import { addFriend } from '@/infra/store/friends'
 
+const { webAppInitData } = useTelegram()
+
+// TODO: redirect to questions if user is already onboarded
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/questions'
+    component: Onboarding,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const initData = new URLSearchParams(webAppInitData)
+        const start_param = JSON.parse(initData.get('start_param') || '{}')
+        if (start_param) {
+          await addFriend(Number(start_param))
+        }
+        next('/questions')
+      } catch (error) {
+        console.error('Error in / route:', error)
+        next('/questions')
+      }
+    }
   },
   {
-    path: '/home',
-    component: Home,
-  },
-  {
-    path: '/location',
-    component: Location,
-  },
-  {
-    path: '/hotel/:id',
-    component: Hotel,
-    props: route => ({
-      id: parseInt(route.params.id as string, 10),
-    }),
-  },
-  {
-    path: '/room/:hotelId/:roomId',
-    component: Room,
-    props: route => ({
-      hotelId: parseInt(route.params.hotelId as string, 10),
-      roomId: parseInt(route.params.roomId as string, 10),
-    }),
+    path: '/onboarding',
+    name: 'onboarding',
+    component: Onboarding
+    // TODO: redirect to questions if user is already onboarded
   },
   {
     path: '/questions',

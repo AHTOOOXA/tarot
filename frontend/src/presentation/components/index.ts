@@ -1,6 +1,5 @@
 import PageWithHeader from './Page/WithHeader.vue'
 import Icon from './Icon/Icon.vue'
-import DataOverview from './DataOverview/DataOverview.vue'
 import Avatar from './Avatar/Avatar.vue'
 import List from './List/List.vue'
 import ListItem from './List/ListItem.vue'
@@ -22,7 +21,6 @@ import Lottie from './Lottie/Lottie.vue'
 export {
   PageWithHeader,
   Icon,
-  DataOverview,
   Avatar,
   List,
   ListItem,
