@@ -118,7 +118,10 @@ services:
       - "15672:15672"
     env_file:
       - ".env"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   pgdata: { }
   cache: { }
+  rabbitmq_data: { }  # Add this line
