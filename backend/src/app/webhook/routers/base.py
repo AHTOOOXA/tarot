@@ -7,11 +7,13 @@ from starlette.requests import Request
 
 from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
+from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.schemas.inbox import InboxSchema
 from app.schemas.quizzes import QuizListSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
 from app.webhook.dependencies.database import get_repo
+from app.webhook.dependencies.rabbit import get_rabbit_producer
 from app.webhook.dependencies.service import get_services
 
 router = APIRouter()
@@ -44,9 +46,11 @@ async def post_quiz_response(
     request: Request,
     services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
+    rabbit_producer: RabbitMQProducer = Depends(get_rabbit_producer),
 ):
     request_data = await request.json()
-    await services.quizzes.create_quiz_response(user.user_id, request_data)
+    quiz_response = await services.quizzes.create_quiz_response(user.user_id, request_data)
+    await rabbit_producer.publish({"user_id": quiz_response.answer_id, "text": "Someone answered a quiz about you"})
     return {"status": "success"}
 
 

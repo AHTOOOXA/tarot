@@ -21,6 +21,7 @@ dependencies = [
     "alembic",
     "environs",
     "betterlogging",
+    "aio-pika",
 ]
 [project.optional-dependencies]
 bot = [
