@@ -7,9 +7,6 @@ from app.infrastructure.database.repo.base import BaseRepo
 
 
 class QuizResponsesRepo(BaseRepo):
-    def __init__(self, session: AsyncSession):
-        super().__init__(session)
-
     async def create_quiz_response(self, taker_id: int, question_id: int, answer_id: int) -> QuizResponse:
         """
         Create a new quiz response.

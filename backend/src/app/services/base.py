@@ -1,7 +1,9 @@
 from fastapi import Depends
 
 from app.infrastructure.database.repo.requests import RequestsRepo
+from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.webhook.dependencies.database import get_repo
+from app.webhook.dependencies.rabbit import get_rabbit_producer
 
 
 class BaseService:
@@ -13,5 +15,10 @@ class BaseService:
 
     """
 
-    def __init__(self, repo: RequestsRepo = Depends(get_repo)):
+    def __init__(
+        self,
+        repo: RequestsRepo,
+        producer: RabbitMQProducer,
+    ):
         self.repo: RequestsRepo = repo
+        self.producer: RabbitMQProducer = producer

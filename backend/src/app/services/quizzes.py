@@ -44,10 +44,10 @@ class QuizzesService(BaseService):
         quiz_response = await self.repo.quiz_responses.create_quiz_response(
             taker_id=user_id, question_id=question_id, answer_id=answer_id
         )
-
-        return QuizResponseSchema(
-            id=quiz_response.id,
-            taker_id=quiz_response.taker_id,
-            question_id=quiz_response.question_id,
-            answer_id=quiz_response.answer_id,
+        question = await self.repo.questions.get_question_by_id(question_id)
+        await self.producer.publish(
+            {
+                "user_id": quiz_response.answer_id,
+                "text": f"Someone answered a quiz about: '{question.text}'",
+            }
         )

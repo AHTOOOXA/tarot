@@ -6,14 +6,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
 from app.infrastructure.database.models.users import User
-from app.infrastructure.database.repo.requests import RequestsRepo
-from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.schemas.inbox import InboxSchema
 from app.schemas.quizzes import QuizListSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
-from app.webhook.dependencies.database import get_repo
-from app.webhook.dependencies.rabbit import get_rabbit_producer
 from app.webhook.dependencies.service import get_services
 
 router = APIRouter()
@@ -46,30 +42,19 @@ async def post_quiz_response(
     request: Request,
     services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
-    rabbit_producer: RabbitMQProducer = Depends(get_rabbit_producer),
 ):
     request_data = await request.json()
-    quiz_response = await services.quizzes.create_quiz_response(user.user_id, request_data)
-    await rabbit_producer.publish({"user_id": quiz_response.answer_id, "text": "Someone answered a quiz about you"})
+    await services.quizzes.create_quiz_response(user.user_id, request_data)
     return {"status": "success"}
 
 
 @router.get("/profile")
 async def get_profile(
     request: Request,
-    repo: RequestsRepo = Depends(get_repo),
+    services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
 ):
-    # Create a profile object using the TelegramUser data
-    profile = {
-        "user_id": user.user_id,
-        "username": user.username,
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "language_code": user.language_code,
-        "photo_url": user.photo_url,
-    }
-
+    profile = await services.users.get_profile(user.user_id)
     print(f"Returning profile for user: {user.user_id}")
     return profile
 
@@ -77,10 +62,10 @@ async def get_profile(
 @router.get("/friends")
 async def get_friends(
     request: Request,
-    repo: RequestsRepo = Depends(get_repo),
+    services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
 ):
-    friends = await repo.users.get_friends(user.user_id)
+    friends = await services.users.get_friends(user.user_id)
     logger.info(f"Returning friends for user: {user.user_id}, friends: {friends}")
     return friends
 
@@ -88,14 +73,13 @@ async def get_friends(
 @router.post("/add_friend")
 async def add_friend(
     request: Request,
-    repo: RequestsRepo = Depends(get_repo),
+    services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
 ):
     request_data = await request.json()
     logger.info(f"Request data: {request_data}")
     friend_id = request_data.get("friend_id")
     logger.info(f"{friend_id} of type {type(friend_id)}")
-    friend = await repo.users.get_user_by_id(friend_id)
-    await repo.users.add_friend(user.user_id, friend.user_id)
-    logger.info(f"User {user.user_id} added friend {friend.user_id}")
+    await services.users.add_friend(user.user_id, friend_id)
+    logger.info(f"User {user.user_id} added friend {friend_id}")
     return {"status": "success"}
