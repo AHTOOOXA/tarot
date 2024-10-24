@@ -1,30 +1,21 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import { useInbox } from '@/composables/useInbox'
+import { useInboxStore } from '@/store/inbox'
+import { storeToRefs } from 'pinia'
 
-const { messages, load } = useInbox()
-const isLoading = ref(true)
-const error = ref<string | null>(null)
+const inboxStore = useInboxStore()
+const { messages, getIsLoading, getError } = storeToRefs(inboxStore)
 
 onMounted(async () => {
-  try {
-    isLoading.value = true
-    await load()
-    console.log('Loaded messages:', messages.value)
-  } catch (e) {
-    error.value = 'Failed to load messages. Please try again later.'
-    console.error('Error loading messages:', e)
-  } finally {
-    isLoading.value = false
-  }
+  await inboxStore.fetchMessages()
 })
 </script>
 
 <template>
   <div class="inbox-page">
-    <div v-if="isLoading" class="loading">Loading messages...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-if="getIsLoading" class="loading">Loading messages...</div>
+    <div v-else-if="getError" class="error">{{ getError }}</div>
     <Sections v-else>
       <Section standalone>
         <Placeholder

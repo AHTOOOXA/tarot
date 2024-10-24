@@ -8,20 +8,20 @@ type QuizResponse = paths['/quiz_response']['post']['requestBody']['content']['a
 
 interface QuizState {
   quizzes: Quiz[];
-  loading: boolean;
+  isLoading: boolean;
   error: string | null;
 }
 
 export const useQuizStore = defineStore('quiz', {
   state: (): QuizState => ({
     quizzes: [],
-    loading: false,
+    isLoading: false,
     error: null,
   }),
 
   actions: {
     async fetchQuizzes() {
-      this.loading = true;
+      this.isLoading = true;
       this.error = null;
 
       try {
@@ -37,7 +37,7 @@ export const useQuizStore = defineStore('quiz', {
       } catch (err) {
         this.error = (err as Error).message;
       } finally {
-        this.loading = false;
+        this.isLoading = false;
       }
     },
 
@@ -66,7 +66,7 @@ export const useQuizStore = defineStore('quiz', {
 
   getters: {
     getQuizzes: (state): Quiz[] => state.quizzes,
-    isLoading: (state): boolean => state.loading,
+    getIsLoading: (state): boolean => state.isLoading,
     getError: (state): string | null => state.error,
   },
 });

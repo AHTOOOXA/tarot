@@ -43,8 +43,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/inbox',
     name: 'inbox',
-    // component: Inbox
-    component: Question
+    component: Inbox
   },
   {
     path: '/friends',
