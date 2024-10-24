@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import useTelegram from '@/application/services/useTelegram'
-import { useFriends } from '@/domain/services/useFriends'
+import useTelegram from '@/services/useTelegram'
+import { useFriends } from '@/composables/useFriends'
 import type User from '@/domain/entities/User'
 
 const { webAppInitData } = useTelegram()

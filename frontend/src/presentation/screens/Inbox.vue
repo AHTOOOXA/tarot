@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import { useInbox } from '@/domain/services/useInbox'
+import { useInbox } from '@/composables/useInbox'
 
 const { messages, load } = useInbox()
 const isLoading = ref(true)

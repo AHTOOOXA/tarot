@@ -7,7 +7,7 @@ from starlette.requests import Request
 
 from app.infrastructure.database.models.users import User
 from app.schemas.inbox import InboxSchema
-from app.schemas.quizzes import QuizListSchema
+from app.schemas.quizzes import QuizListSchema, QuizResponseSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
 from app.webhook.dependencies.service import get_services
@@ -39,12 +39,11 @@ async def get_quizzes(
 
 @router.post("/quiz_response")
 async def post_quiz_response(
-    request: Request,
+    quiz_response: QuizResponseSchema,
     services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
 ):
-    request_data = await request.json()
-    await services.quizzes.create_quiz_response(user.user_id, request_data)
+    await services.quizzes.create_quiz_response(user.user_id, quiz_response.dict())
     return {"status": "success"}
 
 

@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import useTelegram from '@/application/services/useTelegram'
+import useTelegram from '@/services/useTelegram'
 
 const router = useRouter()
 const { webAppInitData } = useTelegram()

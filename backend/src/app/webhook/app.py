@@ -8,7 +8,6 @@ from app.webhook import admin, routers
 from app.webhook.dependencies.database import engine
 
 app = FastAPI()
-prefix_router = APIRouter(prefix="/api")
 
 log_level = logging.INFO
 log = logging.getLogger(__name__)
@@ -32,10 +31,7 @@ logging.basicConfig(
 for router in [
     routers.base.router,
 ]:
-    prefix_router.include_router(router)
-
-app.include_router(prefix_router)
-
+    app.include_router(router)
 
 app_admin = Admin(app, engine)
 

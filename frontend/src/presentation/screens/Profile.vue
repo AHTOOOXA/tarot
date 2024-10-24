@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import { useProfile } from '@/domain/services/useProfile'
+import { useProfile } from '@/domain/useProfile'
 
 const { profile, load } = useProfile()
 const isLoading = ref(true)

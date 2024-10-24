@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import { useQuizzes } from '@/domain/services/useQuizzes'
+import { ref, onMounted, watch, computed } from 'vue'
+import { useQuizStore } from '@/store/quiz'
 import { Placeholder, Section, Sections } from '@/presentation/components'
+import { storeToRefs } from 'pinia'
 
-const { quizzes, load, submitQuizResponse } = useQuizzes()
+const quizStore = useQuizStore()
+const { quizzes, loading: isLoading, error } = storeToRefs(quizStore)
 const currentQuizIndex = ref(0)
-const isLoading = ref(true)
-const error = ref<string | null>(null)
 const selectedAnswerId = ref<number | null>(null)
 
 const selectAnswer = async (answerId: number) => {
@@ -14,13 +14,11 @@ const selectAnswer = async (answerId: number) => {
   console.log('Selected answer:', answerId)
 
   // Start the API request without awaiting it
-  submitQuizResponse({
-    question_id: currentQuiz().question.id,
-    answer_id: answerId
-  }).catch(error => {
-    console.error('Failed to submit quiz response:', error)
-    // Optionally, show an error message to the user
-  })
+  quizStore.submitQuizResponse(1, currentQuiz.value.question.id, answerId)
+    .catch(error => {
+      console.error('Failed to submit quiz response:', error)
+      // Optionally, show an error message to the user
+    })
 
   // Wait for the animation to complete
   await new Promise(resolve => setTimeout(resolve, 300))
@@ -37,14 +35,10 @@ const selectAnswer = async (answerId: number) => {
 
 onMounted(async () => {
   try {
-    isLoading.value = true
-    await load()
+    await quizStore.fetchQuizzes()
     console.log('Loaded quizzes:', quizzes.value)
   } catch (e) {
-    error.value = 'Failed to load quizzes. Please try again later.'
     console.error('Error loading questions:', e)
-  } finally {
-    isLoading.value = false
   }
 })
 
@@ -52,11 +46,11 @@ watch(quizzes, (newQuizzes) => {
   console.log('Quizzes updated:', newQuizzes)
 })
 
-const currentQuiz = () => {
+const currentQuiz = computed(() => {
   const quiz = quizzes.value[currentQuizIndex.value]
   console.log('Current quiz:', quiz)
   return quiz
-}
+})
 </script>
 
 <template>
@@ -66,19 +60,19 @@ const currentQuiz = () => {
     <Sections v-else-if="quizzes.length > 0">
       <Section standalone>
         <Placeholder
-          :title="currentQuiz().question.text"
+          :title="currentQuiz.question.text"
           caption="чиназес"
           standalone
         >
           <template #picture>
-            <div class="question-emoji">{{ currentQuiz().question.emoji }}</div>
+            <div class="question-emoji">{{ currentQuiz.question.emoji }}</div>
           </template>
         </Placeholder>
       </Section>
       <Section padded>
         <div class="answer-grid">
           <button
-            v-for="friend in currentQuiz().friends"
+            v-for="friend in currentQuiz.friends"
             :key="friend.id"
             class="answer-button"
             :class="{ 'selected': selectedAnswerId === friend.id }"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, onErrorCaptured, watch } from 'vue'
-import { useTelegram } from '@/application/services'
+import { useTelegram } from '@/services'
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
@@ -69,8 +69,8 @@ watch(() => route.name, (newRouteName) => {
       </RouterView>
     </div>
     <nav class="tab-menu">
-      <button 
-        v-for="tab in tabs" 
+      <button
+        v-for="tab in tabs"
         :key="tab.name"
         @click="changeTab(tab.name)"
         :class="{ active: activeTab === tab.name }"

@@ -1,6 +1,6 @@
-import { imageToBase64 } from '@/infra/utils/dom'
+import { imageToBase64 } from '@/utils/dom'
 import { type Ref, onMounted, ref } from 'vue'
-import ImageCache from '@/infra/store/thumbs/image.cache'
+import ImageCache from '@/store/image.cache'
 
 interface useThumbnailComposableState {
   /**
