@@ -2676,17 +2676,17 @@ object.values@^1.2.0:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-openapi-fetch@^0.12.2:
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/openapi-fetch/-/openapi-fetch-0.12.2.tgz#f8d6c8f00ef32a62da4b3918336df1b204495543"
-  integrity sha512-ctMQ4LkkSWfIDUMuf1SYuPMsQ7ePcWAkYaMPW1lCDdk4WlV3Vulq1zoyGrwnFVvrBs5t7OOqNF+EKa8SAaovEA==
+openapi-fetch@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/openapi-fetch/-/openapi-fetch-0.13.0.tgz#42dcdac4a8e14d2aeba321b46f6fbf4dac997a94"
+  integrity sha512-6Nlf/BDbtyHwHdNrLPUiyt4CZMzL3ZyAt55yWH8W7+Z+8aYWnvca4uZHQHXViy8KcnCMqAhLM/bifh2Yjjkf6w==
   dependencies:
-    openapi-typescript-helpers "^0.0.13"
+    openapi-typescript-helpers "^0.0.15"
 
-openapi-typescript-helpers@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/openapi-typescript-helpers/-/openapi-typescript-helpers-0.0.13.tgz#d959b6a87b5461759e240af375fab480252d2caf"
-  integrity sha512-z44WK2e7ygW3aUtAtiurfEACohf/Qt9g6BsejmIYgEoY4REHeRzgFJmO3ium0libsuzPc145I+8lE9aiiZrQvQ==
+openapi-typescript-helpers@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/openapi-typescript-helpers/-/openapi-typescript-helpers-0.0.15.tgz#96ffa762a5e01ef66a661b163d5f1109ed1967ed"
+  integrity sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==
 
 openapi-typescript@^7.4.1:
   version "7.4.1"
