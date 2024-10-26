@@ -5,7 +5,7 @@ import { Placeholder, Section, Sections } from '@/presentation/components'
 import { storeToRefs } from 'pinia'
 
 const quizStore = useQuizStore()
-const { quizzes, loading: isLoading, error } = storeToRefs(quizStore)
+const { quizzes, isLoading, error } = storeToRefs(quizStore)
 const currentQuizIndex = ref(0)
 const selectedAnswerId = ref<number | null>(null)
 
@@ -73,10 +73,10 @@ const currentQuiz = computed(() => {
         <div class="answer-grid">
           <button
             v-for="friend in currentQuiz.friends"
-            :key="friend.id"
+            :key="friend.user_id"
             class="answer-button"
-            :class="{ 'selected': selectedAnswerId === friend.id }"
-            @click="selectAnswer(friend.id)"
+            :class="{ 'selected': selectedAnswerId === friend.user_id }"
+            @click="selectAnswer(friend.user_id)"
           >
             {{ friend.first_name + ' ' + friend.last_name || friend.username }}
           </button>

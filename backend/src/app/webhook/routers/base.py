@@ -43,7 +43,8 @@ async def post_quiz_response(
     services: RequestsService = Depends(get_services),
     user: User = Depends(get_twa_user),
 ):
-    await services.quizzes.create_quiz_response(user.user_id, quiz_response.dict())
+    quiz_response.taker_id = user.user_id
+    await services.quizzes.create_quiz_response(quiz_response)
     return {"status": "success"}
 
 
