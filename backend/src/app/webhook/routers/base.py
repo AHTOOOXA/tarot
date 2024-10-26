@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
 from app.schemas.inbox import InboxSchema
-from app.schemas.quizzes import QuizListSchema, QuizResponseSchema
+from app.schemas.quizzes import QuizResponseSchema, QuizSchema
 from app.schemas.users import UpdateUserRequest, UserSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
@@ -31,7 +31,7 @@ async def get_quizzes(
     request: Request,
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
-) -> QuizListSchema:
+) -> List[QuizSchema]:
     quizzes = await services.quizzes.get_random_quizzes(user.user_id, limit=10)
     return quizzes
 
