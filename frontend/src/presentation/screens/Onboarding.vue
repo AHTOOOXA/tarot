@@ -3,12 +3,18 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 import useTelegram from '@/services/useTelegram'
+import { useStart } from '@/composables/start'
+import { useUserStore } from '@/store/user'
 
 const router = useRouter()
 const { webAppInitData } = useTelegram()
+const { parseStartParam, getStartParam } = useStart()
+const userStore = useUserStore()
+
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 const onboardingSteps = ref<string[]>([])
+const invitedByUser = ref<any>(null)
 
 onMounted(async () => {
   try {
@@ -17,13 +23,20 @@ onMounted(async () => {
     const initData = new URLSearchParams(webAppInitData)
     const user = JSON.parse(initData.get('user') || '{}')
 
+    // Parse start parameters
+    parseStartParam()
+    const friendId = getStartParam('friend')
+
+    if (friendId) {
+      // Fetch friend information
+      invitedByUser.value = await userStore.fetchUserById(Number(friendId))
+    }
+
     // Simulating API call to get onboarding steps
     await new Promise(resolve => setTimeout(resolve, 1000))
     onboardingSteps.value = [
-      'Welcome to Glow App!',
-      'Connect with friends',
-      'Explore new features',
-      'Customize your profile'
+      `Welcome ${user.first_name}!`,
+      "Let's get you started",
     ]
   } catch (e) {
     error.value = 'Failed to load onboarding steps. Please try again later.'
@@ -46,8 +59,7 @@ const startApp = () => {
     <Sections v-else>
       <Section standalone>
         <Placeholder
-          title="Welcome"
-          caption="Let's get you started"
+          title="Welcome to Glow App!"
           standalone
         >
           <template #picture>
@@ -55,6 +67,8 @@ const startApp = () => {
           </template>
         </Placeholder>
       </Section>
+      <Placeholder compact v-if="invitedByUser" :title="`You were invited by ${invitedByUser.first_name} ${invitedByUser.last_name}`" :caption="`@${invitedByUser.username}`">
+      </Placeholder>
       <Section padded>
         <div class="onboarding-content">
           <div v-for="(step, index) in onboardingSteps" :key="index" class="onboarding-step">

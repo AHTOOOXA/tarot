@@ -87,6 +87,14 @@ async def get_user(
     return user
 
 
+@router.get("/user/{user_id}")
+async def get_user_by_id(
+    user_id: int,
+    services: RequestsService = Depends(get_services),
+) -> UserSchema:
+    return await services.users.get_user_by_id(user_id)
+
+
 @router.post("/user")
 async def update_user(
     user_data: UpdateUserRequest,

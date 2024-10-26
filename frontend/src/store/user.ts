@@ -75,6 +75,21 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async fetchUserById(userId: number) {
+      this.error = null;
+      const { data, error } = await apiClient.GET('/user/{user_id}', {
+        params: {
+          path: { user_id: userId },
+        },
+      });
+
+      if (error) {
+        throw new Error('Failed to fetch user');
+      }
+
+      return data as User;
+    },
+
     async addFriend(friendId: number) {
       this.error = null;
 
