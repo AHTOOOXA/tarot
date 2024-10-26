@@ -86,6 +86,16 @@ class UserRepo(BaseRepo):
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
+    async def get_friendship(self, user_id1: int, user_id2: int) -> Optional[Friendship]:
+        stmt = select(Friendship).where(
+            or_(
+                and_(Friendship.user_id1 == user_id1, Friendship.user_id2 == user_id2),
+                and_(Friendship.user_id1 == user_id2, Friendship.user_id2 == user_id1),
+            )
+        )
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
     async def get_friends(self, user_id: int):
         stmt = (
             select(User)

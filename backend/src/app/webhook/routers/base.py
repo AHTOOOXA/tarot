@@ -4,6 +4,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
+from app.exceptions import FriendAlreadyExistsException, UserNotFoundException
 from app.schemas.inbox import InboxSchema
 from app.schemas.quizzes import QuizResponseSchema, QuizSchema
 from app.schemas.users import UpdateUserRequest, UserSchema
@@ -74,9 +75,14 @@ async def add_friend(
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
 ):
-    await services.users.add_friend(user.user_id, friend_id)
-    logger.info(f"User {user.user_id} added friend {friend_id}")
-    return {"status": "success"}
+    try:
+        await services.users.add_friend(user.user_id, friend_id)
+        logger.info(f"User {user.user_id} added friend {friend_id}")
+        return {"status": "success"}
+    except UserNotFoundException:
+        raise HTTPException(status_code=404, detail="Friend not found")
+    except FriendAlreadyExistsException:
+        raise HTTPException(status_code=409, detail="Friend already exists")
 
 
 @router.get("/user")

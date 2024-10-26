@@ -23,10 +23,10 @@ const routes: RouteRecordRaw[] = [
 
         const { parseStartParam, getStartParam } = useStart()
         parseStartParam()
-        const friendId = getStartParam('friendId')
+        const friendId = getStartParam('friend')
 
         if (friendId) {
-          await userStore.addFriend(Number(friendId))
+          userStore.addFriend(Number(friendId))
         }
 
         if (userStore.user?.is_onboarded) {
