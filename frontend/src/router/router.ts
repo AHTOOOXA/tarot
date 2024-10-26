@@ -4,37 +4,41 @@ import Inbox from '@/presentation/screens/Inbox.vue'
 import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
 import Onboarding from '@/presentation/screens/Onboarding.vue'
-import useTelegram from '@/services/useTelegram'
 import { useUserStore } from '@/store/user'
+import useTelegram from '@/services/useTelegram'
 
 const { webAppInitData } = useTelegram()
 
-// TODO: redirect to questions if user is already onboarded
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: Onboarding,
-    beforeEnter: async (to, from, next) => {
-      try {
-        const initData = new URLSearchParams(webAppInitData)
-        const start_param = JSON.parse(initData.get('start_param') || '{}')
-        if (start_param) {
-          const userStore = useUserStore()
-          await userStore.addFriend(Number(start_param))
-        }
-        next('/questions')
-      } catch (error) {
-        console.error('Error in / route:', error)
-        next('/questions')
-      }
-    }
+    redirect: '/onboarding'
   },
   {
     path: '/onboarding',
     name: 'onboarding',
-    // component: Onboarding
-    component: Question
-    // TODO: redirect to questions if user is already onboarded
+    component: Onboarding,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const userStore = useUserStore()
+        await userStore.fetchUser()
+
+        const initData = new URLSearchParams(webAppInitData)
+        const start_param = JSON.parse(initData.get('start_param') || '{}')
+        if (start_param) {
+          await userStore.addFriend(Number(start_param))
+        }
+
+        if (userStore.user?.is_onboarded) {
+          next('/questions')
+        } else {
+          next()
+        }
+      } catch (error) {
+        console.error('Error in /onboarding route:', error)
+        next()
+      }
+    }
   },
   {
     path: '/questions',

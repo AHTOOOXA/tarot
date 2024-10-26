@@ -78,17 +78,25 @@ export const useUserStore = defineStore('user', {
     async addFriend(friendId: number) {
       this.error = null;
 
-      try {
-        const { data, error } = await apiClient.POST('/add_friend', {
-          params: { query: { friend_id: friendId } },
-        });
+      if (!Number.isNaN(friendId) && Number.isFinite(friendId)) {
+        try {
+          const { data, error } = await apiClient.POST('/add_friend', {
+            params: { query: { friend_id: friendId } },
+          });
 
-        if (error) {
-          throw new Error('Failed to add friend');
+          if (error) {
+            throw new Error('Failed to add friend');
+          }
+
+          // Handle successful friend addition here
+          // For example, you might want to update the friends list
+          // await this.fetchFriends();
+
+        } catch (err) {
+          this.error = (err as Error).message;
         }
-
-      } catch (err) {
-        this.error = (err as Error).message;
+      } else {
+        this.error = 'Invalid friend ID';
       }
     },
   },
