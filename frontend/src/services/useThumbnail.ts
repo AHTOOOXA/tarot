@@ -28,7 +28,7 @@ export default function useThumbnail(src: string, thumbData: string): useThumbna
    */
   const cachedData = ImageCache.get(src)
 
-  if (cachedData !== undefined) {
+  if (cachedData !== null) {
     return {
       pictureUrl: ref(cachedData),
       isPictureLoaded: ref(true),
