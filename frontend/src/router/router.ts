@@ -40,11 +40,11 @@ const routes: RouteRecordRaw[] = [
     name: 'questions',
     component: Question
   },
-  // {
-  //   path: '/inbox',
-  //   name: 'inbox',
-  //   component: Inbox
-  // },
+  {
+    path: '/inbox',
+    name: 'inbox',
+    component: Inbox
+  },
   {
     path: '/friends',
     name: 'friends',

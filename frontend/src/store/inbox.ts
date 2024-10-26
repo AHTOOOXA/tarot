@@ -2,11 +2,10 @@ import { defineStore } from 'pinia';
 import apiClient from '../api/client';
 import type { paths } from '@/types/schema'
 
-type Message = paths['/inbox']['get']['responses']['200']['content']['application/json']['messages'][number]
-type InboxResponse = paths['/inbox']['get']['responses']['200']['content']['application/json']
+type InboxMessage = paths['/inbox']['get']['responses']['200']['content']['application/json']['messages'][number]
 
 interface InboxState {
-  messages: Message[];
+  messages: InboxMessage[];
   isLoading: boolean;
   error: string | null;
 }
@@ -27,11 +26,11 @@ export const useInboxStore = defineStore('inbox', {
         const { data, error } = await apiClient.GET('/inbox');
 
         if (error) {
-          throw new Error('Failed to fetch messages');
+          throw new Error('Failed to fetch inbox messages');
         }
 
         if (data) {
-          this.messages = (data as InboxResponse).messages;
+          this.messages = data.messages as InboxMessage[];
         }
       } catch (err) {
         this.error = (err as Error).message;
@@ -39,12 +38,10 @@ export const useInboxStore = defineStore('inbox', {
         this.isLoading = false;
       }
     },
-
-    // You can add more actions here, such as sending a message, marking as read, etc.
   },
 
   getters: {
-    getMessages: (state): Message[] => state.messages,
+    getMessages: (state): InboxMessage[] => state.messages,
     getIsLoading: (state): boolean => state.isLoading,
     getError: (state): string | null => state.error,
   },
