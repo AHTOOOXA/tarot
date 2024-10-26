@@ -1,26 +1,25 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import useTelegram from '@/services/useTelegram'
-import { useFriends } from '@/composables/useFriends'
-import type User from '@/domain/entities/User'
+import { useUserStore } from '@/store/user'
+import type { paths } from '@/types/schema'
 
-const { webAppInitData } = useTelegram()
-const { friends, load: loadFriends } = useFriends()
+type User = paths['/user']['get']['responses']['200']['content']['application/json']
+
+const userStore = useUserStore()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 
-const currentUserId = ref('')
+const user = computed(() => userStore.getUser)
+const friends = computed(() => userStore.getFriends)
 
 onMounted(async () => {
   try {
     isLoading.value = true
-    // Parse webAppInitData to get user information
-    const initData = new URLSearchParams(webAppInitData)
-    const user = JSON.parse(initData.get('user') || '{}')
-    currentUserId.value = user.id?.toString() || ''
-
-    await loadFriends()
+    await Promise.all([
+      userStore.fetchUser(),
+      userStore.fetchFriends()
+    ])
   } catch (e) {
     error.value = 'Failed to load friends. Please try again later.'
     console.error('Error loading friends:', e)
@@ -30,8 +29,10 @@ onMounted(async () => {
 })
 
 const inviteFriends = () => {
+  if (!user.value) return
+
   const baseUrl = 'https://t.me/anton_local_dev_bot/app'
-  const friendParam = `startapp=${currentUserId.value}`
+  const friendParam = `startapp=${user.value.user_id}`
   const textParam = encodeURIComponent('Добавь меня в друзья в Glow App')
   const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(`${baseUrl}?${friendParam}`)}&text=${textParam}`
   window.open(shareUrl, '_blank')
@@ -61,7 +62,7 @@ const inviteFriends = () => {
               Invite Friends
             </div>
             <div v-if="friends.length > 0">
-              <div v-for="friend in friends" :key="friend.id" class="friend-item">
+              <div v-for="friend in friends" :key="friend.user_id" class="friend-item">
                 <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
                 <img v-if="friend.photo_url" :src="friend.photo_url" alt="Friend's photo" class="friend-photo">
               </div>

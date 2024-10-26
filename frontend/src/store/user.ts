@@ -7,12 +7,14 @@ type UpdateUserRequest = paths['/user']['post']['requestBody']['content']['appli
 
 interface UserState {
   user: User | null;
+  friends: User[];
   error: string | null;
 }
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     user: null,
+    friends: [],
     error: null,
   }),
 
@@ -54,10 +56,29 @@ export const useUserStore = defineStore('user', {
         this.error = (err as Error).message;
       }
     },
+
+    async fetchFriends() {
+      this.error = null;
+
+      try {
+        const { data, error } = await apiClient.GET('/friends');
+
+        if (error) {
+          throw new Error('Failed to fetch friends');
+        }
+
+        if (data) {
+          this.friends = data as User[];
+        }
+      } catch (err) {
+        this.error = (err as Error).message;
+      }
+    },
   },
 
   getters: {
     getUser: (state): User | null => state.user,
+    getFriends: (state): User[] => state.friends,
     getError: (state): string | null => state.error,
   },
 });

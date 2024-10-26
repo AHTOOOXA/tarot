@@ -1,6 +1,5 @@
-import json
 import logging
-import random
+from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
@@ -61,10 +60,9 @@ async def get_profile(
 
 @router.get("/friends")
 async def get_friends(
-    request: Request,
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
-):
+) -> List[UserSchema]:
     friends = await services.users.get_friends(user.user_id)
     logger.info(f"Returning friends for user: {user.user_id}, friends: {friends}")
     return friends
