@@ -19,3 +19,7 @@ class UserService(BaseService):
     async def add_friend(self, user_id: int, friend_id: int):
         friend = await self.repo.users.get_user_by_id(friend_id)
         await self.repo.users.add_friend(user_id, friend.user_id)
+
+    async def update_user(self, user_id: int, user_data: dict):
+        # TODO: add validation and security checks
+        await self.repo.users.update_user(user_id, user_data)

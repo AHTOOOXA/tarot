@@ -16,3 +16,11 @@ class UserSchema(BaseModel):
     photo_url: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class UpdateUserRequest(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+    language_code: Optional[str] = None
+    photo_url: Optional[str] = None

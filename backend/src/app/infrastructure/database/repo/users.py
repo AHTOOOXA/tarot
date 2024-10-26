@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import and_, or_, select
+from sqlalchemy import and_, or_, select, update
 from sqlalchemy.dialects.postgresql import insert
 
 from app.infrastructure.database.models import Friendship, User
@@ -70,6 +70,11 @@ class UserRepo(BaseRepo):
 
         await self.session.commit()
         return result.scalar_one()
+
+    async def update_user(self, user_id: int, user_data: dict):
+        stmt = update(User).where(User.user_id == user_id).values(**user_data)
+        await self.session.execute(stmt)
+        await self.session.commit()
 
     async def get_user_by_id(self, user_id: int) -> Optional[User]:
         stmt = select(User).where(User.user_id == user_id)
