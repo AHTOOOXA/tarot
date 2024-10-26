@@ -106,6 +106,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get User */
+        get: operations["get_user_user_get"];
+        put?: never;
+        /** Update User */
+        post: operations["update_user_user_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -159,16 +177,39 @@ export interface components {
             /** Friends */
             friends: components["schemas"]["UserSchema"][];
         };
+        /** UpdateUserRequest */
+        UpdateUserRequest: {
+            /** First Name */
+            first_name?: string | null;
+            /** Last Name */
+            last_name?: string | null;
+            /** Username */
+            username?: string | null;
+            /** Language Code */
+            language_code?: string | null;
+            /** Photo Url */
+            photo_url?: string | null;
+        };
         /** UserSchema */
         UserSchema: {
-            /** Id */
-            id: number;
+            /** User Id */
+            user_id: number;
             /** First Name */
             first_name: string;
             /** Last Name */
             last_name?: string | null;
             /** Username */
             username?: string | null;
+            /** Is Bot */
+            is_bot?: boolean | null;
+            /** Language Code */
+            language_code?: string | null;
+            /** Is Premium */
+            is_premium?: boolean | null;
+            /** Added To Attachment Menu */
+            added_to_attachment_menu?: boolean | null;
+            /** Allows Write To Pm */
+            allows_write_to_pm?: boolean | null;
             /** Photo Url */
             photo_url?: string | null;
         };
@@ -319,6 +360,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    get_user_user_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSchema"];
+                };
+            };
+        };
+    };
+    update_user_user_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
