@@ -16,9 +16,10 @@ class ImageCache {
   /**
    * Get image data from cache
    * @param url image url
+   * @returns image data as string, or null if not found
    */
-  public get(url: string): string | undefined {
-    return this.cache.get(url)
+  public get(url: string): string | null {
+    return this.cache.get(url) || null
   }
 
   /**
