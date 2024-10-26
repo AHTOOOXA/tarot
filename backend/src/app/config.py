@@ -139,6 +139,18 @@ class RedisConfig:
         return RedisConfig(redis_pass=redis_pass, redis_port=redis_port, redis_host=redis_host)
 
 
+@dataclass
+class RabbitConfig:
+    url: str
+    queue_name: str
+
+    @staticmethod
+    def from_env(env: Env):
+        url = env.str("RABBITMQ_URL")
+        queue_name = env.str("RABBITMQ_QUEUE_NAME")
+        return RabbitConfig(url=url, queue_name=queue_name)
+
+
 def _load_config(path: str = None):
     """
     This function takes an optional file path as input and returns a Config object.
@@ -152,7 +164,7 @@ def _load_config(path: str = None):
     env = Env()
     env.read_env(path)
 
-    return TgBot.from_env(env), DbConfig.from_env(env), RedisConfig.from_env(env)
+    return TgBot.from_env(env), DbConfig.from_env(env), RedisConfig.from_env(env), RabbitConfig.from_env(env)
 
 
-tgbot_config, db_config, redis_config = _load_config(".env")
+tgbot_config, db_config, redis_config, rabbit_config = _load_config(".env")

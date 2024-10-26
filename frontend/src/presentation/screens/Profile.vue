@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import { useProfile } from '@/domain/services/useProfile'
+import { useUserStore } from '@/store/user'
 
-const { profile, load } = useProfile()
+const userStore = useUserStore()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
+
+const user = computed(() => userStore.getUser)
 
 onMounted(async () => {
   try {
     isLoading.value = true
-    await load()
-    console.log('Loaded profile:', profile.value)
+    await userStore.fetchUser()
+    console.log('Loaded profile:', user.value)
   } catch (e) {
     error.value = 'Failed to load profile. Please try again later.'
     console.error('Error loading profile:', e)
@@ -25,26 +27,26 @@ onMounted(async () => {
   <div class="profile-page">
     <div v-if="isLoading" class="loading">Loading profile...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
-    <Sections v-else-if="profile">
+    <Sections v-else-if="user">
       <Section standalone>
         <Placeholder
-          :title="profile.first_name + (profile.last_name ? ' ' + profile.last_name : '')"
-          :caption="profile.username ? '@' + profile.username : 'Your profile'"
+          :title="user.first_name + (user.last_name ? ' ' + user.last_name : '')"
+          :caption="user.username ? '@' + user.username : 'Your profile'"
           standalone
         >
           <template #picture>
-            <img v-if="profile.photo_url" :src="profile.photo_url" alt="Profile Picture" class="profile-picture">
+            <img v-if="user.photo_url" :src="user.photo_url" alt="Profile Picture" class="profile-picture">
             <div v-else class="profile-icon">👤</div>
           </template>
         </Placeholder>
       </Section>
       <Section padded>
         <div class="profile-details">
-          <p><strong>User ID:</strong> {{ profile.user_id }}</p>
-          <p v-if="profile.username"><strong>Username:</strong> @{{ profile.username }}</p>
-          <p><strong>First Name:</strong> {{ profile.first_name }}</p>
-          <p v-if="profile.last_name"><strong>Last Name:</strong> {{ profile.last_name }}</p>
-          <p v-if="profile.language_code"><strong>Language:</strong> {{ profile.language_code }}</p>
+          <p><strong>User ID:</strong> {{ user.user_id }}</p>
+          <p v-if="user.username"><strong>Username:</strong> @{{ user.username }}</p>
+          <p><strong>First Name:</strong> {{ user.first_name }}</p>
+          <p v-if="user.last_name"><strong>Last Name:</strong> {{ user.last_name }}</p>
+          <p v-if="user.language_code"><strong>Language:</strong> {{ user.language_code }}</p>
         </div>
       </Section>
     </Sections>

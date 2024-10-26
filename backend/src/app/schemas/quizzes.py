@@ -7,7 +7,6 @@ from app.schemas.users import UserSchema
 
 
 class QuizResponseSchema(BaseModel):
-    id: int
     taker_id: int
     question_id: int
     answer_id: int

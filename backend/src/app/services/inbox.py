@@ -10,18 +10,8 @@ class InboxService(BaseService):
 
         inbox_messages = [
             InboxMessageSchema(
-                question=QuestionSchema(
-                    id=quiz_response.question.id,
-                    text=quiz_response.question.text,
-                    emoji=quiz_response.question.emoji,
-                ),
-                taker=UserSchema(
-                    id=quiz_response.taker.user_id,
-                    first_name=quiz_response.taker.first_name,
-                    last_name=quiz_response.taker.last_name,
-                    username=quiz_response.taker.username,
-                    photo_url=quiz_response.taker.photo_url,
-                ),
+                question=QuestionSchema.model_validate(quiz_response.question),
+                taker=UserSchema.model_validate(quiz_response.taker),
                 created_at=quiz_response.created_at,
             )
             for quiz_response in quiz_responses

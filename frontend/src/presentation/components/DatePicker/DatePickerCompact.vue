@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { formatDate } from '@/infra/utils/date'
+import { formatDate } from '@/utils/date'
 
 const props = defineProps<{
   /**
