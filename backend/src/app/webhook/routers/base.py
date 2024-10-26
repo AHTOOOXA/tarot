@@ -70,14 +70,10 @@ async def get_friends(
 
 @router.post("/add_friend")
 async def add_friend(
-    request: Request,
+    friend_id: int,
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
 ):
-    request_data = await request.json()
-    logger.info(f"Request data: {request_data}")
-    friend_id = request_data.get("friend_id")
-    logger.info(f"{friend_id} of type {type(friend_id)}")
     await services.users.add_friend(user.user_id, friend_id)
     logger.info(f"User {user.user_id} added friend {friend_id}")
     return {"status": "success"}

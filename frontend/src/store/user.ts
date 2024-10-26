@@ -74,6 +74,23 @@ export const useUserStore = defineStore('user', {
         this.error = (err as Error).message;
       }
     },
+
+    async addFriend(friendId: number) {
+      this.error = null;
+
+      try {
+        const { data, error } = await apiClient.POST('/add_friend', {
+          params: { query: { friend_id: friendId } },
+        });
+
+        if (error) {
+          throw new Error('Failed to add friend');
+        }
+
+      } catch (err) {
+        this.error = (err as Error).message;
+      }
+    },
   },
 
   getters: {

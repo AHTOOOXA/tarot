@@ -5,7 +5,7 @@ import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
 import Onboarding from '@/presentation/screens/Onboarding.vue'
 import useTelegram from '@/services/useTelegram'
-// import { addFriend } from '@/infra/store/friends'
+import { useUserStore } from '@/store/user'
 
 const { webAppInitData } = useTelegram()
 
@@ -19,7 +19,8 @@ const routes: RouteRecordRaw[] = [
         const initData = new URLSearchParams(webAppInitData)
         const start_param = JSON.parse(initData.get('start_param') || '{}')
         if (start_param) {
-          // await addFriend(Number(start_param))
+          const userStore = useUserStore()
+          await userStore.addFriend(Number(start_param))
         }
         next('/questions')
       } catch (error) {

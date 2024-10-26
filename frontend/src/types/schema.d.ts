@@ -346,7 +346,9 @@ export interface operations {
     };
     add_friend_add_friend_post: {
         parameters: {
-            query?: never;
+            query: {
+                friend_id: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -360,6 +362,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
