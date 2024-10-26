@@ -60,7 +60,7 @@ const startApp = () => {
       <Section standalone>
         <Placeholder
           title="Welcome to Glow App!"
-          standalone
+          caption="Let's get started with your onboarding"
         >
           <template #picture>
             <div class="onboarding-icon">🚀</div>
