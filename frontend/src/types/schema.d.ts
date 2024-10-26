@@ -184,6 +184,14 @@ export interface components {
             language_code?: string | null;
             /** Photo Url */
             photo_url?: string | null;
+            /** App Username */
+            app_username?: string | null;
+            /** Male */
+            male?: boolean | null;
+            /** Birth Date */
+            birth_date?: string | null;
+            /** Is Onboarded */
+            is_onboarded?: boolean | null;
         };
         /** UserSchema */
         UserSchema: {
@@ -207,6 +215,14 @@ export interface components {
             allows_write_to_pm?: boolean | null;
             /** Photo Url */
             photo_url?: string | null;
+            /** App Username */
+            app_username?: string | null;
+            /** Male */
+            male?: boolean | null;
+            /** Birth Date */
+            birth_date?: string | null;
+            /** Is Onboarded */
+            is_onboarded?: boolean | null;
         };
         /** ValidationError */
         ValidationError: {

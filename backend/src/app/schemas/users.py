@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
@@ -15,6 +16,11 @@ class UserSchema(BaseModel):
     allows_write_to_pm: Optional[bool] = None
     photo_url: Optional[str] = None
 
+    app_username: Optional[str] = None
+    male: Optional[bool] = None
+    birth_date: Optional[date] = None
+    is_onboarded: Optional[bool] = None
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -24,3 +30,8 @@ class UpdateUserRequest(BaseModel):
     username: Optional[str] = None
     language_code: Optional[str] = None
     photo_url: Optional[str] = None
+
+    app_username: Optional[str] = None
+    male: Optional[bool] = None
+    birth_date: Optional[date] = None
+    is_onboarded: Optional[bool] = None
