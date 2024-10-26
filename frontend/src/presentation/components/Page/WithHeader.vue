@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { useTelegram } from '@/application/services'
+import { useTelegram } from '@/services'
 
 const { headerColor, setHeaderColor, colorScheme, platform} = useTelegram()
 

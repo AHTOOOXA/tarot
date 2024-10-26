@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type EntityPicture from '@/domain/entities/EntityPicture'
+import type EntityPicture from '@/types/EntityPicture'
 import { Avatar, Icon, ListItemIcon } from '@/presentation/components'
 import { computed, useSlots } from 'vue'
 

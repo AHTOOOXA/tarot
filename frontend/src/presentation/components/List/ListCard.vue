@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useLayout, useScroll, useTelegram, useThumbnail } from '@/application/services'
-import { getCSSVariable } from '@/infra/utils/dom'
+import { useLayout, useScroll, useTelegram, useThumbnail } from '@/services'
+import { getCSSVariable } from '@/utils/dom'
 
 const props = defineProps<{
   /**

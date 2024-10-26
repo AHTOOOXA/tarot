@@ -1,10 +1,11 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
-import Router from '@/application/router'
+import Router from '@/router/router'
 import './presentation/styles/index.css'
-import { useTelegram } from '@/application/services'
-import { getCSSVariable } from './infra/utils/dom'
-import { darkenColor } from './infra/utils/color'
+import { useTelegram } from '@/services'
+import { getCSSVariable } from './utils/dom'
+import { darkenColor } from './utils/color'
 
 /**
  * @todo async lottie-player loading
@@ -78,8 +79,10 @@ function handleBrokenVariables(): void {
  * @todo prepare image thumbs
  */
 const app = createApp(App)
+const pinia = createPinia()
 
 app.use(Router)
+app.use(pinia)
 app.mount('#app')
 
 requestAnimationFrame(() => {

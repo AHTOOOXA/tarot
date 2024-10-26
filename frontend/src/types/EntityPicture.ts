@@ -21,4 +21,3 @@ export default interface EntityPicture {
    */
   pictureThumb?: string;
 }
-

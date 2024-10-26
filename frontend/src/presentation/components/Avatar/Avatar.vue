@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useThumbnail } from '@/application/services'
-import type EntityPicture from '@/domain/entities/EntityPicture'
+import { useThumbnail } from '@/services'
+import type EntityPicture from '@/types/EntityPicture'
 
 /**
  * Available props of the avatar component

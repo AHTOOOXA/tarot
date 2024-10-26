@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
-import { useInbox } from '@/domain/services/useInbox'
+import { useInboxStore } from '@/store/inbox'
 
-const { messages, load } = useInbox()
-const isLoading = ref(true)
-const error = ref<string | null>(null)
+const inboxStore = useInboxStore()
+
+const messages = computed(() => inboxStore.getMessages)
+const isLoading = computed(() => inboxStore.getIsLoading)
+const error = computed(() => inboxStore.getError)
 
 onMounted(async () => {
-  try {
-    isLoading.value = true
-    await load()
-    console.log('Loaded messages:', messages.value)
-  } catch (e) {
-    error.value = 'Failed to load messages. Please try again later.'
-    console.error('Error loading messages:', e)
-  } finally {
-    isLoading.value = false
-  }
+  await inboxStore.fetchMessages()
 })
 </script>
 
