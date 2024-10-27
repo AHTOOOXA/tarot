@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from app.infrastructure.database.repo.requests import RequestsRepo
 from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.services.inbox import InboxService
+from app.services.invites import InvitesService
 from app.services.quizzes import QuizzesService
 from app.services.users import UserService
 
@@ -29,3 +30,7 @@ class RequestsService:
     @property
     def users(self) -> UserService:
         return UserService(self.repo, self.producer)
+
+    @property
+    def invites(self) -> InvitesService:
+        return InvitesService(self.repo, self.producer)

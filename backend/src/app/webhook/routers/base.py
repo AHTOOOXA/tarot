@@ -6,6 +6,7 @@ from starlette.requests import Request
 
 from app.exceptions import FriendAlreadyExistsException, UserNotFoundException
 from app.schemas.inbox import InboxSchema
+from app.schemas.invites import InviteTokens
 from app.schemas.quizzes import QuizResponseSchema, QuizSchema
 from app.schemas.users import UpdateUserRequest, UserSchema
 from app.services.requests import RequestsService
@@ -109,3 +110,11 @@ async def update_user(
 ):
     await services.users.update_user(user.user_id, user_data.dict())
     return {"status": "success"}
+
+
+@router.get("/invite_token", response_model=InviteTokens)
+async def get_invite_token(
+    services: RequestsService = Depends(get_services),
+    user: UserSchema = Depends(get_twa_user),
+) -> InviteTokens:
+    return await services.invites.create_invite(user.user_id)

@@ -2,11 +2,13 @@
 import { ref, onMounted, computed } from 'vue'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 import { useUserStore } from '@/store/user'
+import { useStart } from '@/composables/start'
 import type { paths } from '@/types/schema'
 
 type User = paths['/user']['get']['responses']['200']['content']['application/json']
 
 const userStore = useUserStore()
+const { constructInviteLink } = useStart()
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 
@@ -28,14 +30,18 @@ onMounted(async () => {
   }
 })
 
-const inviteFriends = () => {
+const inviteFriends = async () => {
   if (!user.value) return
 
-  const baseUrl = 'https://t.me/anton_local_dev_bot/app'
-  const friendParam = `startapp=${user.value.user_id}`
-  const textParam = encodeURIComponent('Добавь меня в друзья в Glow App')
-  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(`${baseUrl}?${friendParam}`)}&text=${textParam}`
-  window.open(shareUrl, '_blank')
+  try {
+    const inviteLink = await constructInviteLink()
+    const textParam = encodeURIComponent('Join me in Glow App!')
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${textParam}`
+    window.open(shareUrl, '_blank')
+  } catch (e) {
+    console.error('Error creating invite link:', e)
+    error.value = 'Failed to create invite link. Please try again later.'
+  }
 }
 </script>
 
