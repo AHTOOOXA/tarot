@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "start": "vite preview --host",
     "format": "prettier --write \"src/**/*.{vue,ts,js,json,css}\"",
-    "format:check": "prettier --check \"src/**/*.{vue,ts,js,json,css}\""
+    "format:check": "prettier --check \"src/**/*.{vue,ts,js,json,css}\"",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@twa-dev/sdk": "^7.8.0",
