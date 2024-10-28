@@ -89,17 +89,22 @@ services:
       - webhook
     restart: always
 
-  zrok:
-    image: openziti/zrok
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}
     restart: unless-stopped
-    user: "${UID:-1000}"
-    volumes:
-      - ${HOME:-/home/user}/.zrok:/.zrok
-    environment:
-      - PFXLOG_NO_JSON=true
-    command: share reserved "anton" --headless
-    depends_on:
-      - nginx
+
+  # zrok:
+  #   image: openziti/zrok
+  #   restart: unless-stopped
+  #   user: "${UID:-1000}"
+  #   volumes:
+  #     - ${HOME:-/home/user}/.zrok:/.zrok
+  #   environment:
+  #     - PFXLOG_NO_JSON=true
+  #   command: share reserved "anton" --headless
+  #   depends_on:
+  #     - nginx
 
   # ngrok:
   #   image: ngrok/ngrok:latest
