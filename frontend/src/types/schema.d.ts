@@ -158,10 +158,36 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/process_start': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Process Start */
+    post: operations['process_start_process_start_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** GroupSchema */
+    GroupSchema: {
+      /** Group Id */
+      group_id: number;
+      /** Title */
+      title: string;
+      /** Users */
+      users: components['schemas']['UserSchema'][];
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -212,6 +238,21 @@ export interface components {
       question: components['schemas']['QuestionSchema'];
       /** Friends */
       friends: components['schemas']['UserSchema'][];
+    };
+    /** StartData */
+    StartData: {
+      current_user: components['schemas']['UserSchema'] | null;
+      /** Inviter */
+      inviter: components['schemas']['UserSchema'] | components['schemas']['GroupSchema'] | null;
+    };
+    /** StartParams */
+    StartParams: {
+      /** User Token */
+      user_token: string;
+      /** Group Token */
+      group_token: string;
+      /** Referal Id */
+      referal_id: string;
     };
     /** UpdateUserRequest */
     UpdateUserRequest: {
@@ -527,6 +568,39 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['InviteTokens'];
+        };
+      };
+    };
+  };
+  process_start_process_start_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StartParams'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['StartData'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };

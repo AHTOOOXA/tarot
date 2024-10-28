@@ -5,7 +5,7 @@ import Friends from '@/presentation/screens/Friends.vue';
 import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
-import { StartParamKey, useStart } from '@/composables/start';
+import { processStart } from '@/composables/start';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -19,17 +19,9 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: async (to, from, next) => {
       try {
         const userStore = useUserStore();
-        await userStore.fetchUser();
+        const user = userStore.user;
 
-        const { parseStartParam, getStartParam } = useStart();
-        parseStartParam();
-        const friendId = getStartParam(StartParamKey.FRIEND);
-
-        if (friendId) {
-          userStore.addFriend(Number(friendId));
-        }
-
-        if (userStore.user?.is_onboarded) {
+        if (user?.is_onboarded) {
           next('/questions');
         } else {
           next();
@@ -65,6 +57,20 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// Global navigation guard that runs before any route
+router.beforeEach(async (to, from, next) => {
+  try {
+    // Process start parameters only once when the app starts
+    if (from.path === '/') {
+      await processStart();
+    }
+    next();
+  } catch (error) {
+    console.error('Error processing start parameters:', error);
+    next();
+  }
 });
 
 export default router;

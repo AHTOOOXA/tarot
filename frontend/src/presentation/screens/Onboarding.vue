@@ -8,7 +8,6 @@
 
   const router = useRouter();
   const { webAppInitData } = useTelegram();
-  const { parseStartParam, getStartParam } = useStart();
   const userStore = useUserStore();
 
   const isLoading = ref(true);

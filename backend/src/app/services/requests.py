@@ -5,6 +5,7 @@ from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.services.inbox import InboxService
 from app.services.invites import InvitesService
 from app.services.quizzes import QuizzesService
+from app.services.start import StartService
 from app.services.users import UserService
 
 
@@ -34,3 +35,7 @@ class RequestsService:
     @property
     def invites(self) -> InvitesService:
         return InvitesService(self.repo, self.producer)
+
+    @property
+    def start(self) -> StartService:
+        return StartService(self.repo, self.producer)

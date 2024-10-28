@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -22,6 +22,12 @@ class UserSchema(BaseModel):
     is_onboarded: Optional[bool] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class GroupSchema(BaseModel):
+    group_id: int
+    title: str
+    users: List[UserSchema]
 
 
 class UpdateUserRequest(BaseModel):

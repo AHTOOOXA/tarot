@@ -8,6 +8,7 @@ from app.exceptions import FriendAlreadyExistsException, UserNotFoundException
 from app.schemas.inbox import InboxSchema
 from app.schemas.invites import InviteTokens
 from app.schemas.quizzes import QuizResponseSchema, QuizSchema
+from app.schemas.start import StartData, StartParams
 from app.schemas.users import UpdateUserRequest, UserSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
@@ -118,3 +119,12 @@ async def get_invite_token(
     user: UserSchema = Depends(get_twa_user),
 ) -> InviteTokens:
     return await services.invites.create_invite(user.user_id)
+
+
+@router.post("/process_start")
+async def process_start(
+    start_params: StartParams,
+    services: RequestsService = Depends(get_services),
+) -> StartData:
+    print(f"Processing start with params: {start_params}")
+    return await services.start.process_start(start_params)
