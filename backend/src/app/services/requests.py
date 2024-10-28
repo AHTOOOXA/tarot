@@ -22,20 +22,20 @@ class RequestsService:
 
     @property
     def quizzes(self) -> QuizzesService:
-        return QuizzesService(self.repo, self.producer)
+        return QuizzesService(self.repo, self.producer, self)
 
     @property
     def inbox(self) -> InboxService:
-        return InboxService(self.repo, self.producer)
+        return InboxService(self.repo, self.producer, self)
 
     @property
     def users(self) -> UserService:
-        return UserService(self.repo, self.producer)
+        return UserService(self.repo, self.producer, self)
 
     @property
     def invites(self) -> InvitesService:
-        return InvitesService(self.repo, self.producer)
+        return InvitesService(self.repo, self.producer, self)
 
     @property
     def start(self) -> StartService:
-        return StartService(self.repo, self.producer)
+        return StartService(self.repo, self.producer, self)

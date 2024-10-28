@@ -241,7 +241,7 @@ export interface components {
     };
     /** StartData */
     StartData: {
-      current_user: components['schemas']['UserSchema'] | null;
+      current_user: components['schemas']['UserSchema'];
       /** Inviter */
       inviter: components['schemas']['UserSchema'] | components['schemas']['GroupSchema'] | null;
     };

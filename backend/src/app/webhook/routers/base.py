@@ -125,6 +125,7 @@ async def get_invite_token(
 async def process_start(
     start_params: StartParams,
     services: RequestsService = Depends(get_services),
+    user: UserSchema = Depends(get_twa_user),
 ) -> StartData:
     print(f"Processing start with params: {start_params}")
-    return await services.start.process_start(start_params)
+    return await services.start.process_start(user, start_params)

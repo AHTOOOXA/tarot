@@ -1,9 +1,13 @@
 import base64
+from typing import TYPE_CHECKING
 
 from app.infrastructure.database.repo.requests import RequestsRepo
 from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.schemas.invites import InviteTokens
 from app.services.base import BaseService
+
+if TYPE_CHECKING:
+    from app.services.requests import RequestsService
 
 
 class InvitesService(BaseService):
@@ -11,9 +15,9 @@ class InvitesService(BaseService):
         self,
         repo: RequestsRepo,
         producer: RabbitMQProducer,
+        services: "RequestsService",
     ):
-        super().__init__(repo, producer)
-        # Simple offset key (could be loaded from env vars)
+        super().__init__(repo, producer, services)
         self.offset = 7355
 
     async def generate_token(self, value: str) -> str:
@@ -37,7 +41,7 @@ class InvitesService(BaseService):
 
     async def get_invite_tokens(self, user_id: int) -> InviteTokens:
         user_token = await self.generate_token(str(user_id))
-        group_token = await self.generate_token(str(user_id))
+        group_token = await self.generate_token(str(1))
         return InviteTokens(user_token=user_token, group_token=group_token)
 
     async def create_invite(self, user_id: int) -> InviteTokens:
@@ -45,9 +49,9 @@ class InvitesService(BaseService):
         # TODO: Save the invite to the database with user_id and tokens
         return tokens
 
-    async def validate_invite(self, invite_tokens: InviteTokens) -> bool:
-        user_id = await self.decrypt_token(invite_tokens.user_token)
-        group_id = await self.decrypt_token(invite_tokens.group_token)
+    async def validate_invite(self, user_token: str, group_token: str) -> bool:
+        user_id = await self.decrypt_token(user_token)
+        group_id = await self.decrypt_token(group_token)
         print("decrypted", user_id, group_id)
         # TODO: Validate the invite in the database
         return True
