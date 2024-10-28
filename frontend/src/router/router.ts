@@ -5,7 +5,7 @@ import Friends from '@/presentation/screens/Friends.vue'
 import Profile from '@/presentation/screens/Profile.vue'
 import Onboarding from '@/presentation/screens/Onboarding.vue'
 import { useUserStore } from '@/store/user'
-import { useStart } from '@/composables/start'
+import { StartParamKey, useStart } from '@/composables/start'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
 
         const { parseStartParam, getStartParam } = useStart()
         parseStartParam()
-        const friendId = getStartParam('friend')
+        const friendId = getStartParam(StartParamKey.FRIEND)
 
         if (friendId) {
           userStore.addFriend(Number(friendId))

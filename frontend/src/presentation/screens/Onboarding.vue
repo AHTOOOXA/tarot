@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Placeholder, Section, Sections } from '@/presentation/components'
 import useTelegram from '@/services/useTelegram'
-import { useStart } from '@/composables/start'
+import { useStart, StartParamKey } from '@/composables/start'
 import { useUserStore } from '@/store/user'
 
 const router = useRouter()
@@ -23,14 +23,15 @@ onMounted(async () => {
     const initData = new URLSearchParams(webAppInitData)
     const user = JSON.parse(initData.get('user') || '{}')
 
-    // Parse start parameters
-    parseStartParam()
-    const friendId = getStartParam('friend')
+    // TODO: redo this and add inviting group / user to start store
+    // // Parse start parameters
+    // parseStartParam()
+    // const friendId = getStartParam(StartParamKey.FRIEND)
 
-    if (friendId) {
-      // Fetch friend information
-      invitedByUser.value = await userStore.fetchUserById(Number(friendId))
-    }
+    // // if (friendId) {
+    // //   // Fetch friend information
+    // //   invitedByUser.value = await userStore.fetchUserById(Number(friendId))
+    // // }
 
     // Simulating API call to get onboarding steps
     await new Promise(resolve => setTimeout(resolve, 1000))
