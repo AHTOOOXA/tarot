@@ -1,6 +1,6 @@
-import { imageToBase64 } from '@/utils/dom'
-import { type Ref, onMounted, ref } from 'vue'
-import ImageCache from '@/store/image.cache'
+import { imageToBase64 } from '@/utils/dom';
+import { type Ref, onMounted, ref } from 'vue';
+import ImageCache from '@/store/image.cache';
 
 interface useThumbnailComposableState {
   /**
@@ -26,37 +26,36 @@ export default function useThumbnail(src: string, thumbData: string): useThumbna
   /**
    * Get cached data if exists.
    */
-  const cachedData = ImageCache.get(src)
+  const cachedData = ImageCache.get(src);
 
   if (cachedData !== null) {
     return {
       pictureUrl: ref(cachedData),
       isPictureLoaded: ref(true),
-    }
+    };
   }
 
   /**
    * Loading state of the picture.
    */
-  const isPictureLoaded = ref(false)
+  const isPictureLoaded = ref(false);
 
   /**
    * Picture data in base64.
    */
-  const data = ref(`data:image/png;base64,${thumbData}`)
+  const data = ref(`data:image/png;base64,${thumbData}`);
 
   onMounted(() => {
-    void imageToBase64(src)
-      .then(base64 => {
-        data.value = base64
-        isPictureLoaded.value = true
+    void imageToBase64(src).then(base64 => {
+      data.value = base64;
+      isPictureLoaded.value = true;
 
-        ImageCache.set(src, base64)
-      })
-  })
+      ImageCache.set(src, base64);
+    });
+  });
 
   return {
     pictureUrl: data,
     isPictureLoaded,
-  }
+  };
 }

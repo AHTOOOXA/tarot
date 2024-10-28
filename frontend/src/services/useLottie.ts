@@ -1,4 +1,4 @@
-import { onMounted, shallowRef, type ShallowRef } from 'vue'
+import { onMounted, shallowRef, type ShallowRef } from 'vue';
 
 interface useLottieComposableState {
   /**
@@ -16,16 +16,15 @@ export default function useLottie(name: 'simp' | 'eyes'): useLottieComposableSta
   /**
    * Lottie animation data
    */
-  const animationData = shallowRef<object | null>(null)
+  const animationData = shallowRef<object | null>(null);
 
   onMounted(() => {
-    void import(`../../presentation/assets/lottie/${name}.json`)
-      .then(({ default: data }) => {
-        animationData.value = data
-      })
-  })
+    void import(`../../presentation/assets/lottie/${name}.json`).then(({ default: data }) => {
+      animationData.value = data;
+    });
+  });
 
   return {
     animationData,
-  }
+  };
 }

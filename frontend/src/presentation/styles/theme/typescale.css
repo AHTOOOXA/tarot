@@ -1,6 +1,6 @@
 :root {
   --family: system-ui, Inter, Avenir, Helvetica, Arial, sans-serif;
-  --rounded-family: SF Pro Rounded, "ui-rounded", system-ui;
+  --rounded-family: SF Pro Rounded, 'ui-rounded', system-ui;
 
   --font-size-title-2: 22px;
   --line-height-title-2: 28px;
@@ -14,7 +14,6 @@
 
   --font-size-body: 17px;
   --line-height-body: 22px;
-
 
   .is-material {
     /**
@@ -48,7 +47,7 @@
       src: url('../../assets/fonts/Roboto-Black.ttf') format('truetype');
     }
 
-    --family: "Roboto", system-ui, Inter, Avenir, Helvetica, Arial, sans-serif;
+    --family: 'Roboto', system-ui, Inter, Avenir, Helvetica, Arial, sans-serif;
 
     --font-size-title-2: 20px;
     --line-height-title-2: 24px;
@@ -70,7 +69,7 @@
       src: url('../../assets/fonts/OpenSans.ttf') format('truetype');
     }
 
-    --family: 'Open Sans',"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,Verdana,sans-serif;
+    --family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Arial, Helvetica, Verdana, sans-serif;
   }
 
   --title-1 {
@@ -148,13 +147,17 @@
   --body-mono {
     @apply --body;
 
-    font-family: SF Mono, Monospace;
+    font-family:
+      SF Mono,
+      Monospace;
   }
 
   --body-mono-numbers {
     @apply --body-mono;
 
-    font-feature-settings: 'tnum' on, 'lnum' on;
+    font-feature-settings:
+      'tnum' on,
+      'lnum' on;
   }
 
   --body-compact {
@@ -167,7 +170,6 @@
 
     font-weight: 500;
   }
-
 
   --callout {
     font-size: 16px;
@@ -202,7 +204,7 @@
   }
 
   --subheadline-2 {
-    font-size: var(--font-size-subheadline-2:);
+    font-size: var(--font-size-subheadline-2: );
     line-height: var(--line-height-subheadline-2);
     letter-spacing: var(--ls-subheadline-2);
   }
@@ -241,7 +243,9 @@
   --footnote-caps-semibold {
     @apply --footnote-caps;
 
-    font-feature-settings: 'clig' off, 'liga' off;
+    font-feature-settings:
+      'clig' off,
+      'liga' off;
     font-weight: 590;
   }
 

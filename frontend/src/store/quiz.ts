@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import apiClient from '../api/client';
-import type { paths } from '@/types/schema'
+import type { paths } from '@/types/schema';
 
-type Quiz = paths['/quizzes']['get']['responses']['200']['content']['application/json'][number]
-type QuizResponse = paths['/quiz_response']['post']['requestBody']['content']['application/json']
+type Quiz = paths['/quizzes']['get']['responses']['200']['content']['application/json'][number];
+type QuizResponse = paths['/quiz_response']['post']['requestBody']['content']['application/json'];
 
 interface QuizState {
   quizzes: Quiz[];

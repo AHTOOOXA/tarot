@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Vue3Lottie } from 'vue3-lottie'
+  import { Vue3Lottie } from 'vue3-lottie';
 
-defineProps<{
-  animationData: object;
-  width: string;
-  height: string;
-}>()
+  defineProps<{
+    animationData: object;
+    width: string;
+    height: string;
+  }>();
 </script>
 
 <template>

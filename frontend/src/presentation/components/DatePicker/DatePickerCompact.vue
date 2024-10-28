@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { formatDate } from '@/utils/date'
+  import { computed } from 'vue';
+  import { formatDate } from '@/utils/date';
 
-const props = defineProps<{
+  const props = defineProps<{
+    /**
+     * Visible value
+     */
+    value?: Date;
+  }>();
+
   /**
-   * Visible value
+   * Formats the date to a readable format
    */
-  value?: Date;
-}>()
+  const dateVisible = computed(() => {
+    if (props.value === undefined) {
+      return 'Select date';
+    }
 
-/**
- * Formats the date to a readable format
- */
-const dateVisible = computed(() => {
-  if (props.value === undefined) {
-    return 'Select date'
-  }
-
-  return formatDate(props.value)
-})
+    return formatDate(props.value);
+  });
 </script>
 
 <template>
@@ -28,17 +28,17 @@ const dateVisible = computed(() => {
 </template>
 
 <style scoped>
-@import '@/presentation/styles/theme/typescale.css';
-.picker-compact {
-  @apply --headline;
+  @import '@/presentation/styles/theme/typescale.css';
+  .picker-compact {
+    @apply --headline;
 
-  padding: 6px 14px;
-  border-radius: var(--size-border-radius-small);
-  background-color: var(--color-bg-tertiary);
-  user-select: none;
+    padding: 6px 14px;
+    border-radius: var(--size-border-radius-small);
+    background-color: var(--color-bg-tertiary);
+    user-select: none;
 
-  @media (hover: hover) {
-    cursor: pointer;
+    @media (hover: hover) {
+      cursor: pointer;
+    }
   }
-}
 </style>

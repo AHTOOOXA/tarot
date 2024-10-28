@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import apiClient from '../api/client';
-import type { paths } from '@/types/schema'
+import type { paths } from '@/types/schema';
 
-type User = paths['/user']['get']['responses']['200']['content']['application/json']
-type UpdateUserRequest = paths['/user']['post']['requestBody']['content']['application/json']
+type User = paths['/user']['get']['responses']['200']['content']['application/json'];
+type UpdateUserRequest = paths['/user']['post']['requestBody']['content']['application/json'];
 
 interface UserState {
   user: User | null;
@@ -106,7 +106,6 @@ export const useUserStore = defineStore('user', {
           // Handle successful friend addition here
           // For example, you might want to update the friends list
           // await this.fetchFriends();
-
         } catch (err) {
           this.error = (err as Error).message;
         }

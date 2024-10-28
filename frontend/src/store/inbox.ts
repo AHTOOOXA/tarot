@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import apiClient from '../api/client';
-import type { paths } from '@/types/schema'
+import type { paths } from '@/types/schema';
 
-type InboxMessage = paths['/inbox']['get']['responses']['200']['content']['application/json']['messages'][number]
+type InboxMessage = paths['/inbox']['get']['responses']['200']['content']['application/json']['messages'][number];
 
 interface InboxState {
   messages: InboxMessage[];

@@ -6,7 +6,7 @@ class ImageCache {
   /**
    * Cache data
    */
-  private readonly cache = new Map<string, string>()
+  private readonly cache = new Map<string, string>();
 
   /**
    * @param maxSize — Max size of the cache. If cache is full, first element will be removed
@@ -19,7 +19,7 @@ class ImageCache {
    * @returns image data as string, or null if not found
    */
   public get(url: string): string | null {
-    return this.cache.get(url) || null
+    return this.cache.get(url) || null;
   }
 
   /**
@@ -32,24 +32,24 @@ class ImageCache {
      * Check if image already exists in cache
      */
     if (this.cache.has(url)) {
-      return
+      return;
     }
 
     /**
      * If cache is full, remove first element
      */
     if (this.cache.size >= this.maxSize) {
-      const firstKey = this.cache.keys().next().value
+      const firstKey = this.cache.keys().next().value;
       if (firstKey) {
-        this.cache.delete(firstKey)
+        this.cache.delete(firstKey);
       }
     }
 
     /**
      * Add new image data to cache
      */
-    this.cache.set(url, data)
+    this.cache.set(url, data);
   }
 }
 
-export default new ImageCache(15)
+export default new ImageCache(15);

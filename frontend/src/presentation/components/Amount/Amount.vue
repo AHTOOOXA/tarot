@@ -1,10 +1,10 @@
 <script setup lang="ts">
-defineProps<{
-  /**
-   * Will be placed at top-left corner near the number
-   */
-  prefix?: string;
-}>()
+  defineProps<{
+    /**
+     * Will be placed at top-left corner near the number
+     */
+    prefix?: string;
+  }>();
 </script>
 
 <template>
@@ -42,39 +42,39 @@ defineProps<{
 </template>
 
 <style scoped>
-@import '@/presentation/styles/theme/typescale.css';
-.amount {
-  display: grid;
-  grid-auto-rows: min-content;
-  gap: 3px;
-}
+  @import '@/presentation/styles/theme/typescale.css';
+  .amount {
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 3px;
+  }
 
-.digit {
-  @apply --title-3-rounded-semibold;
+  .digit {
+    @apply --title-3-rounded-semibold;
 
-  white-space: nowrap;
-}
+    white-space: nowrap;
+  }
 
-.subline,
-.topline {
-  @apply --caption-1;
+  .subline,
+  .topline {
+    @apply --caption-1;
 
-  color: var(--color-text-secondary);
-  color: var(--color-hint);
-}
+    color: var(--color-text-secondary);
+    color: var(--color-hint);
+  }
 
-.prefix {
-  @apply --footnote-rounded-semibold;
+  .prefix {
+    @apply --footnote-rounded-semibold;
 
-  color: var(--color-hint);
-  vertical-align: text-top;
-  line-height: 24px;
-}
+    color: var(--color-hint);
+    vertical-align: text-top;
+    line-height: 24px;
+  }
 
-.postfix {
-  @apply --footnote-rounded-semibold;
+  .postfix {
+    @apply --footnote-rounded-semibold;
 
-  color: var(--color-hint);
-  vertical-align: middle;
-}
+    color: var(--color-hint);
+    vertical-align: middle;
+  }
 </style>
