@@ -19,6 +19,7 @@ interface useTelegramComposableState {
   headerColor: string;
   setHeaderColor: (color: 'bg_color' | 'secondary_bg_color' | `#${string}`) => void;
   webAppInitData: string;
+  openTelegramLink: (url: string) => void;
 }
 
 /**
@@ -242,6 +243,10 @@ export default function useTelegram(): useTelegramComposableState {
     WebApp.setHeaderColor(color);
   }
 
+  function openTelegramLink(url: string): void {
+    WebApp.openTelegramLink(url);
+  }
+
   /**
    * The current color scheme of the device. Can be light or dark.
    * If app is launched in a browser, the value will be undefined.
@@ -281,5 +286,6 @@ export default function useTelegram(): useTelegramComposableState {
     headerColor,
     setHeaderColor,
     webAppInitData,
+    openTelegramLink,
   };
 }

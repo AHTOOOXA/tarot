@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted, computed } from 'vue';
   import { Placeholder, Section, Sections } from '@/presentation/components';
+  import useTelegram from '@/services/useTelegram';
   import { useUserStore } from '@/store/user';
   import { useStart } from '@/composables/start';
   import type { paths } from '@/types/schema';
@@ -9,6 +10,7 @@
 
   const userStore = useUserStore();
   const { constructInviteLink } = useStart();
+  const telegram = useTelegram();
   const isLoading = ref(true);
   const error = ref<string | null>(null);
 
@@ -34,7 +36,7 @@
       const inviteLink = await constructInviteLink();
       const textParam = encodeURIComponent('Join me in Glow App!');
       const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${textParam}`;
-      window.open(shareUrl, '_blank');
+      telegram.openTelegramLink(shareUrl);
     } catch (e) {
       console.error('Error creating invite link:', e);
       error.value = 'Failed to create invite link. Please try again later.';
