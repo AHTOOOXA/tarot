@@ -113,6 +113,10 @@ export const useUserStore = defineStore('user', {
         this.error = 'Invalid friend ID';
       }
     },
+
+    setUser(user: User) {
+      this.user = user;
+    },
   },
 
   getters: {

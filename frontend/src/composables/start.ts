@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import useTelegram from '@/services/useTelegram';
 import apiClient from '@/api/client';
+import { useUserStore } from '@/store/user';
 import type { paths } from '@/types/schema';
 import type { components } from '@/types/schema';
 
@@ -15,7 +16,7 @@ type StartParams = Partial<Record<StartParamKey, string>>;
 type StartData = components['schemas']['StartData'];
 
 const startParams = ref<StartParams>({});
-const startData = ref<StartData | null>(null);
+const inviter = ref<StartData['inviter'] | null>(null);
 
 // Parse start parameters on initialization
 const { webAppInitData } = useTelegram();
@@ -51,13 +52,16 @@ export async function processStart(): Promise<void> {
   }
 
   if (data) {
-    startData.value = data;
+    const userStore = useUserStore();
+    userStore.setUser(data.current_user);
+
+    inviter.value = data.inviter;
   }
 }
 
 export function useStart() {
-  function getStartData(): StartData | null {
-    return startData.value;
+  function getInviter() {
+    return inviter.value;
   }
 
   async function fetchInviteTokens(): Promise<
@@ -84,7 +88,7 @@ export function useStart() {
   }
 
   return {
-    getStartData,
+    getInviter,
     constructInviteLink,
     StartParamKey,
   };
