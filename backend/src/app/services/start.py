@@ -9,7 +9,9 @@ class StartService(BaseService):
 
         inviter = None
         if start_params.user_token and start_params.group_token:
-            inviter = await self.services.invites.validate_invite(start_params.user_token, start_params.group_token)
+            inviter = await self.services.invites.process_invite(
+                start_params.user_token, start_params.group_token, current_user.user_id
+            )
 
         return StartData(
             current_user=current_user,

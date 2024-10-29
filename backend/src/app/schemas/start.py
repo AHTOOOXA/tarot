@@ -13,4 +13,4 @@ class StartParams(BaseModel):
 
 class StartData(BaseModel):
     current_user: UserSchema
-    inviter: Optional[UserSchema | GroupSchema]
+    inviter: Optional[GroupSchema]
