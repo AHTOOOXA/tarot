@@ -3,7 +3,7 @@
     --color-bg: var(--tg-theme-bg-color, #1c1c1d);
     --color-bg-secondary: var(--tg-theme-secondary-bg-color, #000);
     --color-bg-tertiary: rgba(118, 118, 128, 0.1);
-    --color-bg-quarternary: rgba(255,255,255,0.16);
+    --color-bg-quarternary: rgba(255, 255, 255, 0.16);
     --color-bg-button: var(--tg-theme-button-color, #3e88f7);
     --color-bg-overlay: rgba(0, 0, 0, 0.3);
 
@@ -35,7 +35,7 @@
   }
 
   .is-material {
-    --color-island-shadow: rgba(0,0,0,0.02);
+    --color-island-shadow: rgba(0, 0, 0, 0.02);
   }
 }
 

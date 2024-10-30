@@ -1,66 +1,88 @@
-import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import Question from '@/presentation/screens/Question.vue'
-import Inbox from '@/presentation/screens/Inbox.vue'
-import Friends from '@/presentation/screens/Friends.vue'
-import Profile from '@/presentation/screens/Profile.vue'
-import Onboarding from '@/presentation/screens/Onboarding.vue'
-import useTelegram from '@/services/useTelegram'
-import { useUserStore } from '@/store/user'
+import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+import Question from '@/presentation/screens/Question.vue';
+import Inbox from '@/presentation/screens/Inbox.vue';
+import Friends from '@/presentation/screens/Friends.vue';
+import Profile from '@/presentation/screens/Profile.vue';
+import Onboarding from '@/presentation/screens/Onboarding.vue';
+import { useUserStore } from '@/store/user';
+import { useInviterStore } from '@/store/inviter';
+import { processStart } from '@/composables/start';
 
-const { webAppInitData } = useTelegram()
-
-// TODO: redirect to questions if user is already onboarded
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: Onboarding,
-    beforeEnter: async (to, from, next) => {
-      try {
-        const initData = new URLSearchParams(webAppInitData)
-        const start_param = JSON.parse(initData.get('start_param') || '{}')
-        if (start_param) {
-          const userStore = useUserStore()
-          await userStore.addFriend(Number(start_param))
-        }
-        next('/questions')
-      } catch (error) {
-        console.error('Error in / route:', error)
-        next('/questions')
-      }
-    }
+    redirect: '/questions',
   },
   {
     path: '/onboarding',
     name: 'onboarding',
-    // component: Onboarding
-    component: Question
-    // TODO: redirect to questions if user is already onboarded
+    component: Onboarding,
+  },
+  {
+    path: '/inviter',
+    name: 'inviter',
+    component: () => import('@/presentation/screens/Inviter.vue'),
   },
   {
     path: '/questions',
     name: 'questions',
-    component: Question
+    component: Question,
   },
   {
     path: '/inbox',
     name: 'inbox',
-    component: Inbox
+    component: Inbox,
   },
   {
     path: '/friends',
     name: 'friends',
-    component: Friends
+    component: Friends,
   },
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
-  }
-]
+    component: Profile,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-})
+});
 
-export default router
+// Global navigation guard that runs before any route
+router.beforeEach(async (to, from, next) => {
+  try {
+    // DO NOT REMOVE
+    // Process start parameters only once when the app starts
+    if (from.path === '/') {
+      await processStart();
+    }
+
+    const userStore = useUserStore();
+    const inviterStore = useInviterStore();
+    const inviter = inviterStore.getInviter;
+
+    // Forcing onboarding if user is not onboarded
+    // Forcing inviter after onboarding
+    if (!userStore.user?.is_onboarded) {
+      if (to.name !== 'onboarding') {
+        console.log('redirecting to onboarding');
+        return next('/onboarding');
+      }
+    } else if (inviter) {
+      if (to.name !== 'inviter') {
+        console.log('redirecting to inviter');
+        return next('/inviter');
+      }
+    }
+
+    next();
+  } catch (error) {
+    console.error('Error processing start parameters:', error);
+    // TODO: Handle error maybe redirect to error page
+    next();
+  }
+});
+
+export default router;

@@ -1,8 +1,8 @@
 import random
+from typing import List
 
 from app.schemas.quizzes import (
     QuestionSchema,
-    QuizListSchema,
     QuizResponseSchema,
     QuizSchema,
     UserSchema,
@@ -11,7 +11,7 @@ from app.services.base import BaseService
 
 
 class QuizzesService(BaseService):
-    async def get_random_quizzes(self, user_id: int, limit: int = 10) -> QuizListSchema:
+    async def get_random_quizzes(self, user_id: int, limit: int = 10) -> List[QuizSchema]:
         questions = await self.repo.questions.get_random_questions(limit)
         friends = await self.repo.users.get_friends(user_id)
 
@@ -23,7 +23,7 @@ class QuizzesService(BaseService):
             for q in questions
         ]
 
-        return QuizListSchema(quizzes=quizzes)
+        return quizzes
 
     async def create_quiz_response(self, quiz_response: QuizResponseSchema) -> None:
         quiz_response = await self.repo.quiz_responses.create_quiz_response(

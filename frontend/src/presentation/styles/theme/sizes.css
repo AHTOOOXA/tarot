@@ -19,7 +19,7 @@
 .is-ios,
 .is-mac-os {
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-  --size-separator-height: 0.33px;
+    --size-separator-height: 0.33px;
   }
 }
 

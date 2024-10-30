@@ -4,428 +4,604 @@
  */
 
 export interface paths {
-    "/inbox": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Inbox */
-        get: operations["get_inbox_inbox_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  '/inbox': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/quizzes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Quizzes */
-        get: operations["get_quizzes_quizzes_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get Inbox */
+    get: operations['get_inbox_inbox_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/quizzes': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/quiz_response": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Post Quiz Response */
-        post: operations["post_quiz_response_quiz_response_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get Quizzes */
+    get: operations['get_quizzes_quizzes_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/quiz_response': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Profile */
-        get: operations["get_profile_profile_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Post Quiz Response */
+    post: operations['post_quiz_response_quiz_response_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/profile': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/friends": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Friends */
-        get: operations["get_friends_friends_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get Profile */
+    get: operations['get_profile_profile_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/friends': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/add_friend": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add Friend */
-        post: operations["add_friend_add_friend_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get Friends */
+    get: operations['get_friends_friends_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/add_friend': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/user": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get User */
-        get: operations["get_user_user_get"];
-        put?: never;
-        /** Update User */
-        post: operations["update_user_user_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Add Friend */
+    post: operations['add_friend_add_friend_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/user': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    /** Get User */
+    get: operations['get_user_user_get'];
+    put?: never;
+    /** Update User */
+    post: operations['update_user_user_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/user/{user_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get User By Id */
+    get: operations['get_user_by_id_user__user_id__get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/invite_token': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get Invite Token */
+    get: operations['get_invite_token_invite_token_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/process_start': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Process Start */
+    post: operations['process_start_process_start_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** HTTPValidationError */
-        HTTPValidationError: {
-            /** Detail */
-            detail?: components["schemas"]["ValidationError"][];
-        };
-        /** InboxMessageSchema */
-        InboxMessageSchema: {
-            question: components["schemas"]["QuestionSchema"];
-            taker: components["schemas"]["UserSchema"];
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-        };
-        /** InboxSchema */
-        InboxSchema: {
-            /** Messages */
-            messages: components["schemas"]["InboxMessageSchema"][];
-        };
-        /** QuestionSchema */
-        QuestionSchema: {
-            /** Id */
-            id: number;
-            /** Text */
-            text: string;
-            /** Emoji */
-            emoji: string;
-        };
-        /** QuizListSchema */
-        QuizListSchema: {
-            /** Quizzes */
-            quizzes: components["schemas"]["QuizSchema"][];
-        };
-        /** QuizResponseSchema */
-        QuizResponseSchema: {
-            /** Taker Id */
-            taker_id: number;
-            /** Question Id */
-            question_id: number;
-            /** Answer Id */
-            answer_id: number;
-        };
-        /** QuizSchema */
-        QuizSchema: {
-            question: components["schemas"]["QuestionSchema"];
-            /** Friends */
-            friends: components["schemas"]["UserSchema"][];
-        };
-        /** UpdateUserRequest */
-        UpdateUserRequest: {
-            /** First Name */
-            first_name?: string | null;
-            /** Last Name */
-            last_name?: string | null;
-            /** Username */
-            username?: string | null;
-            /** Language Code */
-            language_code?: string | null;
-            /** Photo Url */
-            photo_url?: string | null;
-        };
-        /** UserSchema */
-        UserSchema: {
-            /** User Id */
-            user_id: number;
-            /** First Name */
-            first_name: string;
-            /** Last Name */
-            last_name?: string | null;
-            /** Username */
-            username?: string | null;
-            /** Is Bot */
-            is_bot?: boolean | null;
-            /** Language Code */
-            language_code?: string | null;
-            /** Is Premium */
-            is_premium?: boolean | null;
-            /** Added To Attachment Menu */
-            added_to_attachment_menu?: boolean | null;
-            /** Allows Write To Pm */
-            allows_write_to_pm?: boolean | null;
-            /** Photo Url */
-            photo_url?: string | null;
-        };
-        /** ValidationError */
-        ValidationError: {
-            /** Location */
-            loc: (string | number)[];
-            /** Message */
-            msg: string;
-            /** Error Type */
-            type: string;
-        };
+  schemas: {
+    /** GroupSchema */
+    GroupSchema: {
+      /** Group Id */
+      group_id: number;
+      /** Title */
+      title: string;
+      /** Users */
+      users: components['schemas']['UserSchema'][];
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    /** HTTPValidationError */
+    HTTPValidationError: {
+      /** Detail */
+      detail?: components['schemas']['ValidationError'][];
+    };
+    /** InboxMessageSchema */
+    InboxMessageSchema: {
+      question: components['schemas']['QuestionSchema'];
+      taker: components['schemas']['UserSchema'];
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+    };
+    /** InboxSchema */
+    InboxSchema: {
+      /** Messages */
+      messages: components['schemas']['InboxMessageSchema'][];
+    };
+    /** InviteTokens */
+    InviteTokens: {
+      /** User Token */
+      user_token: string;
+      /** Group Token */
+      group_token: string;
+    };
+    /** QuestionSchema */
+    QuestionSchema: {
+      /** Id */
+      id: number;
+      /** Text */
+      text: string;
+      /** Emoji */
+      emoji: string;
+    };
+    /** QuizResponseSchema */
+    QuizResponseSchema: {
+      /** Taker Id */
+      taker_id: number;
+      /** Question Id */
+      question_id: number;
+      /** Answer Id */
+      answer_id: number;
+    };
+    /** QuizSchema */
+    QuizSchema: {
+      question: components['schemas']['QuestionSchema'];
+      /** Friends */
+      friends: components['schemas']['UserSchema'][];
+    };
+    /** StartData */
+    StartData: {
+      current_user: components['schemas']['UserSchema'];
+      inviter: components['schemas']['GroupSchema'] | null;
+    };
+    /** StartParams */
+    StartParams: {
+      /** User Token */
+      user_token: string;
+      /** Group Token */
+      group_token: string;
+      /** Referal Id */
+      referal_id: string;
+    };
+    /** UpdateUserRequest */
+    UpdateUserRequest: {
+      /** First Name */
+      first_name?: string | null;
+      /** Last Name */
+      last_name?: string | null;
+      /** Username */
+      username?: string | null;
+      /** Language Code */
+      language_code?: string | null;
+      /** Photo Url */
+      photo_url?: string | null;
+      /** App Username */
+      app_username?: string | null;
+      /** Male */
+      male?: boolean | null;
+      /** Birth Date */
+      birth_date?: string | null;
+      /** Is Onboarded */
+      is_onboarded?: boolean | null;
+    };
+    /** UserSchema */
+    UserSchema: {
+      /** User Id */
+      user_id: number;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name?: string | null;
+      /** Username */
+      username?: string | null;
+      /** Is Bot */
+      is_bot?: boolean | null;
+      /** Language Code */
+      language_code?: string | null;
+      /** Is Premium */
+      is_premium?: boolean | null;
+      /** Added To Attachment Menu */
+      added_to_attachment_menu?: boolean | null;
+      /** Allows Write To Pm */
+      allows_write_to_pm?: boolean | null;
+      /** Photo Url */
+      photo_url?: string | null;
+      /** App Username */
+      app_username?: string | null;
+      /** Male */
+      male?: boolean | null;
+      /** Birth Date */
+      birth_date?: string | null;
+      /** Is Onboarded */
+      is_onboarded?: boolean | null;
+    };
+    /** ValidationError */
+    ValidationError: {
+      /** Location */
+      loc: (string | number)[];
+      /** Message */
+      msg: string;
+      /** Error Type */
+      type: string;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    get_inbox_inbox_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InboxSchema"];
-                };
-            };
-        };
+  get_inbox_inbox_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    get_quizzes_quizzes_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["QuizListSchema"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['InboxSchema'];
         };
+      };
     };
-    post_quiz_response_quiz_response_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["QuizResponseSchema"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  get_quizzes_quizzes_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    get_profile_profile_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
+        content: {
+          'application/json': components['schemas']['QuizSchema'][];
         };
+      };
     };
-    get_friends_friends_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSchema"][];
-                };
-            };
-        };
+  };
+  post_quiz_response_quiz_response_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    add_friend_add_friend_post: {
-        parameters: {
-            query: {
-                friend_id: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['QuizResponseSchema'];
+      };
     };
-    get_user_user_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSchema"];
-                };
-            };
+        content: {
+          'application/json': unknown;
         };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
     };
-    update_user_user_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
+  };
+  get_profile_profile_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+    };
+  };
+  get_friends_friends_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserSchema'][];
+        };
+      };
+    };
+  };
+  add_friend_add_friend_post: {
+    parameters: {
+      query: {
+        friend_id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  get_user_user_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserSchema'];
+        };
+      };
+    };
+  };
+  update_user_user_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateUserRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  get_user_by_id_user__user_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserSchema'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  get_invite_token_invite_token_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['InviteTokens'];
+        };
+      };
+    };
+  };
+  process_start_process_start_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StartParams'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['StartData'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
 }

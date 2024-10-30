@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import apiClient from '../api/client';
-import type { paths } from '@/types/schema'
+import type { paths } from '@/types/schema';
 
-type User = paths['/user']['get']['responses']['200']['content']['application/json']
-type UpdateUserRequest = paths['/user']['post']['requestBody']['content']['application/json']
+type User = paths['/user']['get']['responses']['200']['content']['application/json'];
+type UpdateUserRequest = paths['/user']['post']['requestBody']['content']['application/json'];
 
 interface UserState {
   user: User | null;
@@ -35,6 +35,11 @@ export const useUserStore = defineStore('user', {
       } catch (err) {
         this.error = (err as Error).message;
       }
+    },
+
+    async onboardUser() {
+      this.error = null;
+      this.user!.is_onboarded = true;
     },
 
     async updateUser(updatedUser: UpdateUserRequest) {
@@ -75,21 +80,47 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async fetchUserById(userId: number) {
+      this.error = null;
+      const { data, error } = await apiClient.GET('/user/{user_id}', {
+        params: {
+          path: { user_id: userId },
+        },
+      });
+
+      if (error) {
+        throw new Error('Failed to fetch user');
+      }
+
+      return data as User;
+    },
+
     async addFriend(friendId: number) {
       this.error = null;
 
-      try {
-        const { data, error } = await apiClient.POST('/add_friend', {
-          params: { query: { friend_id: friendId } },
-        });
+      if (!Number.isNaN(friendId) && Number.isFinite(friendId)) {
+        try {
+          const { data, error } = await apiClient.POST('/add_friend', {
+            params: { query: { friend_id: friendId } },
+          });
 
-        if (error) {
-          throw new Error('Failed to add friend');
+          if (error) {
+            throw new Error('Failed to add friend');
+          }
+
+          // Handle successful friend addition here
+          // For example, you might want to update the friends list
+          // await this.fetchFriends();
+        } catch (err) {
+          this.error = (err as Error).message;
         }
-
-      } catch (err) {
-        this.error = (err as Error).message;
+      } else {
+        this.error = 'Invalid friend ID';
       }
+    },
+
+    setUser(user: User) {
+      this.user = user;
     },
   },
 

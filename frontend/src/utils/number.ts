@@ -8,7 +8,7 @@
  */
 export function shortNumber(val: number): string {
   if (val < 1000) {
-    return val.toString()
+    return val.toString();
   }
 
   if (val < 1000000) {
@@ -16,13 +16,13 @@ export function shortNumber(val: number): string {
      * Do not add .0
      */
     if (val % 1000 === 0) {
-      return `${(val / 1000).toFixed(0)}K`
+      return `${(val / 1000).toFixed(0)}K`;
     }
 
-    return `${(val / 1000).toFixed(1)}K`
+    return `${(val / 1000).toFixed(1)}K`;
   }
 
-  return `${(val / 1000000).toFixed(1)}M`
+  return `${(val / 1000000).toFixed(1)}M`;
 }
 
 /**
@@ -33,8 +33,8 @@ export function shortNumber(val: number): string {
  */
 export function spaced(val: number): string {
   if (val < 10000) {
-    return val.toString()
+    return val.toString();
   }
 
-  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }

@@ -1,4 +1,7 @@
-from fastapi import Depends
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.services.requests import RequestsService
 
 from app.infrastructure.database.repo.requests import RequestsRepo
 from app.infrastructure.rabbit.producer import RabbitMQProducer
@@ -19,6 +22,8 @@ class BaseService:
         self,
         repo: RequestsRepo,
         producer: RabbitMQProducer,
+        services: "RequestsService",
     ):
         self.repo: RequestsRepo = repo
         self.producer: RabbitMQProducer = producer
+        self.services: "RequestsService" = services

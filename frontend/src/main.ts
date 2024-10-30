@@ -1,11 +1,11 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
-import Router from '@/router/router'
-import './presentation/styles/index.css'
-import { useTelegram } from '@/services'
-import { getCSSVariable } from './utils/dom'
-import { darkenColor } from './utils/color'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import App from './App.vue';
+import Router from '@/router/router';
+import './presentation/styles/index.css';
+import { useTelegram } from '@/services';
+import { getCSSVariable } from './utils/dom';
+import { darkenColor } from './utils/color';
 
 /**
  * @todo async lottie-player loading
@@ -16,7 +16,7 @@ import { darkenColor } from './utils/color'
  * @todo cancel payment toast
  */
 
-const { platform, ready, showAlert } = useTelegram()
+const { platform, ready, showAlert } = useTelegram();
 
 if (platform !== 'unknown') {
   switch (platform) {
@@ -25,15 +25,15 @@ if (platform !== 'unknown') {
     case 'web':
     case 'weba':
     case 'tdesktop':
-      document.body.classList.add('is-material')
-      break
+      document.body.classList.add('is-material');
+      break;
     case 'ios':
     case 'macos':
-      document.body.classList.add('is-apple')
-      break
+      document.body.classList.add('is-apple');
+      break;
     default:
-      document.body.classList.add(`is-${platform}`)
-      break
+      document.body.classList.add(`is-${platform}`);
+      break;
   }
 }
 
@@ -41,7 +41,7 @@ if (platform !== 'unknown') {
  * Some clients may use material/apple base styles, but has some overrides
  * For instance, WebK uses material but more rounded and clean
  */
-document.body.classList.add(`is-exact-${platform}`)
+document.body.classList.add(`is-exact-${platform}`);
 
 /**
  * In the last Telegram iOS client, some theme variable are broken in Dark mode:
@@ -54,21 +54,21 @@ document.body.classList.add(`is-exact-${platform}`)
  *
  */
 function handleBrokenVariables(): void {
-  const themeBgColor = getCSSVariable('--tg-theme-bg-color')
-  const themeSecondaryBgColor = getCSSVariable('--tg-theme-secondary-bg-color')
+  const themeBgColor = getCSSVariable('--tg-theme-bg-color');
+  const themeSecondaryBgColor = getCSSVariable('--tg-theme-secondary-bg-color');
 
   if (themeBgColor === '#000000' && themeSecondaryBgColor !== '#000000') {
-    document.documentElement.style.setProperty('--tg-theme-bg-color', themeSecondaryBgColor ?? '')
-    document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', themeBgColor ?? '')
+    document.documentElement.style.setProperty('--tg-theme-bg-color', themeSecondaryBgColor ?? '');
+    document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', themeBgColor ?? '');
 
-    return
+    return;
   }
 
   /**
    * Workaround problem with iOS Dark Dimmed theme. Manually make secondary bg color darker
    */
   if (themeBgColor === themeSecondaryBgColor && themeBgColor !== undefined) {
-    document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', darkenColor(themeBgColor, 2.3))
+    document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', darkenColor(themeBgColor, 2.3));
   }
 }
 
@@ -78,17 +78,17 @@ function handleBrokenVariables(): void {
  * @todo load icons
  * @todo prepare image thumbs
  */
-const app = createApp(App)
-const pinia = createPinia()
+const app = createApp(App);
+const pinia = createPinia();
 
-app.use(Router)
-app.use(pinia)
-app.mount('#app')
+app.use(Router);
+app.use(pinia);
+app.mount('#app');
 
 requestAnimationFrame(() => {
   if (platform === 'ios') {
-    handleBrokenVariables()
+    handleBrokenVariables();
   }
 
-  ready()
-})
+  ready();
+});

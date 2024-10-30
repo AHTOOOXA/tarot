@@ -23,14 +23,14 @@ export const useScroll = (): useScrollComposableState => {
    * Lock the scroll
    */
   function lock(): void {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden';
   }
 
   /**
    * Unlock the scroll
    */
   function unlock(): void {
-    document.body.style.overflow = 'unset'
+    document.body.style.overflow = 'unset';
   }
 
   /**
@@ -43,12 +43,12 @@ export const useScroll = (): useScrollComposableState => {
     window.scrollTo({
       top: el.offsetTop - offset,
       behavior: 'smooth',
-    })
+    });
   }
 
   return {
     lock,
     unlock,
     scrollTo,
-  }
-}
+  };
+};

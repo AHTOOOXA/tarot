@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import apiClient from '../api/client';
-import type { paths } from '@/types/schema'
+import type { paths } from '@/types/schema';
 
-type Quiz = paths['/quizzes']['get']['responses']['200']['content']['application/json']['quizzes'][number]
-type QuizList = paths['/quizzes']['get']['responses']['200']['content']['application/json']
-type QuizResponse = paths['/quiz_response']['post']['requestBody']['content']['application/json']
+type Quiz = paths['/quizzes']['get']['responses']['200']['content']['application/json'][number];
+type QuizResponse = paths['/quiz_response']['post']['requestBody']['content']['application/json'];
 
 interface QuizState {
   quizzes: Quiz[];
@@ -32,7 +31,7 @@ export const useQuizStore = defineStore('quiz', {
         }
 
         if (data) {
-          this.quizzes = (data as QuizList).quizzes;
+          this.quizzes = data as Quiz[];
         }
       } catch (err) {
         this.error = (err as Error).message;

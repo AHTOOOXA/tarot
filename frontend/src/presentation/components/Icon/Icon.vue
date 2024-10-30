@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+  import { onMounted, ref } from 'vue';
 
-const props = defineProps<{
-  /**
-   * Name of the icon
-   */
-  name: string;
-}>()
+  const props = defineProps<{
+    /**
+     * Name of the icon
+     */
+    name: string;
+  }>();
 
-const source = ref('')
+  const source = ref('');
 
-onMounted(async () => {
-  const svg = await import(`../../assets/icons/${props.name}.svg?raw`)
+  onMounted(async () => {
+    const svg = await import(`../../assets/icons/${props.name}.svg?raw`);
 
-  source.value = svg.default
-})
+    source.value = svg.default;
+  });
 </script>
 
 <template>
@@ -25,5 +25,4 @@ onMounted(async () => {
     v-html="source"
   />
 </template>
-<style>
-</style>
+<style></style>

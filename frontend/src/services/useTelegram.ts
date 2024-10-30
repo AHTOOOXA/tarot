@@ -1,5 +1,5 @@
-import WebApp from '@twa-dev/sdk'
-import { type Ref, ref } from 'vue'
+import WebApp from '@twa-dev/sdk';
+import { type Ref, ref } from 'vue';
 
 interface useTelegramComposableState {
   showMainButton: (text: string, callback: () => void) => void;
@@ -19,6 +19,7 @@ interface useTelegramComposableState {
   headerColor: string;
   setHeaderColor: (color: 'bg_color' | 'secondary_bg_color' | `#${string}`) => void;
   webAppInitData: string;
+  openTelegramLink: (url: string) => void;
 }
 
 /**
@@ -30,15 +31,15 @@ export default function useTelegram(): useTelegramComposableState {
   /**
    * We store current MainButton callback to be able to remove it later
    */
-  const mainButtonCallback = ref<(() => void) | null>(null)
+  const mainButtonCallback = ref<(() => void) | null>(null);
 
   /**
    * We store current BackButton callback to be able to remove it later
    */
-  const backButtonCallback = ref<(() => void) | null>(null)
+  const backButtonCallback = ref<(() => void) | null>(null);
 
-  const debugMainButton = ref<HTMLButtonElement | undefined>()
-  const debugBackButton = ref<HTMLButtonElement | undefined>()
+  const debugMainButton = ref<HTMLButtonElement | undefined>();
+  const debugBackButton = ref<HTMLButtonElement | undefined>();
 
   /**
    * When we debug the app in the browser, we need to create a fake main button
@@ -48,18 +49,18 @@ export default function useTelegram(): useTelegramComposableState {
    */
   function prepareDebugButton(reference: Ref<any>, className: string): void {
     if (WebApp.platform !== 'unknown') {
-      return
+      return;
     }
 
     if (reference.value !== undefined) {
-      return
+      return;
     }
 
-    const button = document.createElement('button')
+    const button = document.createElement('button');
 
-    button.classList.add(className)
-    document.body.appendChild(button)
-    reference.value = button
+    button.classList.add(className);
+    document.body.appendChild(button);
+    reference.value = button;
   }
 
   /**
@@ -69,22 +70,22 @@ export default function useTelegram(): useTelegramComposableState {
    * @param callback The callback to call when the button is clicked
    */
   function showMainButton(text: string, callback: () => void): void {
-    prepareDebugButton(debugMainButton, 'fake-main-button')
+    prepareDebugButton(debugMainButton, 'fake-main-button');
 
     if (mainButtonCallback.value !== null) {
-      WebApp.MainButton.offClick(mainButtonCallback.value)
+      WebApp.MainButton.offClick(mainButtonCallback.value);
     }
 
-    mainButtonCallback.value = callback
+    mainButtonCallback.value = callback;
 
-    WebApp.MainButton.text = text ?? 'Submit'
-    WebApp.MainButton.onClick(mainButtonCallback.value)
-    WebApp.MainButton.isVisible = true
+    WebApp.MainButton.text = text ?? 'Submit';
+    WebApp.MainButton.onClick(mainButtonCallback.value);
+    WebApp.MainButton.isVisible = true;
 
     if (debugMainButton.value !== undefined) {
-      debugMainButton.value.innerText = text ?? 'Submit'
-      debugMainButton.value.addEventListener('click', mainButtonCallback.value)
-      debugMainButton.value.classList.add('visible')
+      debugMainButton.value.innerText = text ?? 'Submit';
+      debugMainButton.value.addEventListener('click', mainButtonCallback.value);
+      debugMainButton.value.classList.add('visible');
     }
   }
 
@@ -93,37 +94,37 @@ export default function useTelegram(): useTelegramComposableState {
    */
   function hideMainButton(): void {
     if (mainButtonCallback.value === null) {
-      console.warn('Trying to hide main button but no callback was set')
-      return
+      console.warn('Trying to hide main button but no callback was set');
+      return;
     }
 
-    WebApp.MainButton.offClick(mainButtonCallback.value)
-    debugMainButton.value?.removeEventListener('click', mainButtonCallback.value)
-    mainButtonCallback.value = null
+    WebApp.MainButton.offClick(mainButtonCallback.value);
+    debugMainButton.value?.removeEventListener('click', mainButtonCallback.value);
+    mainButtonCallback.value = null;
 
-    WebApp.MainButton.isVisible = false
-    debugMainButton.value?.classList.remove('visible')
+    WebApp.MainButton.isVisible = false;
+    debugMainButton.value?.classList.remove('visible');
   }
 
   /**
    * Show the back button
    */
   function showBackButton(callback: () => void): void {
-    prepareDebugButton(debugBackButton, 'fake-back-button')
+    prepareDebugButton(debugBackButton, 'fake-back-button');
 
     if (backButtonCallback.value !== null) {
-      WebApp.BackButton.offClick(backButtonCallback.value)
+      WebApp.BackButton.offClick(backButtonCallback.value);
     }
 
-    backButtonCallback.value = callback
+    backButtonCallback.value = callback;
 
-    WebApp.BackButton.onClick(backButtonCallback.value)
-    WebApp.BackButton.show()
+    WebApp.BackButton.onClick(backButtonCallback.value);
+    WebApp.BackButton.show();
 
     if (debugBackButton.value !== undefined) {
-      debugBackButton.value.innerText = '‹ Back'
-      debugBackButton.value.addEventListener('click', backButtonCallback.value)
-      debugBackButton.value.classList.add('visible')
+      debugBackButton.value.innerText = '‹ Back';
+      debugBackButton.value.addEventListener('click', backButtonCallback.value);
+      debugBackButton.value.classList.add('visible');
     }
   }
 
@@ -132,16 +133,16 @@ export default function useTelegram(): useTelegramComposableState {
    */
   function hideBackButton(): void {
     if (backButtonCallback.value === null) {
-      console.warn('Trying to hide back button but no callback was set')
-      return
+      console.warn('Trying to hide back button but no callback was set');
+      return;
     }
 
-    WebApp.BackButton.offClick(backButtonCallback.value)
-    debugBackButton.value?.removeEventListener('click', backButtonCallback.value)
-    backButtonCallback.value = null
+    WebApp.BackButton.offClick(backButtonCallback.value);
+    debugBackButton.value?.removeEventListener('click', backButtonCallback.value);
+    backButtonCallback.value = null;
 
-    WebApp.BackButton.hide()
-    debugBackButton.value?.classList.remove('visible')
+    WebApp.BackButton.hide();
+    debugBackButton.value?.classList.remove('visible');
   }
 
   /**
@@ -151,9 +152,9 @@ export default function useTelegram(): useTelegramComposableState {
    */
   function setButtonLoader(state: boolean): void {
     if (state) {
-      WebApp.MainButton.showProgress()
+      WebApp.MainButton.showProgress();
     } else {
-      WebApp.MainButton.hideProgress()
+      WebApp.MainButton.hideProgress();
     }
   }
 
@@ -163,7 +164,7 @@ export default function useTelegram(): useTelegramComposableState {
    * @param text The text to show in the alert
    */
   function showAlert(text: string): void {
-    WebApp.showAlert(text)
+    WebApp.showAlert(text);
   }
 
   /**
@@ -173,21 +174,21 @@ export default function useTelegram(): useTelegramComposableState {
    * @param callback The callback to call when the invoice is paid
    */
   function openInvoice(url: string, callback: (status: 'pending' | 'failed' | 'cancelled' | 'paid') => void): void {
-    WebApp.openInvoice(url, callback)
+    WebApp.openInvoice(url, callback);
   }
 
   /**
    * Closes the app
    */
   function closeApp(): void {
-    WebApp.close()
+    WebApp.close();
   }
 
   /**
    * Expands Telegram app layout
    */
   function expand(): void {
-    WebApp.expand()
+    WebApp.expand();
   }
 
   /**
@@ -201,7 +202,7 @@ export default function useTelegram(): useTelegramComposableState {
    * It's more appropriate to use the value of the viewportStableHeight field for this purpose.
    */
   function getViewportHeight(): number {
-    return WebApp.viewportStableHeight
+    return WebApp.viewportStableHeight;
   }
 
   /**
@@ -209,20 +210,22 @@ export default function useTelegram(): useTelegramComposableState {
    *
    * @param style The style of the vibration
    */
-  function vibrate(style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft' | 'error' | 'warning' | 'success' = 'heavy'): void {
+  function vibrate(
+    style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft' | 'error' | 'warning' | 'success' = 'heavy'
+  ): void {
     switch (style) {
       case 'light':
       case 'medium':
       case 'heavy':
       case 'rigid':
       case 'soft':
-        WebApp.HapticFeedback.impactOccurred(style)
-        break
+        WebApp.HapticFeedback.impactOccurred(style);
+        break;
       case 'error':
       case 'warning':
       case 'success':
-        WebApp.HapticFeedback.notificationOccurred(style)
-        break
+        WebApp.HapticFeedback.notificationOccurred(style);
+        break;
     }
   }
 
@@ -230,36 +233,40 @@ export default function useTelegram(): useTelegramComposableState {
    * Tells Telegram
    */
   function ready(): void {
-    WebApp.ready()
+    WebApp.ready();
   }
 
   /**
    * Sets the header color of the app wrapper
    */
   function setHeaderColor(color: 'bg_color' | 'secondary_bg_color' | `#${string}`): void {
-    WebApp.setHeaderColor(color)
+    WebApp.setHeaderColor(color);
+  }
+
+  function openTelegramLink(url: string): void {
+    WebApp.openTelegramLink(url);
   }
 
   /**
    * The current color scheme of the device. Can be light or dark.
    * If app is launched in a browser, the value will be undefined.
    */
-  const colorScheme = WebApp.platform !== 'unknown' ? WebApp.colorScheme : undefined
+  const colorScheme = WebApp.platform !== 'unknown' ? WebApp.colorScheme : undefined;
 
   /**
    * The current platform of the device.
    */
-  const platform = WebApp.platform
+  const platform = WebApp.platform;
 
   /**
    * The current header color of the app wrapper
    */
-  const headerColor = WebApp.headerColor
+  const headerColor = WebApp.headerColor;
 
   /**
    * The initial data received from Telegram
    */
-  const webAppInitData = WebApp.initData || ''
+  const webAppInitData = WebApp.initData || '';
 
   return {
     showMainButton,
@@ -279,5 +286,6 @@ export default function useTelegram(): useTelegramComposableState {
     headerColor,
     setHeaderColor,
     webAppInitData,
-  }
+    openTelegramLink,
+  };
 }
