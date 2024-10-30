@@ -3,13 +3,13 @@
   import { Placeholder, Section, Sections } from '@/presentation/components';
   import useTelegram from '@/services/useTelegram';
   import { useUserStore } from '@/store/user';
-  import { useStart } from '@/composables/start';
+  import { useInvite } from '@/composables/invite';
   import type { paths } from '@/types/schema';
 
   type User = paths['/user']['get']['responses']['200']['content']['application/json'];
 
   const userStore = useUserStore();
-  const { constructInviteLink } = useStart();
+  const { constructInviteLink } = useInvite();
   const telegram = useTelegram();
   const isLoading = ref(true);
   const error = ref<string | null>(null);
