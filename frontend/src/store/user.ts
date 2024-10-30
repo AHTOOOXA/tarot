@@ -37,6 +37,11 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async onboardUser() {
+      this.error = null;
+      this.user!.is_onboarded = true;
+    },
+
     async updateUser(updatedUser: UpdateUserRequest) {
       this.error = null;
 

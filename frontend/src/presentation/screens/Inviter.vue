@@ -2,42 +2,47 @@
   import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { Placeholder, Section, Sections } from '@/presentation/components';
-  import { useUserStore } from '@/store/user';
+  import type { components } from '@/types/schema';
+  import { useInviterStore } from '@/store/inviter';
 
   const router = useRouter();
-  const userStore = useUserStore();
 
   const isLoading = ref(true);
   const error = ref<string | null>(null);
-  const onboardingSteps = ref<string[]>([]);
+  const inviter = ref<components['schemas']['StartData']['inviter'] | null>(null);
 
-  const user = userStore.user;
+  const inviterStore = useInviterStore();
 
   onMounted(async () => {
     try {
       isLoading.value = true;
-      onboardingSteps.value = [`Welcome ${user?.first_name}!`, "Let's get you started"];
+      inviter.value = inviterStore.getInviter;
+
+      if (!inviter.value) {
+        router.replace({ name: 'onboarding' });
+        return;
+      }
     } catch (e) {
-      error.value = 'Failed to load onboarding steps. Please try again later.';
-      console.error('Error loading onboarding steps:', e);
+      error.value = 'Failed to load inviter information. Please try again later.';
+      console.error('Error loading inviter:', e);
     } finally {
       isLoading.value = false;
     }
   });
 
-  const startApp = () => {
-    userStore.onboardUser();
+  const continueToApp = () => {
+    inviterStore.processInvite();
     router.push({ name: 'questions' });
   };
 </script>
 
 <template>
-  <div class="onboarding-page">
+  <div class="inviter-page">
     <div
       v-if="isLoading"
       class="loading"
     >
-      Loading onboarding...
+      Loading...
     </div>
     <div
       v-else-if="error"
@@ -48,28 +53,26 @@
     <Sections v-else>
       <Section standalone>
         <Placeholder
-          title="Welcome to Glow App!"
-          caption="Let's get started with your onboarding"
+          title="You've Been Invited!"
+          caption="Someone wants you to join them on Glow App"
         >
           <template #picture>
-            <div class="onboarding-icon">🚀</div>
+            <div class="inviter-icon">✨</div>
           </template>
         </Placeholder>
       </Section>
       <Section padded>
-        <div class="onboarding-content">
+        <div class="inviter-content">
+          <Placeholder
+            compact
+            :title="`${inviter?.title} invited you`"
+            :caption="inviter?.group_id ? `Group ID: ${inviter.group_id}` : ''"
+          />
           <div
-            v-for="(step, index) in onboardingSteps"
-            :key="index"
-            class="onboarding-step"
+            class="continue-button"
+            @click="continueToApp"
           >
-            {{ step }}
-          </div>
-          <div
-            class="start-button"
-            @click="startApp"
-          >
-            Start Using Glow App
+            Continue to Glow App
           </div>
         </div>
       </Section>
@@ -78,13 +81,13 @@
 </template>
 
 <style scoped>
-  .onboarding-page {
+  .inviter-page {
     display: flex;
     flex-direction: column;
     min-height: 100%;
   }
 
-  .onboarding-icon {
+  .inviter-icon {
     font-size: 48px;
     width: var(--size-avatar-big);
     height: var(--size-avatar-big);
@@ -93,21 +96,15 @@
     justify-content: center;
   }
 
-  .onboarding-content {
+  .inviter-content {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-10);
   }
 
-  .onboarding-step {
+  .continue-button {
     padding: var(--spacing-10);
-    background-color: var(--color-bg-tertiary);
-    border-radius: var(--size-border-radius-medium);
-  }
-
-  .start-button {
-    padding: var(--spacing-10);
-    background-color: #4caf50; /* Green color */
+    background-color: var(--color-primary);
     border-radius: var(--size-border-radius-medium);
     color: white;
     text-align: center;
@@ -116,7 +113,17 @@
     transition: background-color 0.3s ease;
   }
 
-  .start-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+  .continue-button:hover {
+    opacity: 0.9;
+  }
+
+  .loading,
+  .error {
+    padding: var(--spacing-10);
+    text-align: center;
+  }
+
+  .error {
+    color: var(--color-error);
   }
 </style>

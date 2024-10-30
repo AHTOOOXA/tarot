@@ -5,32 +5,23 @@ import Friends from '@/presentation/screens/Friends.vue';
 import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
+import { useInviterStore } from '@/store/inviter';
 import { processStart } from '@/composables/start';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/onboarding',
+    redirect: '/questions',
   },
   {
     path: '/onboarding',
     name: 'onboarding',
     component: Onboarding,
-    beforeEnter: async (to, from, next) => {
-      try {
-        const userStore = useUserStore();
-        const user = userStore.user;
-
-        if (user?.is_onboarded) {
-          next('/questions');
-        } else {
-          next();
-        }
-      } catch (error) {
-        console.error('Error in /onboarding route:', error);
-        next();
-      }
-    },
+  },
+  {
+    path: '/inviter',
+    name: 'inviter',
+    component: () => import('@/presentation/screens/Inviter.vue'),
   },
   {
     path: '/questions',
@@ -62,13 +53,34 @@ const router = createRouter({
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
   try {
+    // DO NOT REMOVE
     // Process start parameters only once when the app starts
     if (from.path === '/') {
       await processStart();
     }
+
+    const userStore = useUserStore();
+    const inviterStore = useInviterStore();
+    const inviter = inviterStore.getInviter;
+
+    // Forcing onboarding if user is not onboarded
+    // Forcing inviter after onboarding
+    if (!userStore.user?.is_onboarded) {
+      if (to.name !== 'onboarding') {
+        console.log('redirecting to onboarding');
+        return next('/onboarding');
+      }
+    } else if (inviter) {
+      if (to.name !== 'inviter') {
+        console.log('redirecting to inviter');
+        return next('/inviter');
+      }
+    }
+
     next();
   } catch (error) {
     console.error('Error processing start parameters:', error);
+    // TODO: Handle error maybe redirect to error page
     next();
   }
 });
