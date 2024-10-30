@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { ref, onBeforeMount, onErrorCaptured, watch } from 'vue';
+  import { ref, onBeforeMount, onErrorCaptured, watch, onMounted } from 'vue';
   import { useTelegram } from '@/services';
   import { useRouter, useRoute } from 'vue-router';
+  import { processStart } from '@/composables/start';
 
   const router = useRouter();
   const route = useRoute();
@@ -57,6 +58,14 @@
     },
     { immediate: true }
   );
+
+  onMounted(async () => {
+    try {
+      await processStart();
+    } catch (error) {
+      console.error('Error processing start parameters:', error);
+    }
+  });
 </script>
 
 <template>

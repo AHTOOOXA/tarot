@@ -6,7 +6,6 @@ import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
-import { processStart } from '@/composables/start';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -53,12 +52,6 @@ const router = createRouter({
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
   try {
-    // DO NOT REMOVE
-    // Process start parameters only once when the app starts
-    if (from.path === '/') {
-      await processStart();
-    }
-
     const userStore = useUserStore();
     const inviterStore = useInviterStore();
     const inviter = inviterStore.getInviter;
@@ -79,8 +72,7 @@ router.beforeEach(async (to, from, next) => {
 
     next();
   } catch (error) {
-    console.error('Error processing start parameters:', error);
-    // TODO: Handle error maybe redirect to error page
+    console.error('Navigation guard error:', error);
     next();
   }
 });
