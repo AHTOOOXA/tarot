@@ -7,6 +7,13 @@ import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
 
+// Simplify route meta types to only use navigationMode
+declare module 'vue-router' {
+  interface RouteMeta {
+    navigationMode: 'tabs' | 'button' | 'none';
+  }
+}
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -17,7 +24,7 @@ const routes: RouteRecordRaw[] = [
     name: 'onboarding',
     component: Onboarding,
     meta: {
-      hideTabMenu: true,
+      navigationMode: 'button',
     },
   },
   {
@@ -25,28 +32,40 @@ const routes: RouteRecordRaw[] = [
     name: 'inviter',
     component: () => import('@/presentation/screens/Inviter.vue'),
     meta: {
-      hideTabMenu: true,
+      navigationMode: 'button',
     },
   },
   {
     path: '/questions',
     name: 'questions',
     component: Question,
+    meta: {
+      navigationMode: 'tabs',
+    },
   },
   {
     path: '/inbox',
     name: 'inbox',
     component: Inbox,
+    meta: {
+      navigationMode: 'tabs',
+    },
   },
   {
     path: '/friends',
     name: 'friends',
     component: Friends,
+    meta: {
+      navigationMode: 'tabs',
+    },
   },
   {
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: {
+      navigationMode: 'tabs',
+    },
   },
 ];
 
@@ -57,9 +76,9 @@ const router = createRouter({
 
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
-  // If the route does not have a `showTabMenu` property set, default to true
-  if (typeof to.meta.hideTabMenu === 'undefined') {
-    to.meta.hideTabMenu = false;
+  // Set default navigation mode if not specified
+  if (typeof to.meta.navigationMode === 'undefined') {
+    to.meta.navigationMode = 'tabs';
   }
 
   try {
