@@ -16,7 +16,6 @@
     // Start the API request without awaiting it
     quizStore.submitQuizResponse(1, currentQuiz.value.question.id, answerId).catch(error => {
       console.error('Failed to submit quiz response:', error);
-      // Optionally, show an error message to the user
     });
 
     // Wait for the animation to complete

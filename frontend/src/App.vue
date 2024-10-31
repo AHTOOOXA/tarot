@@ -1,10 +1,24 @@
 <script setup lang="ts">
-  import { onBeforeMount, onErrorCaptured, onMounted } from 'vue';
+  import { computed, onBeforeMount, onErrorCaptured, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
   import { useTelegram } from '@/services';
   import { processStart } from '@/composables/start';
-  import MainLayout from '@/presentation/layouts/MainLayout.vue';
+  import ButtonLayout from '@/presentation/layouts/ButtonLayout.vue';
+  import TabsLayout from '@/presentation/layouts/TabsLayout.vue';
 
   const { colorScheme, expand } = useTelegram();
+  const route = useRoute();
+
+  const layoutComponent = computed(() => {
+    switch (route.meta.layout) {
+      case 'button':
+        return ButtonLayout;
+      case 'tabs':
+        return TabsLayout;
+      default:
+        return 'div';
+    }
+  });
 
   function onBeforeSegue(): void {
     requestAnimationFrame(() => {
@@ -34,7 +48,7 @@
 
 <template>
   <div class="app">
-    <MainLayout>
+    <component :is="layoutComponent">
       <RouterView v-slot="{ Component }">
         <transition
           name="default-segue"
@@ -43,7 +57,7 @@
           <component :is="Component" />
         </transition>
       </RouterView>
-    </MainLayout>
+    </component>
   </div>
 </template>
 

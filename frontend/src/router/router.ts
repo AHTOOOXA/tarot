@@ -7,10 +7,10 @@ import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
 
-// Simplify route meta types to only use navigationMode
+// Update RouteMeta interface
 declare module 'vue-router' {
   interface RouteMeta {
-    navigationMode: 'tabs' | 'button' | 'none';
+    layout: 'button' | 'tabs' | 'none';
   }
 }
 
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
     name: 'onboarding',
     component: Onboarding,
     meta: {
-      navigationMode: 'button',
+      layout: 'button',
     },
   },
   {
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
     name: 'inviter',
     component: () => import('@/presentation/screens/Inviter.vue'),
     meta: {
-      navigationMode: 'button',
+      layout: 'button',
     },
   },
   {
@@ -40,7 +40,7 @@ const routes: RouteRecordRaw[] = [
     name: 'questions',
     component: Question,
     meta: {
-      navigationMode: 'tabs',
+      layout: 'tabs',
     },
   },
   {
@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
     name: 'inbox',
     component: Inbox,
     meta: {
-      navigationMode: 'tabs',
+      layout: 'tabs',
     },
   },
   {
@@ -56,7 +56,7 @@ const routes: RouteRecordRaw[] = [
     name: 'friends',
     component: Friends,
     meta: {
-      navigationMode: 'tabs',
+      layout: 'tabs',
     },
   },
   {
@@ -64,7 +64,7 @@ const routes: RouteRecordRaw[] = [
     name: 'profile',
     component: Profile,
     meta: {
-      navigationMode: 'tabs',
+      layout: 'tabs',
     },
   },
 ];
@@ -77,8 +77,8 @@ const router = createRouter({
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
   // Set default navigation mode if not specified
-  if (typeof to.meta.navigationMode === 'undefined') {
-    to.meta.navigationMode = 'tabs';
+  if (typeof to.meta.layout === 'undefined') {
+    to.meta.layout = 'tabs';
   }
 
   try {

@@ -1,17 +1,18 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onUnmounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { Placeholder, Section, Sections } from '@/presentation/components';
   import type { components } from '@/types/schema';
   import { useInviterStore } from '@/store/inviter';
+  import { useButtonStore } from '@/store/button';
 
   const router = useRouter();
+  const buttonStore = useButtonStore();
+  const inviterStore = useInviterStore();
 
   const isLoading = ref(true);
   const error = ref<string | null>(null);
   const inviter = ref<components['schemas']['StartData']['inviter'] | null>(null);
-
-  const inviterStore = useInviterStore();
 
   onMounted(async () => {
     try {
@@ -22,6 +23,16 @@
         router.replace({ name: 'onboarding' });
         return;
       }
+
+      // Configure the button
+      buttonStore.setButton({
+        text: 'Continue to Glow App',
+        isVisible: true,
+        onClick: async () => {
+          await inviterStore.processInvite();
+          router.push({ name: 'questions' });
+        },
+      });
     } catch (e) {
       error.value = 'Failed to load inviter information. Please try again later.';
       console.error('Error loading inviter:', e);
@@ -30,10 +41,10 @@
     }
   });
 
-  const continueToApp = () => {
-    inviterStore.processInvite();
-    router.push({ name: 'questions' });
-  };
+  // Clean up button state when component unmounts
+  onUnmounted(() => {
+    buttonStore.reset();
+  });
 </script>
 
 <template>
@@ -68,12 +79,6 @@
             :title="`${inviter?.title} invited you`"
             :caption="inviter?.group_id ? `Group ID: ${inviter.group_id}` : ''"
           />
-          <div
-            class="continue-button"
-            @click="continueToApp"
-          >
-            Continue to Glow App
-          </div>
         </div>
       </Section>
     </Sections>
@@ -100,21 +105,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-10);
-  }
-
-  .continue-button {
-    padding: var(--spacing-10);
-    background-color: var(--color-primary);
-    border-radius: var(--size-border-radius-medium);
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .continue-button:hover {
-    opacity: 0.9;
   }
 
   .loading,

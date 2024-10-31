@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onUnmounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { Placeholder, Section, Sections } from '@/presentation/components';
   import { useUserStore } from '@/store/user';
+  import { useButtonStore } from '@/store/button';
 
   const router = useRouter();
   const userStore = useUserStore();
+  const buttonStore = useButtonStore();
 
   const isLoading = ref(true);
   const error = ref<string | null>(null);
@@ -17,6 +19,16 @@
     try {
       isLoading.value = true;
       onboardingSteps.value = [`Welcome ${user?.first_name}!`, "Let's get you started"];
+
+      // Configure the button
+      buttonStore.setButton({
+        text: 'Start Using Glow App',
+        isVisible: true,
+        onClick: async () => {
+          await userStore.onboardUser();
+          router.push({ name: 'questions' });
+        },
+      });
     } catch (e) {
       error.value = 'Failed to load onboarding steps. Please try again later.';
       console.error('Error loading onboarding steps:', e);
@@ -25,10 +37,10 @@
     }
   });
 
-  const startApp = () => {
-    userStore.onboardUser();
-    router.push({ name: 'questions' });
-  };
+  // Clean up button state when component unmounts
+  onUnmounted(() => {
+    buttonStore.reset();
+  });
 </script>
 
 <template>
@@ -65,12 +77,6 @@
           >
             {{ step }}
           </div>
-          <div
-            class="start-button"
-            @click="startApp"
-          >
-            Start Using Glow App
-          </div>
         </div>
       </Section>
     </Sections>
@@ -103,20 +109,5 @@
     padding: var(--spacing-10);
     background-color: var(--color-bg-tertiary);
     border-radius: var(--size-border-radius-medium);
-  }
-
-  .start-button {
-    padding: var(--spacing-10);
-    background-color: #4caf50; /* Green color */
-    border-radius: var(--size-border-radius-medium);
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .start-button:hover {
-    background-color: #45a049; /* Darker green on hover */
   }
 </style>
