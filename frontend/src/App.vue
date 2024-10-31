@@ -1,18 +1,11 @@
 <script setup lang="ts">
-  import { ref, onBeforeMount, onErrorCaptured, watch, onMounted } from 'vue';
+  import { onBeforeMount, onErrorCaptured, onMounted } from 'vue';
   import { useTelegram } from '@/services';
-  import { useRouter, useRoute } from 'vue-router';
   import { processStart } from '@/composables/start';
-
-  const router = useRouter();
-  const route = useRoute();
+  import MainLayout from '@/presentation/layouts/MainLayout.vue';
 
   const { colorScheme, expand } = useTelegram();
 
-  /**
-   * Hook will be called when next screen just added to the DOM
-   * We use it to scroll to the top of the page
-   */
   function onBeforeSegue(): void {
     requestAnimationFrame(() => {
       window.scrollTo(0, 0);
@@ -30,35 +23,6 @@
     expand();
   });
 
-  const activeTab = ref('Questions'); // Default active tab
-
-  const tabs = [
-    { name: 'Inbox', icon: '📥', route: 'inbox' },
-    { name: 'Questions', icon: '❓', route: 'questions' },
-    { name: 'Friends', icon: '👥', route: 'friends' },
-    { name: 'Profile', icon: '👤', route: 'profile' },
-  ];
-
-  function changeTab(tabName: string) {
-    console.log('changeTab', tabName);
-    const tab = tabs.find(t => t.name === tabName);
-    if (tab) {
-      router.push({ name: tab.route });
-    }
-  }
-
-  // Update active tab based on current route
-  watch(
-    () => route.name,
-    newRouteName => {
-      const tab = tabs.find(t => t.route === newRouteName);
-      if (tab) {
-        activeTab.value = tab.name;
-      }
-    },
-    { immediate: true }
-  );
-
   onMounted(async () => {
     try {
       await processStart();
@@ -70,9 +34,7 @@
 
 <template>
   <div class="app">
-    <div class="app-content">
-      <div class="app-header"></div>
-      <!--Teleport location for PageWithHeader component-->
+    <MainLayout>
       <RouterView v-slot="{ Component }">
         <transition
           name="default-segue"
@@ -81,19 +43,7 @@
           <component :is="Component" />
         </transition>
       </RouterView>
-    </div>
-    <nav class="tab-menu">
-      <button
-        v-for="tab in tabs"
-        :key="tab.name"
-        @click="changeTab(tab.name)"
-        :class="{ active: activeTab === tab.name }"
-        class="tab-button"
-      >
-        <span class="tab-icon">{{ tab.icon }}</span>
-        <span class="tab-name">{{ tab.name }}</span>
-      </button>
-    </nav>
+    </MainLayout>
   </div>
 </template>
 
@@ -170,55 +120,5 @@
   .default-segue-enter-from,
   .default-segue-leave-to {
     opacity: 0;
-  }
-
-  .tab-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    background-color: var(--color-bg-secondary);
-    padding: 25px 0; /* Increased padding for more space */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .tab-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: none;
-    border: none;
-    color: var(--color-text);
-    font-size: 12px;
-    cursor: pointer;
-    padding: 5px;
-  }
-
-  .tab-button.active {
-    color: var(--color-primary);
-  }
-
-  .tab-icon {
-    font-size: 24px;
-    margin-bottom: 2px;
-  }
-
-  .tab-name {
-    font-size: 10px;
-  }
-
-  @media (min-width: 460px) {
-    #app {
-      max-width: 390px;
-      margin: 0 auto;
-    }
-
-    .tab-menu {
-      max-width: 390px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
   }
 </style>

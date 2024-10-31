@@ -16,11 +16,17 @@ const routes: RouteRecordRaw[] = [
     path: '/onboarding',
     name: 'onboarding',
     component: Onboarding,
+    meta: {
+      hideTabMenu: true,
+    },
   },
   {
     path: '/inviter',
     name: 'inviter',
     component: () => import('@/presentation/screens/Inviter.vue'),
+    meta: {
+      hideTabMenu: true,
+    },
   },
   {
     path: '/questions',
@@ -51,6 +57,11 @@ const router = createRouter({
 
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
+  // If the route does not have a `showTabMenu` property set, default to true
+  if (typeof to.meta.hideTabMenu === 'undefined') {
+    to.meta.hideTabMenu = false;
+  }
+
   try {
     const userStore = useUserStore();
     const inviterStore = useInviterStore();
