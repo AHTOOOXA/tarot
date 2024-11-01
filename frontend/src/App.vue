@@ -3,7 +3,7 @@
   import { useRoute } from 'vue-router';
   import { useTelegram } from '@/services';
   import { processStart } from '@/composables/start';
-  import ButtonLayout from '@/presentation/layouts/ButtonLayout.vue';
+  import BaseLayout from '@/presentation/layouts/BaseLayout.vue';
   import TabsLayout from '@/presentation/layouts/TabsLayout.vue';
 
   const { colorScheme, expand } = useTelegram();
@@ -11,12 +11,10 @@
 
   const layoutComponent = computed(() => {
     switch (route.meta.layout) {
-      case 'button':
-        return ButtonLayout;
       case 'tabs':
         return TabsLayout;
       default:
-        return 'div';
+        return BaseLayout;
     }
   });
 

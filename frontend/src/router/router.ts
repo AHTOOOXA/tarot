@@ -7,7 +7,6 @@ import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
 
-// Update RouteMeta interface
 declare module 'vue-router' {
   interface RouteMeta {
     layout: 'button' | 'tabs' | 'none';
@@ -23,17 +22,11 @@ const routes: RouteRecordRaw[] = [
     path: '/onboarding',
     name: 'onboarding',
     component: Onboarding,
-    meta: {
-      layout: 'button',
-    },
   },
   {
     path: '/inviter',
     name: 'inviter',
     component: () => import('@/presentation/screens/Inviter.vue'),
-    meta: {
-      layout: 'button',
-    },
   },
   {
     path: '/questions',
@@ -76,11 +69,6 @@ const router = createRouter({
 
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
-  // Set default navigation mode if not specified
-  if (typeof to.meta.layout === 'undefined') {
-    to.meta.layout = 'tabs';
-  }
-
   try {
     const userStore = useUserStore();
     const inviterStore = useInviterStore();
