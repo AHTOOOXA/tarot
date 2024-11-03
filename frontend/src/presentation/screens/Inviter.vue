@@ -1,13 +1,11 @@
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
-  import { Placeholder, Section, Sections } from '@/presentation/components';
+  import { Placeholder, Section, Sections, WithButton } from '@/presentation/components';
   import type { components } from '@/types/schema';
   import { useInviterStore } from '@/store/inviter';
-  import { useButtonStore } from '@/store/button';
 
   const router = useRouter();
-  const buttonStore = useButtonStore();
   const inviterStore = useInviterStore();
 
   const isLoading = ref(true);
@@ -23,16 +21,6 @@
         router.replace({ name: 'onboarding' });
         return;
       }
-
-      // Configure the button
-      buttonStore.setButton({
-        text: 'Continue to Glow App',
-        isVisible: true,
-        onClick: async () => {
-          await inviterStore.processInvite();
-          router.push({ name: 'questions' });
-        },
-      });
     } catch (e) {
       error.value = 'Failed to load inviter information. Please try again later.';
       console.error('Error loading inviter:', e);
@@ -41,48 +29,65 @@
     }
   });
 
-  // Clean up button state when component unmounts
-  onUnmounted(() => {
-    buttonStore.reset();
-  });
+  const handleContinue = async () => {
+    try {
+      await inviterStore.processInvite();
+      router.push({ name: 'questions' });
+    } catch (error) {
+      console.error('Error processing invite:', error);
+    }
+  };
 </script>
 
 <template>
-  <div class="inviter-page">
-    <div
-      v-if="isLoading"
-      class="loading"
-    >
-      Loading...
-    </div>
-    <div
-      v-else-if="error"
-      class="error"
-    >
-      {{ error }}
-    </div>
-    <Sections v-else>
-      <Section standalone>
-        <Placeholder
-          title="You've Been Invited!"
-          caption="Someone wants you to join them on Glow App"
+  <WithButton withPadding>
+    <template #content>
+      <div class="inviter-page">
+        <div
+          v-if="isLoading"
+          class="loading"
         >
-          <template #picture>
-            <div class="inviter-icon">✨</div>
-          </template>
-        </Placeholder>
-      </Section>
-      <Section padded>
-        <div class="inviter-content">
-          <Placeholder
-            compact
-            :title="`${inviter?.title} invited you`"
-            :caption="inviter?.group_id ? `Group ID: ${inviter.group_id}` : ''"
-          />
+          Loading...
         </div>
-      </Section>
-    </Sections>
-  </div>
+        <div
+          v-else-if="error"
+          class="error"
+        >
+          {{ error }}
+        </div>
+        <Sections v-else>
+          <Section standalone>
+            <Placeholder
+              title="You've Been Invited!"
+              caption="Someone wants you to join them on Glow App"
+            >
+              <template #picture>
+                <div class="inviter-icon">✨</div>
+              </template>
+            </Placeholder>
+          </Section>
+          <Section padded>
+            <div class="inviter-content">
+              <Placeholder
+                compact
+                :title="`${inviter?.title} invited you`"
+                :caption="inviter?.group_id ? `Group ID: ${inviter.group_id}` : ''"
+              />
+            </div>
+          </Section>
+        </Sections>
+      </div>
+    </template>
+
+    <template #button>
+      <button
+        class="primary-button"
+        @click="handleContinue"
+      >
+        Continue to Glow App
+      </button>
+    </template>
+  </WithButton>
 </template>
 
 <style scoped>
@@ -115,5 +120,23 @@
 
   .error {
     color: var(--color-error);
+  }
+
+  .primary-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: var(--size-border-radius-medium);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .primary-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 </style>
