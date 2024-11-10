@@ -6,10 +6,10 @@ build-backend = "setuptools.build_meta"
 package-dir = { "" = "src" }
 
 [project]
-name = "GlowApp"
+name = "Tarot"
 version = "0.0.1"
 
-description = "GlowApp - Mini web app in Telegram"
+description = "Tarot - Mini web app in Telegram"
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",

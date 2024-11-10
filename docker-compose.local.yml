@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    image: "glow-app-vue"
+    image: "tarot-vue"
     build:
         context: ./frontend
         dockerfile: Dockerfile
@@ -21,7 +21,7 @@ services:
     stop_signal: SIGINT
 
   bot:
-    image: "glow-app-bot"
+    image: "tarot-bot"
     stop_signal: SIGINT
     build:
       context: ./backend
@@ -50,7 +50,7 @@ services:
         max-file: "10"
 
   webhook:
-    image: "glow-app-webhook"
+    image: "tarot-webhook"
     stop_signal: SIGINT
     build:
       context: ./backend
