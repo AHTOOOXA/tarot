@@ -1,12 +1,15 @@
+from datetime import datetime
 from enum import Enum
 from typing import List, Optional
-from datetime import datetime
+
 from pydantic import BaseModel
+
 
 class SpreadType(str, Enum):
     SINGLE = "single"
     THREE_CARD = "three_card"
     CELTIC_CROSS = "celtic_cross"
+
 
 class TarotCard(BaseModel):
     id: int
@@ -18,6 +21,7 @@ class TarotCard(BaseModel):
     meaning_reversed: str
     is_reversed: bool = False
 
+
 class TarotSpread(BaseModel):
     id: int
     name: str
@@ -25,6 +29,7 @@ class TarotSpread(BaseModel):
     num_cards: int
     positions: List[str]
     type: SpreadType
+
 
 class TarotReading(BaseModel):
     id: int

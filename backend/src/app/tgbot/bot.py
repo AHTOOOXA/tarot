@@ -11,8 +11,8 @@ from app.config import db_config, rabbit_config, redis_config, tgbot_config
 from app.infrastructure.database.setup import create_engine, create_session_pool
 from app.infrastructure.rabbit.consumer import RabbitMQConsumer
 from app.tgbot.handlers import routers_list
-from app.tgbot.middlewares.database import DatabaseMiddleware
 from app.tgbot.middlewares.auth import AuthMiddleware
+from app.tgbot.middlewares.database import DatabaseMiddleware
 from app.tgbot.middlewares.service import ServiceMiddleware
 from app.tgbot.services import broadcaster
 
@@ -22,18 +22,14 @@ logger = logging.getLogger(__name__)
 def setup_logging():
     bl.basic_colorized_config(level=logging.INFO, color=True)
     log_format = (
-        "\033[1;36m%(filename)s:%(lineno)d\033[0m "          # Cyan filename and line number
-        "#%(levelname)-8s "                                  # Log level in normal color
-        "\033[1;32m[%(asctime)s]\033[0m "                     # Green timestamp
-        "- \033[1;34m%(name)s\033[0m "                         # Blue logger name
-        "- %(message)s"                                      # Normal log message
+        "\033[1;36m%(filename)s:%(lineno)d\033[0m "  # Cyan filename and line number
+        "#%(levelname)-8s "  # Log level in normal color
+        "\033[1;32m[%(asctime)s]\033[0m "  # Green timestamp
+        "- \033[1;34m%(name)s\033[0m "  # Blue logger name
+        "- %(message)s"  # Normal log message
     )
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format=log_format,
-        force=True
-    )
+    logging.basicConfig(level=logging.INFO, format=log_format, force=True)
 
 
 async def on_startup(bot: Bot, admin_ids: List[int]):

@@ -1,10 +1,12 @@
+import os
 import subprocess
 import sys
-import time
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-import os
 import threading
+import time
+
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
+
 
 class BotReloader(FileSystemEventHandler):
     def __init__(self, start_command):
@@ -25,14 +27,14 @@ class BotReloader(FileSystemEventHandler):
                 stdout=sys.stdout,
                 stderr=sys.stderr,
                 universal_newlines=True,
-                bufsize=1
+                bufsize=1,
             )
         except Exception as e:
             print(f"Failed to start bot: {e}")
 
     def on_modified(self, event):
         """Restart the bot on .py file changes, excluding __pycache__ and .pyc files."""
-        if event.is_directory or event.src_path.endswith(('.pyc', '__pycache__')):
+        if event.is_directory or event.src_path.endswith((".pyc", "__pycache__")):
             return
         print(f"File change detected: {event.src_path}")
         self.start_bot()
@@ -43,6 +45,7 @@ class BotReloader(FileSystemEventHandler):
             print("Stopping bot...")
             self.bot_process.kill()
             self.bot_process.wait()
+
 
 if __name__ == "__main__":
     # Add -u flag for unbuffered output

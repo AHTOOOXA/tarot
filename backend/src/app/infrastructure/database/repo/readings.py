@@ -1,6 +1,7 @@
-from app.schemas.tarot import TarotReading, TarotCard
 from datetime import datetime
 from typing import List, Optional
+
+from app.schemas.tarot import TarotCard, TarotReading
 
 
 class ReadingsRepo:
@@ -14,7 +15,7 @@ class ReadingsRepo:
         cards: List[TarotCard],
         question: Optional[str],
         interpretation: str,
-        created_at: datetime
+        created_at: datetime,
     ) -> TarotReading:
         reading = TarotReading(
             id=self._next_id,
@@ -23,7 +24,7 @@ class ReadingsRepo:
             cards=cards,
             question=question,
             interpretation=interpretation,
-            created_at=created_at
+            created_at=created_at,
         )
         self._readings.append(reading)
         self._next_id += 1
