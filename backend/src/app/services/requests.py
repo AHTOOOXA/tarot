@@ -2,12 +2,10 @@ from dataclasses import dataclass
 
 from app.infrastructure.database.repo.requests import RequestsRepo
 from app.infrastructure.rabbit.producer import RabbitMQProducer
-from app.services.inbox import InboxService
 from app.services.invites import InvitesService
-from app.services.quizzes import QuizzesService
 from app.services.start import StartService
-from app.services.users import UserService
 from app.services.tarot import TarotService
+from app.services.users import UserService
 
 
 @dataclass
@@ -22,14 +20,6 @@ class RequestsService:
     producer: RabbitMQProducer
 
     @property
-    def quizzes(self) -> QuizzesService:
-        return QuizzesService(self.repo, self.producer, self)
-
-    @property
-    def inbox(self) -> InboxService:
-        return InboxService(self.repo, self.producer, self)
-
-    @property
     def users(self) -> UserService:
         return UserService(self.repo, self.producer, self)
 
@@ -40,7 +30,7 @@ class RequestsService:
     @property
     def start(self) -> StartService:
         return StartService(self.repo, self.producer, self)
-    
+
     @property
     def tarot(self) -> TarotService:
         return TarotService(self.repo, self.producer, self)

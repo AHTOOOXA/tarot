@@ -2,13 +2,11 @@ from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.infrastructure.database.repo.groups import GroupRepo
-from app.infrastructure.database.repo.questions import QuestionRepo
-from app.infrastructure.database.repo.quiz_responses import QuizResponsesRepo
-from app.infrastructure.database.repo.users import UserRepo
 from app.infrastructure.database.repo.cards import CardsRepo
-from app.infrastructure.database.repo.spreads import SpreadsRepo
+from app.infrastructure.database.repo.groups import GroupRepo
 from app.infrastructure.database.repo.readings import ReadingsRepo
+from app.infrastructure.database.repo.spreads import SpreadsRepo
+from app.infrastructure.database.repo.users import UserRepo
 
 
 @dataclass
@@ -28,14 +26,6 @@ class RequestsRepo:
     @property
     def groups(self) -> GroupRepo:
         return GroupRepo(self.session)
-
-    @property
-    def questions(self) -> QuestionRepo:
-        return QuestionRepo(self.session)
-
-    @property
-    def quiz_responses(self) -> QuizResponsesRepo:
-        return QuizResponsesRepo(self.session)
 
     @property
     def cards(self) -> CardsRepo:

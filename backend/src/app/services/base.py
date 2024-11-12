@@ -5,8 +5,6 @@ if TYPE_CHECKING:
 
 from app.infrastructure.database.repo.requests import RequestsRepo
 from app.infrastructure.rabbit.producer import RabbitMQProducer
-from app.webhook.dependencies.database import get_repo
-from app.webhook.dependencies.rabbit import get_rabbit_producer
 
 
 class BaseService:
