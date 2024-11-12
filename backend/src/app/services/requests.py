@@ -7,6 +7,7 @@ from app.services.invites import InvitesService
 from app.services.quizzes import QuizzesService
 from app.services.start import StartService
 from app.services.users import UserService
+from app.services.tarot import TarotService
 
 
 @dataclass
@@ -39,3 +40,7 @@ class RequestsService:
     @property
     def start(self) -> StartService:
         return StartService(self.repo, self.producer, self)
+    
+    @property
+    def tarot(self) -> TarotService:
+        return TarotService(self.repo, self.producer, self)
