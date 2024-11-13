@@ -26,5 +26,9 @@ class TableNameMixin:
             return name + "s"
 
 
-class TimestampMixin:
+class CreatedAtMixin:
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
+
+
+class UpdatedAtMixin:
+    updated_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now(), onupdate=func.now())

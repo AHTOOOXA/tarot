@@ -21,6 +21,6 @@ class ServiceMiddleware(BaseMiddleware):
         repo = data.get("repo")
         if repo:
             service = RequestsService(repo, self.producer)
-            data["service"] = service
+            data["services"] = service
 
         return await handler(event, data)

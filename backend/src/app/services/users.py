@@ -1,8 +1,23 @@
+import logging
+
 from app.exceptions import FriendAlreadyExistsException, UserNotFoundException
+from app.schemas.users import UserSchema
 from app.services.base import BaseService
+
+logger = logging.getLogger(__name__)
 
 
 class UserService(BaseService):
+    async def get_or_create_user(self, user_id: int, first_name: str, username: str):
+        user = await self.repo.users.get_or_create_user(user_id, first_name, username)
+
+        if user.created_at == user.updated_at:
+            logger.info(f"User {user_id} created")
+            # TODO: Some initial logic here
+            # TODO: posthog analytics record here
+
+        return UserSchema.model_validate(user)
+
     async def get_user_by_id(self, user_id: int):
         return await self.repo.users.get_user_by_id(user_id)
 

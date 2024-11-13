@@ -1,9 +1,10 @@
 from aiogram import Router, types
-from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from aiogram.types import CallbackQuery
 
-from app.schemas.tarot import SpreadType
+from app.schemas.tarot import DailyReadingMessage
+from app.schemas.users import UserSchema
 from app.services.requests import RequestsService
 
 router = Router()
@@ -14,47 +15,36 @@ class TarotStates(StatesGroup):
     waiting_for_spread_type = State()
 
 
-@router.message(Command("start"))
-async def start_cmd(message: types.Message):
-    await message.answer(
-        "Welcome to the Tarot Bot! 🔮\n\n"
-        "Commands:\n"
-        "/daily - Get your daily card\n"
-        "/reading - Start a new reading\n"
-        "/question - Ask a specific question"
-    )
-
-
-@router.message(Command("daily"))
-async def daily_card(message: types.Message, service: RequestsService = None):
-    if not service:
-        raise ValueError("Service not found in middleware data")
-
-    reading = await service.tarot.create_reading(user_id=message.from_user.id, spread_type=SpreadType.SINGLE)
-    card = reading.cards[0]
-
+async def _send_daily_card(message: types.Message, user: UserSchema, services: RequestsService):
+    """Helper function to handle daily card logic"""
+    await message.answer("Processing your daily card...")
+    reading: DailyReadingMessage = await services.tarot.get_daily_reading(user=user)
     await message.answer_photo(
-        photo=card.image_url, caption=f"Your daily card is: {card.name}\n\n{reading.interpretation}"
+        photo=reading.card.image_url, caption=f"Your daily card is: {reading.card.name}\n\n{reading.interpretation}"
     )
 
 
-@router.message(Command("question"))
-async def ask_question(message: types.Message, state: FSMContext):
+async def _handle_question(message: types.Message, state: FSMContext):
+    """Helper function to handle question asking logic"""
     await state.set_state(TarotStates.waiting_for_question)
     await message.answer("What question would you like to ask the cards?")
 
 
 @router.message(TarotStates.waiting_for_question)
-async def process_question(message: types.Message, state: FSMContext, service: RequestsService = None):
-    if not service:
-        raise ValueError("Service not found in middleware data")
-
-    reading = await service.tarot.create_reading(
-        user_id=message.from_user.id, spread_type=SpreadType.THREE_CARD, question=message.text
-    )
-
+async def process_question(message: types.Message, state: FSMContext, user: UserSchema, services: RequestsService):
+    # TODO: Implement question processing logic
+    reading = await services.tarot.get_question_reading(user=user, question=message.text)
     await state.clear()
+    await message.answer(reading)
 
-    media = [types.InputMediaPhoto(media=card.image_url) for card in reading.cards]
-    await message.answer_media_group(media=media)
-    await message.answer(reading.interpretation)
+
+@router.callback_query(lambda c: c.data == "cmd_daily")
+async def daily_card_callback(callback: CallbackQuery, user: UserSchema, services: RequestsService):
+    await callback.answer()
+    await _send_daily_card(callback.message, user, services)
+
+
+@router.callback_query(lambda c: c.data == "cmd_question")
+async def question_callback(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+    await _handle_question(callback.message, state)

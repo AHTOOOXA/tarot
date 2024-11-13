@@ -4,11 +4,11 @@ from typing import List, Optional
 from sqlalchemy import BIGINT, TIMESTAMP, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TableNameMixin, TimestampMixin
+from .base import Base, CreatedAtMixin, TableNameMixin
 from .users import User
 
 
-class Group(Base, TimestampMixin, TableNameMixin):
+class Group(Base, CreatedAtMixin, TableNameMixin):
     """
     This class represents a Group in the application.
 
@@ -33,7 +33,7 @@ class Group(Base, TimestampMixin, TableNameMixin):
         return f"<Group {self.group_id} {self.title}>"
 
 
-class GroupMember(Base, TimestampMixin, TableNameMixin):
+class GroupMember(Base, CreatedAtMixin, TableNameMixin):
     """
     This class represents a Group Member in the application.
 

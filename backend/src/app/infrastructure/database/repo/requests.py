@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database.repo.cards import CardsRepo
 from app.infrastructure.database.repo.groups import GroupRepo
 from app.infrastructure.database.repo.readings import ReadingsRepo
-from app.infrastructure.database.repo.spreads import SpreadsRepo
 from app.infrastructure.database.repo.users import UserRepo
 
 
@@ -30,10 +29,6 @@ class RequestsRepo:
     @property
     def cards(self) -> CardsRepo:
         return CardsRepo()
-
-    @property
-    def spreads(self) -> SpreadsRepo:
-        return SpreadsRepo()
 
     @property
     def readings(self) -> ReadingsRepo:

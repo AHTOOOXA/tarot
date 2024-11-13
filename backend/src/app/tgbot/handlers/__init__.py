@@ -1,10 +1,10 @@
 """Import all routers and add them to routers_list."""
 
-from .start import start_router
+from .start import router as start_router
 from .tarot import router as tarot_router
 
 routers_list = [
-    # start_router,
+    start_router,
     tarot_router,
 ]
 
