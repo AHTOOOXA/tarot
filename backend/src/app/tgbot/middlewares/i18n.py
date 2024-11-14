@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
 from aiogram.types import Message
 
-from app.infrastructure.i18n import t
+from app.infrastructure.i18n import i18n, t
 from app.schemas.users import UserSchema
 
 
@@ -15,7 +15,13 @@ class I18nMiddleware(BaseMiddleware):
         data: Dict[str, Any],
     ) -> Any:
         user: UserSchema = data.get("user")
-        # Fallback to 'en' if no user or no language_code
         lang = user.language_code if user and user.language_code else "en"
-        data["t"] = lambda key: t(key, lang)
-        return await handler(event, data)
+
+        # Set translation for this request
+        i18n.set_translation(lambda key: t(key, lang))
+
+        try:
+            return await handler(event, data)
+        finally:
+            # Clean up after request
+            i18n.reset_translation()
