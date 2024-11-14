@@ -10,9 +10,9 @@ from urllib.parse import parse_qsl, unquote
 from fastapi import Depends, Request
 
 from app.config import tgbot_config
-from app.infrastructure.database.repo.requests import RequestsRepo
 from app.schemas.users import UserSchema
-from app.webhook.dependencies.database import get_repo
+from app.services.base import Services
+from app.webhook.dependencies.service import get_services
 
 logger = logging.getLogger(__name__)
 
@@ -157,7 +157,7 @@ def get_telegram_authenticator() -> TelegramAuthenticator:
 async def get_twa_user(
     request: Request,
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
-    repo: RequestsRepo = Depends(get_repo),
+    services: Services = Depends(get_services),
 ) -> UserSchema:
     init_data = request.headers.get("initData")
 
@@ -165,23 +165,25 @@ async def get_twa_user(
     if not init_data:
         logger.error("Init data is missing")
         if tgbot_config.debug:
-            user_db = await repo.users.get_user_by_username(tgbot_config.debug_username)
+            user_db = await services.users.get_user_by_username(tgbot_config.debug_username)
             return UserSchema.model_validate(user_db)
         raise NoInitDataError("Init data is missing")
 
     user = telegram_authenticator.verify_token(init_data)
     # Register or update user in the database
-    db_user = await repo.users.get_or_create_user(
-        user_id=user.id,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        username=user.username,
-        is_bot=user.is_bot,
-        language_code=user.language_code,
-        is_premium=user.is_premium,
-        added_to_attachment_menu=user.added_to_attachment_menu,
-        allows_write_to_pm=user.allows_write_to_pm,
-        photo_url=user.photo_url,
+    db_user = await services.users.get_or_create_user(
+        UserSchema(
+            user_id=user.id,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            is_bot=user.is_bot,
+            language_code=user.language_code,
+            is_premium=user.is_premium,
+            added_to_attachment_menu=user.added_to_attachment_menu,
+            allows_write_to_pm=user.allows_write_to_pm,
+            photo_url=user.photo_url,
+        )
     )
     logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
 

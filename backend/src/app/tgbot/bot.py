@@ -13,6 +13,7 @@ from app.infrastructure.rabbit.consumer import RabbitMQConsumer
 from app.tgbot.handlers import routers_list
 from app.tgbot.middlewares.auth import AuthMiddleware
 from app.tgbot.middlewares.database import DatabaseMiddleware
+from app.tgbot.middlewares.i18n import I18nMiddleware
 from app.tgbot.middlewares.service import ServiceMiddleware
 from app.tgbot.services import broadcaster
 
@@ -63,6 +64,7 @@ async def main():
     dp.update.outer_middleware(DatabaseMiddleware(session_pool))
     dp.update.outer_middleware(ServiceMiddleware())
     dp.update.outer_middleware(AuthMiddleware())
+    dp.update.outer_middleware(I18nMiddleware())
     dp.include_routers(*routers_list)
 
     await on_startup(bot, tgbot_config.admin_ids)
