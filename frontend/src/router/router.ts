@@ -1,12 +1,15 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
-import Question from '@/presentation/screens/Question.vue';
-import Inbox from '@/presentation/screens/Inbox.vue';
 import Friends from '@/presentation/screens/Friends.vue';
 import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
-import { processStart } from '@/composables/start';
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    layout: 'button' | 'tabs' | 'none';
+  }
+}
 
 const routes: RouteRecordRaw[] = [
   {
@@ -24,24 +27,20 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/presentation/screens/Inviter.vue'),
   },
   {
-    path: '/questions',
-    name: 'questions',
-    component: Question,
-  },
-  {
-    path: '/inbox',
-    name: 'inbox',
-    component: Inbox,
-  },
-  {
     path: '/friends',
     name: 'friends',
     component: Friends,
+    meta: {
+      layout: 'tabs',
+    },
   },
   {
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: {
+      layout: 'tabs',
+    },
   },
 ];
 
@@ -53,12 +52,6 @@ const router = createRouter({
 // Global navigation guard that runs before any route
 router.beforeEach(async (to, from, next) => {
   try {
-    // DO NOT REMOVE
-    // Process start parameters only once when the app starts
-    if (from.path === '/') {
-      await processStart();
-    }
-
     const userStore = useUserStore();
     const inviterStore = useInviterStore();
     const inviter = inviterStore.getInviter;
@@ -79,8 +72,7 @@ router.beforeEach(async (to, from, next) => {
 
     next();
   } catch (error) {
-    console.error('Error processing start parameters:', error);
-    // TODO: Handle error maybe redirect to error page
+    console.error('Navigation guard error:', error);
     next();
   }
 });

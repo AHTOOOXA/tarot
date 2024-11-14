@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
@@ -20,6 +20,9 @@ class UserSchema(BaseModel):
     male: Optional[bool] = None
     birth_date: Optional[date] = None
     is_onboarded: Optional[bool] = None
+
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)
 

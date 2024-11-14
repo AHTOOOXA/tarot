@@ -17,8 +17,10 @@ import Text from './Text/Text.vue';
 import Rating from './Rating/Rating.vue';
 import FixedFooter from './Page/FixedFooter.vue';
 import Lottie from './Lottie/Lottie.vue';
+import WithButton from './WithButton/WithButton.vue';
 
 export {
+  WithButton,
   PageWithHeader,
   Icon,
   Avatar,

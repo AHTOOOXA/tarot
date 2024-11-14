@@ -1,10 +1,10 @@
 from sqlalchemy import BIGINT, Boolean, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TableNameMixin, TimestampMixin
+from .base import Base, CreatedAtMixin, TableNameMixin
 
 
-class Friendship(Base, TimestampMixin, TableNameMixin):
+class Friendship(Base, CreatedAtMixin, TableNameMixin):
     """
     This class represents a mutual Friendship relationship between two users in the application.
 

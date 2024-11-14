@@ -1,122 +1,130 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import { Placeholder, Section, Sections } from '@/presentation/components';
+  import { WithButton, Sections } from '@/presentation/components';
+  import ProgressBar from '@/presentation/components/ProgressBar/ProgressBar.vue';
   import { useUserStore } from '@/store/user';
+  import HelloStep from './onboarding/HelloStep.vue';
+  import RegisterStep from './onboarding/RegisterStep.vue';
+  import TutorialStep from './onboarding/TutorialStep.vue';
 
   const router = useRouter();
   const userStore = useUserStore();
 
-  const isLoading = ref(true);
-  const error = ref<string | null>(null);
-  const onboardingSteps = ref<string[]>([]);
+  type StepId = 'hello' | 'register' | 'tutorial';
+  const currentStep = ref<StepId>('hello');
 
-  const user = userStore.user;
+  const currentStepIndex = computed(() => {
+    const stepMap = {
+      hello: 1,
+      register: 2,
+      tutorial: 3,
+    };
+    return stepMap[currentStep.value];
+  });
 
-  onMounted(async () => {
-    try {
-      isLoading.value = true;
-      onboardingSteps.value = [`Welcome ${user?.first_name}!`, "Let's get you started"];
-    } catch (e) {
-      error.value = 'Failed to load onboarding steps. Please try again later.';
-      console.error('Error loading onboarding steps:', e);
-    } finally {
-      isLoading.value = false;
+  const currentComponent = computed(() => {
+    switch (currentStep.value) {
+      case 'hello':
+        return HelloStep;
+      case 'register':
+        return RegisterStep;
+      case 'tutorial':
+        return TutorialStep;
+      default:
+        return HelloStep;
     }
   });
 
-  const startApp = () => {
-    userStore.onboardUser();
-    router.push({ name: 'questions' });
+  const buttonText = computed(() => {
+    switch (currentStep.value) {
+      case 'hello':
+        return 'Get Started';
+      case 'register':
+        return 'Continue';
+      case 'tutorial':
+        return 'Complete Onboarding';
+      default:
+        return 'Next';
+    }
+  });
+
+  const handleNext = async () => {
+    switch (currentStep.value) {
+      case 'hello':
+        currentStep.value = 'register';
+        break;
+      case 'register':
+        currentStep.value = 'tutorial';
+        break;
+      case 'tutorial':
+        await completeOnboarding();
+        break;
+    }
+  };
+
+  const completeOnboarding = async () => {
+    try {
+      await userStore.onboardUser();
+      router.push({ name: 'questions' });
+    } catch (error) {
+      console.error('Failed to complete onboarding:', error);
+    }
   };
 </script>
 
 <template>
-  <div class="onboarding-page">
-    <div
-      v-if="isLoading"
-      class="loading"
-    >
-      Loading onboarding...
-    </div>
-    <div
-      v-else-if="error"
-      class="error"
-    >
-      {{ error }}
-    </div>
-    <Sections v-else>
-      <Section standalone>
-        <Placeholder
-          title="Welcome to Glow App!"
-          caption="Let's get started with your onboarding"
-        >
-          <template #picture>
-            <div class="onboarding-icon">🚀</div>
-          </template>
-        </Placeholder>
-      </Section>
-      <Section padded>
-        <div class="onboarding-content">
-          <div
-            v-for="(step, index) in onboardingSteps"
-            :key="index"
-            class="onboarding-step"
-          >
-            {{ step }}
-          </div>
-          <div
-            class="start-button"
-            @click="startApp"
-          >
-            Start Using Glow App
-          </div>
-        </div>
-      </Section>
-    </Sections>
-  </div>
+  <WithButton withPadding>
+    <template #content>
+      <div class="progress-wrapper">
+        <ProgressBar
+          :current-step="currentStepIndex"
+          :total-steps="3"
+        />
+      </div>
+      <Sections class="sections-container">
+        <component :is="currentComponent" />
+      </Sections>
+    </template>
+
+    <template #button>
+      <button
+        class="primary-button"
+        @click="handleNext"
+      >
+        {{ buttonText }}
+      </button>
+    </template>
+  </WithButton>
 </template>
 
 <style scoped>
-  .onboarding-page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
+  .progress-wrapper {
+    padding: 24px 0 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
-  .onboarding-icon {
-    font-size: 48px;
-    width: var(--size-avatar-big);
-    height: var(--size-avatar-big);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .sections-container {
+    margin-top: var(--spacing-8);
   }
 
-  .onboarding-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-10);
-  }
-
-  .onboarding-step {
-    padding: var(--spacing-10);
-    background-color: var(--color-bg-tertiary);
-    border-radius: var(--size-border-radius-medium);
-  }
-
-  .start-button {
-    padding: var(--spacing-10);
-    background-color: #4caf50; /* Green color */
-    border-radius: var(--size-border-radius-medium);
+  .primary-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #4caf50;
     color: white;
-    text-align: center;
-    font-weight: bold;
+    border: none;
+    border-radius: var(--size-border-radius-medium);
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
   }
 
-  .start-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+  .primary-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 </style>

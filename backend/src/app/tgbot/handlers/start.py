@@ -1,19 +1,17 @@
-from typing import Any
-
 from aiogram import Router, types
 from aiogram.filters import CommandStart
 
 from app.infrastructure.database.models.users import User
 from app.infrastructure.database.repo.requests import RequestsRepo
-from app.tgbot.keyboards.inline import main_menu
+from app.infrastructure.i18n import t
+from app.tgbot.keyboards.commands import command_keyboard
 
-start_router = Router()
+router = Router()
 
 
-@start_router.message(CommandStart())
-async def send_webapp(message: types.Message, user: User, repo: RequestsRepo):
-    print(user)
+@router.message(CommandStart())
+async def start_command(message: types.Message, user: User, repo: RequestsRepo):
     await message.answer(
-        "Hi Bro!",
-        reply_markup=main_menu(),
+        t("welcome"),
+        reply_markup=command_keyboard(),
     )

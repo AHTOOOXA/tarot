@@ -4,57 +4,6 @@
  */
 
 export interface paths {
-  '/inbox': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get Inbox */
-    get: operations['get_inbox_inbox_get'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/quizzes': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get Quizzes */
-    get: operations['get_quizzes_quizzes_get'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/quiz_response': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Post Quiz Response */
-    post: operations['post_quiz_response_quiz_response_post'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/profile': {
     parameters: {
       query?: never;
@@ -193,51 +142,12 @@ export interface components {
       /** Detail */
       detail?: components['schemas']['ValidationError'][];
     };
-    /** InboxMessageSchema */
-    InboxMessageSchema: {
-      question: components['schemas']['QuestionSchema'];
-      taker: components['schemas']['UserSchema'];
-      /**
-       * Created At
-       * Format: date-time
-       */
-      created_at: string;
-    };
-    /** InboxSchema */
-    InboxSchema: {
-      /** Messages */
-      messages: components['schemas']['InboxMessageSchema'][];
-    };
     /** InviteTokens */
     InviteTokens: {
       /** User Token */
       user_token: string;
       /** Group Token */
       group_token: string;
-    };
-    /** QuestionSchema */
-    QuestionSchema: {
-      /** Id */
-      id: number;
-      /** Text */
-      text: string;
-      /** Emoji */
-      emoji: string;
-    };
-    /** QuizResponseSchema */
-    QuizResponseSchema: {
-      /** Taker Id */
-      taker_id: number;
-      /** Question Id */
-      question_id: number;
-      /** Answer Id */
-      answer_id: number;
-    };
-    /** QuizSchema */
-    QuizSchema: {
-      question: components['schemas']['QuestionSchema'];
-      /** Friends */
-      friends: components['schemas']['UserSchema'][];
     };
     /** StartData */
     StartData: {
@@ -304,6 +214,10 @@ export interface components {
       birth_date?: string | null;
       /** Is Onboarded */
       is_onboarded?: boolean | null;
+      /** Created At */
+      created_at?: string | null;
+      /** Updated At */
+      updated_at?: string | null;
     };
     /** ValidationError */
     ValidationError: {
@@ -323,79 +237,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  get_inbox_inbox_get: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['InboxSchema'];
-        };
-      };
-    };
-  };
-  get_quizzes_quizzes_get: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['QuizSchema'][];
-        };
-      };
-    };
-  };
-  post_quiz_response_quiz_response_post: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['QuizResponseSchema'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['HTTPValidationError'];
-        };
-      };
-    };
-  };
   get_profile_profile_get: {
     parameters: {
       query?: never;

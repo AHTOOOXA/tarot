@@ -5,9 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
 from app.exceptions import FriendAlreadyExistsException, UserNotFoundException
-from app.schemas.inbox import InboxSchema
 from app.schemas.invites import InviteTokens
-from app.schemas.quizzes import QuizResponseSchema, QuizSchema
 from app.schemas.start import StartData, StartParams
 from app.schemas.users import UpdateUserRequest, UserSchema
 from app.services.requests import RequestsService
@@ -17,37 +15,6 @@ from app.webhook.dependencies.service import get_services
 router = APIRouter()
 
 logger = logging.getLogger(__name__)
-
-
-@router.get("/inbox")
-async def get_inbox(
-    request: Request,
-    services: RequestsService = Depends(get_services),
-    user: UserSchema = Depends(get_twa_user),
-) -> InboxSchema:
-    inbox = await services.inbox.get_inbox_messages(user.user_id)
-    return inbox
-
-
-@router.get("/quizzes")
-async def get_quizzes(
-    request: Request,
-    services: RequestsService = Depends(get_services),
-    user: UserSchema = Depends(get_twa_user),
-) -> List[QuizSchema]:
-    quizzes = await services.quizzes.get_random_quizzes(user.user_id, limit=10)
-    return quizzes
-
-
-@router.post("/quiz_response")
-async def post_quiz_response(
-    quiz_response: QuizResponseSchema,
-    services: RequestsService = Depends(get_services),
-    user: UserSchema = Depends(get_twa_user),
-):
-    quiz_response.taker_id = user.user_id
-    await services.quizzes.create_quiz_response(quiz_response)
-    return {"status": "success"}
 
 
 @router.get("/profile")
