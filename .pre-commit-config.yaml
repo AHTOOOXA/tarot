@@ -22,12 +22,22 @@ repos:
 
 -   repo: local
     hooks:
+    -   id: openapi-types
+        name: Generate OpenAPI Types
+        entry: bash -c 'cd frontend && npx openapi-typescript http://localhost:3779/openapi.json -o ./src/types/schema.d.ts && git add src/types/schema.d.ts'
+        language: system
+        pass_filenames: false
+        stages: [commit]
+        always_run: true
+
     -   id: prettier
         name: Frontend Prettier
-        entry: bash -c 'cd frontend && yarn format'
+        entry: bash -c 'cd frontend && yarn format && cd .. && git add frontend/src/'
         language: system
         files: ^frontend/.*\.(ts|vue|js|css|scss|json)$
         pass_filenames: false
+        stages: [commit]
+        always_run: true
 
     -   id: typescript
         name: TypeScript Check

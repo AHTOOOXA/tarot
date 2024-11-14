@@ -1,6 +1,4 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
-import Question from '@/presentation/screens/Question.vue';
-import Inbox from '@/presentation/screens/Inbox.vue';
 import Friends from '@/presentation/screens/Friends.vue';
 import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
@@ -27,22 +25,6 @@ const routes: RouteRecordRaw[] = [
     path: '/inviter',
     name: 'inviter',
     component: () => import('@/presentation/screens/Inviter.vue'),
-  },
-  {
-    path: '/questions',
-    name: 'questions',
-    component: Question,
-    meta: {
-      layout: 'tabs',
-    },
-  },
-  {
-    path: '/inbox',
-    name: 'inbox',
-    component: Inbox,
-    meta: {
-      layout: 'tabs',
-    },
   },
   {
     path: '/friends',
