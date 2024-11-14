@@ -1,3 +1,14 @@
 {
-  "welcome": "Welcome to the Tarot Bot! 🔮"
+  "welcome": "Welcome to the Tarot Bot! 🔮",
+  "ask_question": "Ask a Question 🔮",
+  "daily_card": "Daily Card 🔮",
+  "start_reading": "Start Some Reading 🔮",
+  "processing_daily_card": "Processing your daily card...",
+  "daily_card_result": "Your daily card is: {card_name}\n\n{interpretation}",
+  "ask_question_prompt": "What question would you like to ask the cards?",
+  "gpt_prompts": {
+    "system": "You are a wise and insightful tarot reader. Keep your interpretations concise yet meaningful. Respond in English.",
+    "daily_card": "Interpret this {card_name} tarot card:\n\n{description} as daily tarot reading. Interpretation should be short, in 100 words or less.",
+    "question_reading": "Using tarot wisdom, answer this question: {question}"
+  }
 }

@@ -1,10 +1,12 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from app.infrastructure.i18n import i18n
+
 
 def command_keyboard():
     kb = InlineKeyboardBuilder()
-    kb.button(text="Ask a Question 🔮", callback_data="cmd_question")
-    kb.button(text="Daily Card 🔮", callback_data="cmd_daily")
-    kb.button(text="Start Some Reading 🔮", callback_data="cmd_reading")
+    kb.button(text=i18n("ask_question"), callback_data="cmd_question")
+    kb.button(text=i18n("daily_card"), callback_data="cmd_daily")
+    kb.button(text=i18n("start_reading"), callback_data="cmd_reading")
     kb.adjust(1, 1, 1)
     return kb.as_markup()
