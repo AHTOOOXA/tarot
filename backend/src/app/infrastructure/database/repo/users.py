@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import and_, or_, select, update
+from sqlalchemy import and_, or_, select, text, update
 from sqlalchemy.dialects.postgresql import insert
 
 from app.infrastructure.database.models import Friendship, User
@@ -17,6 +17,9 @@ class UserRepo(BaseRepo):
 
         # filter out None values to let DB defaults work
         filtered_data = {k: v for k, v in user_data.items() if v is not None}
+        filtered_data["updated_at"] = text(
+            "CURRENT_TIMESTAMP"
+        )  # on_conflict_do_update needs it, cuz it ignores on_update event
 
         insert_stmt = (
             insert(User)
