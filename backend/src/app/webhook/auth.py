@@ -11,7 +11,7 @@ from fastapi import Depends, Request
 
 from app.config import tgbot_config
 from app.schemas.users import UserSchema
-from app.services.base import Services
+from app.services.requests import RequestsService
 from app.webhook.dependencies.service import get_services
 
 logger = logging.getLogger(__name__)
@@ -157,7 +157,7 @@ def get_telegram_authenticator() -> TelegramAuthenticator:
 async def get_twa_user(
     request: Request,
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
-    services: Services = Depends(get_services),
+    services: RequestsService = Depends(get_services),
 ) -> UserSchema:
     init_data = request.headers.get("initData")
 

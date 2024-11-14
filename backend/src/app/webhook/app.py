@@ -37,6 +37,5 @@ app_admin = Admin(app, engine)
 
 for view in [
     admin.users.UserAdmin,
-    admin.questions.QuestionAdmin,
 ]:
     app_admin.add_view(view)
