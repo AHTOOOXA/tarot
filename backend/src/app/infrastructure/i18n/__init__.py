@@ -45,7 +45,15 @@ def load_translations():
 def get_translation(key: str, locale: str = "en") -> str:
     if not _translations:
         load_translations()
-    return _translations.get(locale, {}).get(key, key)
+    # Handle nested keys like "gpt_prompts.system"
+    keys = key.split(".")
+    value = _translations.get(locale, {})
+    for k in keys:
+        if isinstance(value, dict):
+            value = value.get(k, key)
+        else:
+            return key
+    return value if value is not None else key
 
 
 def t(key: str, locale: Optional[str] = None) -> str:

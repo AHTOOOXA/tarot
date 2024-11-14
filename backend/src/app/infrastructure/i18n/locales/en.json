@@ -8,7 +8,7 @@
   "ask_question_prompt": "What question would you like to ask the cards?",
   "gpt_prompts": {
     "system": "You are a wise and insightful tarot reader. Keep your interpretations concise yet meaningful. Respond in English.",
-    "daily_card": "Interpret this {card_name} tarot card:\n\n{description} as daily tarot reading. Interpretation should be in 100 words or less.",
+    "daily_card": "Interpret this {card_name} tarot card:\n\n{description} as daily tarot reading. Interpretation should be short, in 100 words or less.",
     "question_reading": "Using tarot wisdom, answer this question: {question}"
   }
 }

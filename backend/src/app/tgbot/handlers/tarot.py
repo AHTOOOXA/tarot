@@ -18,11 +18,13 @@ class TarotStates(StatesGroup):
 
 async def _send_daily_card(message: types.Message, user: UserSchema, services: RequestsService):
     await message.answer(i18n("processing_daily_card"))
-    reading: DailyReadingMessage = await services.tarot.get_daily_reading(user=user)
+    card = await services.tarot.get_random_card()
     await message.answer_photo(
-        photo=reading.card.image_url,
-        caption=i18n("daily_card_result").format(card_name=reading.card.name, interpretation=reading.interpretation),
-    )
+        photo=card.image_url,
+        caption=card.name,
+    )  # TODO: localize
+    reading: DailyReadingMessage = await services.tarot.get_daily_reading(user=user, card=card)
+    await message.answer(reading.interpretation)
 
 
 async def _handle_question(message: types.Message, state: FSMContext):
