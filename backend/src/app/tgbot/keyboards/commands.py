@@ -10,3 +10,9 @@ def command_keyboard():
     kb.button(text=i18n("start_reading"), callback_data="cmd_reading")
     kb.adjust(1, 1, 1)
     return kb.as_markup()
+
+
+def terms_keyboard():
+    kb = InlineKeyboardBuilder()
+    kb.button(text=i18n("accept_terms"), callback_data="accept_terms")
+    return kb.as_markup()
