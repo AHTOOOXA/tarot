@@ -26,6 +26,9 @@ class I18nManager:
             self._current_token = None
             self._t = None
 
+    def update_locale(self, locale: str):
+        self.set_translation(lambda key: get_translation(key, locale))
+
     def __call__(self, key: str, *args, **kwargs) -> str:
         if self._t is None:
             raise RuntimeError("Translation function not set")
