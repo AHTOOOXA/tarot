@@ -23,6 +23,7 @@ async def start_command(message: types.Message, user: UserSchema, services: Requ
         photo=welcome_image,
         caption=i18n("welcome_with_terms").format(terms_url="https://google.com"),
         reply_markup=terms_keyboard(user.app_language_code),
+        parse_mode="HTML",
     )
 
 

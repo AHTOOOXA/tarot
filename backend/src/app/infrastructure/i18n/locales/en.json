@@ -1,8 +1,8 @@
 {
-  "welcome": "Welcome to the Tarot Bot! 🔮",
-  "ask_question": "Ask a Question 🔮",
-  "daily_card": "Daily Card 🔮",
-  "start_reading": "Start Some Reading 🔮",
+  "welcome": "🔮 Welcome to the Tarot Bot!",
+  "ask_question": "🔮 Ask a Question",
+  "daily_card": "🔮 Daily Card",
+  "start_reading": "🔮 Start Some Reading",
   "processing_daily_card": "Processing your daily card...",
   "daily_card_result": "Your daily card is: {card_name}\n\n{interpretation}",
   "ask_question_prompt": "What question would you like to ask the cards?",
@@ -11,9 +11,13 @@
     "daily_card": "Interpret this {card_name} tarot card:\n\n{description} as daily tarot reading. Interpretation should be short, in 100 words or less.",
     "question_reading": "Using tarot wisdom, answer this question: {question}"
   },
-  "welcome_with_terms": "Welcome to our Tarot Bot! 🔮\n\nBefore we begin, please read our Terms and Conditions: {terms_url}",
-  "accept_terms": "I Accept Terms & Conditions",
+  "welcome_with_terms": "Welcome to our Tarot Bot! 🔮\n\nBefore we begin, please read our <a href=\"{terms_url}\">Terms and Conditions</a>",
+  "accept_terms": "✅ I Accept Terms & Conditions",
   "welcome_after_terms": "Thank you! You can now use the bot. Choose an option below:",
   "your_language": "Your language",
-  "change": "Change"
+  "language_button": "🌐 Language: {lang} (change 🔄)",
+  "languages": {
+    "en": "English",
+    "ru": "Русский"
+  }
 }
