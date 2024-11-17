@@ -173,16 +173,26 @@ export interface components {
       username?: string | null;
       /** Language Code */
       language_code?: string | null;
+      /** Is Premium */
+      is_premium?: boolean | null;
+      /** Added To Attachment Menu */
+      added_to_attachment_menu?: boolean | null;
+      /** Allows Write To Pm */
+      allows_write_to_pm?: boolean | null;
       /** Photo Url */
       photo_url?: string | null;
       /** App Username */
       app_username?: string | null;
+      /** App Language Code */
+      app_language_code?: string | null;
       /** Male */
       male?: boolean | null;
       /** Birth Date */
       birth_date?: string | null;
       /** Is Onboarded */
       is_onboarded?: boolean | null;
+      /** Is Terms Accepted */
+      is_terms_accepted?: boolean | null;
     };
     /** UserSchema */
     UserSchema: {
@@ -208,12 +218,16 @@ export interface components {
       photo_url?: string | null;
       /** App Username */
       app_username?: string | null;
+      /** App Language Code */
+      app_language_code?: string | null;
       /** Male */
       male?: boolean | null;
       /** Birth Date */
       birth_date?: string | null;
       /** Is Onboarded */
       is_onboarded?: boolean | null;
+      /** Is Terms Accepted */
+      is_terms_accepted?: boolean | null;
       /** Created At */
       created_at?: string | null;
       /** Updated At */

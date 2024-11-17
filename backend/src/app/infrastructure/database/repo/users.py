@@ -32,10 +32,12 @@ class UserRepo(BaseRepo):
         await self.session.commit()
         return result.scalar_one()
 
-    async def update_user(self, user_id: int, user_data: dict):
-        stmt = update(User).where(User.user_id == user_id).values(**user_data)
-        await self.session.execute(stmt)
+    async def update_user(self, user_id: int, user_data: dict) -> User:
+        """Update user and return updated user object"""
+        stmt = update(User).where(User.user_id == user_id).values(**user_data).returning(User)
+        result = await self.session.execute(stmt)
         await self.session.commit()
+        return result.scalar_one()
 
     async def get_user_by_id(self, user_id: int) -> Optional[User]:
         stmt = select(User).where(User.user_id == user_id)

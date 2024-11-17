@@ -15,7 +15,13 @@ class I18nMiddleware(BaseMiddleware):
         data: Dict[str, Any],
     ) -> Any:
         user: UserSchema = data.get("user")
-        lang = user.language_code if user and user.language_code else "en"
+
+        lang = "en"
+        if user:
+            if user.app_language_code:
+                lang = user.app_language_code
+            elif user.language_code:
+                lang = user.language_code
 
         # Set translation for this request
         i18n.set_translation(lambda key: t(key, lang))
