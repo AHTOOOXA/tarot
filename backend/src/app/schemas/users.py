@@ -17,6 +17,7 @@ class UserSchema(BaseModel):
     photo_url: Optional[str] = None
 
     app_username: Optional[str] = None
+    app_language_code: str = "en"
     male: Optional[bool] = None
     birth_date: Optional[date] = None
     is_onboarded: Optional[bool] = None
