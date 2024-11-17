@@ -2,6 +2,7 @@ from aiogram import Router, types
 from aiogram.filters import CommandStart
 from aiogram.types import FSInputFile
 
+from app.config import tgbot_config
 from app.infrastructure.files import file_manager
 from app.infrastructure.i18n import i18n
 from app.schemas.users import UpdateUserRequest, UserSchema
@@ -19,11 +20,13 @@ router = Router()
 @router.message(CommandStart())
 async def start_command(message: types.Message, user: UserSchema, services: RequestsService):
     welcome_image = FSInputFile(file_manager.get_image_path("welcome.jpeg"))
+    terms_url = f"{tgbot_config.api_domain}/static/oferta-tarot.pdf"
+
     if not user.is_terms_accepted:
         await message.answer_photo(
             photo=welcome_image,
-            caption=i18n("welcome_with_terms").format(terms_url="https://google.com"),
-            reply_markup=terms_keyboard(user.app_language_code),
+            caption=i18n("welcome_with_terms").format(terms_url=terms_url),
+            reply_markup=terms_keyboard(),
             parse_mode="HTML",
         )
     else:

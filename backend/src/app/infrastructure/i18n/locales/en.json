@@ -17,6 +17,7 @@
   "your_language": "Your language",
   "language_button": "🌐 Language: {lang} (change 🔄)",
   "languages": {
+    "current_language": "English",
     "en": "English",
     "ru": "Русский"
   },

@@ -75,6 +75,7 @@ class TgBot:
     admin_ids: list[int]
     use_redis: bool
     web_app_domain: str
+    api_domain: str
     debug: bool
     debug_username: str
 
@@ -87,6 +88,7 @@ class TgBot:
         admin_ids = list(map(int, env.list("ADMINS")))
         use_redis = env.bool("USE_REDIS")
         web_app_domain = env.str("FRONTEND_URL")
+        api_domain = env.str("API_URL")
         debug = env.bool("DEBUG")
         debug_username = env.str("DEBUG_USERNAME")
         return TgBot(
@@ -94,6 +96,7 @@ class TgBot:
             admin_ids=admin_ids,
             use_redis=use_redis,
             web_app_domain=web_app_domain,
+            api_domain=api_domain,
             debug=debug,
             debug_username=debug_username,
         )
