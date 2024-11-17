@@ -22,7 +22,7 @@ class User(Base, CreatedAtMixin, UpdatedAtMixin, TableNameMixin):
 
     # App user fields
     app_username: Mapped[Optional[str]] = mapped_column(String(128))
-    app_language_code: Mapped[str] = mapped_column(String, default="en")
+    app_language_code: Mapped[Optional[str]] = mapped_column(String)
     male: Mapped[Optional[bool]] = mapped_column(Boolean)
     birth_date: Mapped[Optional[date]] = mapped_column(Date)
     is_onboarded: Mapped[Optional[bool]] = mapped_column(Boolean, default=False)

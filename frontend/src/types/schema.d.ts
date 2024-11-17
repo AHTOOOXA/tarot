@@ -208,11 +208,8 @@ export interface components {
       photo_url?: string | null;
       /** App Username */
       app_username?: string | null;
-      /**
-       * App Language Code
-       * @default en
-       */
-      app_language_code: string;
+      /** App Language Code */
+      app_language_code?: string | null;
       /** Male */
       male?: boolean | null;
       /** Birth Date */
