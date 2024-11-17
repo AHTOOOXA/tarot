@@ -62,7 +62,7 @@ async def set_language(callback: types.CallbackQuery, user: UserSchema, services
     await callback.message.edit_caption(
         caption=i18n("welcome_with_terms").format(terms_url="https://google.com"),
     )
-    await callback.message.edit_reply_markup(reply_markup=terms_keyboard(lang_code))
+    await callback.message.edit_reply_markup(reply_markup=terms_keyboard())
 
 
 @router.callback_query(lambda c: c.data == "cmd_pay")
