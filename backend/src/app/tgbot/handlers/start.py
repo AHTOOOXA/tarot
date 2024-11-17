@@ -9,6 +9,7 @@ from app.services.requests import RequestsService
 from app.tgbot.keyboards.commands import (
     command_keyboard,
     language_selection_keyboard,
+    pay_keyboard,
     terms_keyboard,
 )
 
@@ -59,3 +60,15 @@ async def set_language(callback: types.CallbackQuery, user: UserSchema, services
         caption=i18n("welcome_with_terms").format(terms_url="https://google.com"),
     )
     await callback.message.edit_reply_markup(reply_markup=terms_keyboard(lang_code))
+
+
+@router.callback_query(lambda c: c.data == "cmd_pay")
+async def pay_command(callback: types.CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_reply_markup(reply_markup=pay_keyboard())
+
+
+@router.callback_query(lambda c: c.data == "back_to_menu")
+async def back_to_menu(callback: types.CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(text=i18n("welcome_after_terms"), reply_markup=command_keyboard())

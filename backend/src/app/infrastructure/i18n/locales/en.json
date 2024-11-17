@@ -19,5 +19,10 @@
   "languages": {
     "en": "English",
     "ru": "Русский"
-  }
+  },
+  "pay": "💳 Pay",
+  "buy_10_questions": "🎴 10 Questions - 149₽",
+  "buy_week": "📅 1 Week Unlimited - 249₽",
+  "buy_month": "📆 1 Month Unlimited - 649₽",
+  "back_to_menu": "⬅️ Back to Menu"
 }
