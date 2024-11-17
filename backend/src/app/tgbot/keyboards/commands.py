@@ -26,7 +26,11 @@ def terms_keyboard():
 
 def language_selection_keyboard(page: int = 0) -> InlineKeyboardMarkup:
     languages = i18n("languages")
-    buttons = [[InlineKeyboardButton(text=name, callback_data=f"set_lang_{code}")] for code, name in languages.items()]
+    buttons = [
+        [InlineKeyboardButton(text=name, callback_data=f"set_lang_{code}")]
+        for code, name in languages.items()
+        if code != languages["current_language"]
+    ]
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
