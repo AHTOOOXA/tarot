@@ -12,7 +12,6 @@ repos:
     -   id: black
         files: backend/.*\.py$
         exclude: src/app/migrations/
-        entry: bash -c 'black backend && git add backend/'
 
 -   repo: https://github.com/timothycrosley/isort
     rev: 5.13.2
@@ -20,7 +19,6 @@ repos:
       - id: isort
         files: backend/.*\.py$
         exclude: src/app/migrations/
-        entry: bash -c 'isort backend && git add backend/'
 
 -   repo: local
     hooks:
