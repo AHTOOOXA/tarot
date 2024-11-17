@@ -26,6 +26,7 @@ class User(Base, CreatedAtMixin, UpdatedAtMixin, TableNameMixin):
     male: Mapped[Optional[bool]] = mapped_column(Boolean)
     birth_date: Mapped[Optional[date]] = mapped_column(Date)
     is_onboarded: Mapped[Optional[bool]] = mapped_column(Boolean, default=False)
+    is_terms_accepted: Mapped[Optional[bool]] = mapped_column(Boolean, default=False)
 
     friendships: Mapped[List["Friendship"]] = relationship(
         "Friendship",
