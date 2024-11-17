@@ -14,10 +14,10 @@ def command_keyboard():
     return kb.as_markup()
 
 
-def terms_keyboard(current_lang: str = "en"):
+def terms_keyboard():
     kb = InlineKeyboardBuilder()
     kb.button(
-        text=i18n("language_button").format(lang=i18n("languages")[current_lang]), callback_data="change_language"
+        text=i18n("language_button").format(lang=i18n("languages.current_language")), callback_data="change_language"
     )
     kb.button(text=i18n("accept_terms"), callback_data="accept_terms")
     kb.adjust(1)

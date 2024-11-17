@@ -1,6 +1,8 @@
 import logging
+from pathlib import Path
 
 from fastapi import APIRouter, FastAPI
+from fastapi.staticfiles import StaticFiles
 from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 
@@ -39,3 +41,5 @@ for view in [
     admin.users.UserAdmin,
 ]:
     app_admin.add_view(view)
+
+app.mount("/static", StaticFiles(directory=Path(__file__).parent.parent / "static"), name="static")
