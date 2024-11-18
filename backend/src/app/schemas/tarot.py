@@ -1,8 +1,7 @@
-from typing import List
-
 from pydantic import BaseModel
 
 from app.config import tgbot_config
+from app.infrastructure.i18n import i18n
 
 
 class TarotCard(BaseModel):
@@ -11,14 +10,10 @@ class TarotCard(BaseModel):
 
     @property
     def name(self) -> str:
-        from app.infrastructure.i18n import i18n
-
         return i18n(f"cards.{self.key}.name")
 
     @property
     def description(self) -> str:
-        from app.infrastructure.i18n import i18n
-
         return i18n(f"cards.{self.key}.description")
 
     @property
