@@ -25,5 +25,319 @@
   "buy_10_questions": "🎴 10 Questions - 149₽",
   "buy_week": "📅 1 Week Unlimited - 249₽",
   "buy_month": "📆 1 Month Unlimited - 649₽",
-  "back_to_menu": "⬅️ Back to Menu"
+  "back_to_menu": "⬅️ Back to Menu",
+  "cards": {
+    "00": {
+      "name": "The Fool",
+      "description": "New beginnings, innocence, spontaneity"
+    },
+    "01": {
+      "name": "The Magician",
+      "description": "Manifestation, resourcefulness, power"
+    },
+    "02": {
+      "name": "The High Priestess",
+      "description": "Mystery, intuition, hidden knowledge"
+    },
+    "03": {
+      "name": "The Empress",
+      "description": "Fertility, creativity, motherhood"
+    },
+    "04": {
+      "name": "The Emperor",
+      "description": "Authority, leadership, stability"
+    },
+    "05": {
+      "name": "The Hierophant",
+      "description": "Tradition, conformity, guidance"
+    },
+    "06": {
+      "name": "The Lovers",
+      "description": "Choices, relationships, harmony"
+    },
+    "07": {
+      "name": "The Chariot",
+      "description": "Control, direction, progress"
+    },
+    "08": {
+      "name": "Strength",
+      "description": "Courage, confidence, power"
+    },
+    "09": {
+      "name": "The Hermit",
+      "description": "Introspection, solitude, contemplation"
+    },
+    "10": {
+      "name": "Wheel of Fortune",
+      "description": "Fate, cycles, change"
+    },
+    "11": {
+      "name": "Justice",
+      "description": "Fairness, integrity, balance"
+    },
+    "12": {
+      "name": "The Hanged Man",
+      "description": "Sacrifice, patience, surrender"
+    },
+    "13": {
+      "name": "Death",
+      "description": "Transformation, endings, renewal"
+    },
+    "14": {
+      "name": "Temperance",
+      "description": "Balance, moderation, self-control"
+    },
+    "15": {
+      "name": "The Devil",
+      "description": "Addiction, manipulation, bondage"
+    },
+    "16": {
+      "name": "The Tower",
+      "description": "Disruption, chaos, upheaval"
+    },
+    "17": {
+      "name": "The Star",
+      "description": "Hope, inspiration, renewal"
+    },
+    "18": {
+      "name": "The Moon",
+      "description": "Illusion, deception, fear"
+    },
+    "19": {
+      "name": "The Sun",
+      "description": "Vitality, warmth, success"
+    },
+    "20": {
+      "name": "Judgement",
+      "description": "Reflection, evaluation, revelation"
+    },
+    "21": {
+      "name": "The World",
+      "description": "Completion, fulfillment, achievement"
+    },
+    "22": {
+      "name": "Ace of Cups",
+      "description": "Emotion, love, creativity"
+    },
+    "23": {
+      "name": "Two of Cups",
+      "description": "Partnership, harmony, communication"
+    },
+    "24": {
+      "name": "Three of Cups",
+      "description": "Community, celebration, joy"
+    },
+    "25": {
+      "name": "Four of Cups",
+      "description": "Apathy, disinterest, boredom"
+    },
+    "26": {
+      "name": "Five of Cups",
+      "description": "Loss, disappointment, grief"
+    },
+    "27": {
+      "name": "Six of Cups",
+      "description": "Nostalgia, sentimentality, remembrance"
+    },
+    "28": {
+      "name": "Seven of Cups",
+      "description": "Choices, indecision, overthinking"
+    },
+    "29": {
+      "name": "Eight of Cups",
+      "description": "Departure, end, release"
+    },
+    "30": {
+      "name": "Nine of Cups",
+      "description": "Satisfaction, contentment, fulfillment"
+    },
+    "31": {
+      "name": "Ten of Cups",
+      "description": "Fulfillment, harmony, happiness"
+    },
+    "32": {
+      "name": "Page of Cups",
+      "description": "Emotion, creativity, inspiration"
+    },
+    "33": {
+      "name": "Knight of Cups",
+      "description": "Romance, sensitivity, creativity"
+    },
+    "34": {
+      "name": "Queen of Cups",
+      "description": "Emotion, compassion, nurturing"
+    },
+    "35": {
+      "name": "King of Cups",
+      "description": "Emotion, creativity, compassion"
+    },
+    "36": {
+      "name": "Ace of Pentacles",
+      "description": "Opportunity, abundance, prosperity"
+    },
+    "37": {
+      "name": "Two of Pentacles",
+      "description": "Flexibility, adaptability, balance"
+    },
+    "38": {
+      "name": "Three of Pentacles",
+      "description": "Teamwork, collaboration, achievement"
+    },
+    "39": {
+      "name": "Four of Pentacles",
+      "description": "Security, stability, self-control"
+    },
+    "40": {
+      "name": "Five of Pentacles",
+      "description": "Hardship, struggle, financial difficulty"
+    },
+    "41": {
+      "name": "Six of Pentacles",
+      "description": "Generosity, charity, balance"
+    },
+    "42": {
+      "name": "Seven of Pentacles",
+      "description": "Patience, perseverance, frugality"
+    },
+    "43": {
+      "name": "Eight of Pentacles",
+      "description": "Diligence, hard work, financial gain"
+    },
+    "44": {
+      "name": "Nine of Pentacles",
+      "description": "Luxury, opulence, prosperity"
+    },
+    "45": {
+      "name": "Ten of Pentacles",
+      "description": "Wealth, security, legacy"
+    },
+    "46": {
+      "name": "Page of Pentacles",
+      "description": "Opportunity, learning, financial planning"
+    },
+    "47": {
+      "name": "Knight of Pentacles",
+      "description": "Diligence, hard work, financial gain"
+    },
+    "48": {
+      "name": "Queen of Pentacles",
+      "description": "Generosity, charity, balance"
+    },
+    "49": {
+      "name": "King of Pentacles",
+      "description": "Wealth, security, legacy"
+    },
+    "50": {
+      "name": "Ace of Swords",
+      "description": "Clarity, communication, truth"
+    },
+    "51": {
+      "name": "Two of Swords",
+      "description": "Stalemate, conflict, indecision"
+    },
+    "52": {
+      "name": "Three of Swords",
+      "description": "Heartbreak, sorrow, disappointment"
+    },
+    "53": {
+      "name": "Four of Swords",
+      "description": "Rest, recuperation, contemplation"
+    },
+    "54": {
+      "name": "Five of Swords",
+      "description": "Conflict, competition, betrayal"
+    },
+    "55": {
+      "name": "Six of Swords",
+      "description": "Transition, change, movement"
+    },
+    "56": {
+      "name": "Seven of Swords",
+      "description": "Deceit, manipulation, evasion"
+    },
+    "57": {
+      "name": "Eight of Swords",
+      "description": "Restriction, confinement, fear"
+    },
+    "58": {
+      "name": "Nine of Swords",
+      "description": "Anxiety, worry, fear"
+    },
+    "59": {
+      "name": "Ten of Swords",
+      "description": "End, conclusion, release"
+    },
+    "60": {
+      "name": "Page of Swords",
+      "description": "Learning, communication, clarity"
+    },
+    "61": {
+      "name": "Knight of Swords",
+      "description": "Action, decisiveness, conflict"
+    },
+    "62": {
+      "name": "Queen of Swords",
+      "description": "Intelligence, clarity, independence"
+    },
+    "63": {
+      "name": "King of Swords",
+      "description": "Intellectualism, communication, truth"
+    },
+    "64": {
+      "name": "Ace of Wands",
+      "description": "Inspiration, creativity, ambition"
+    },
+    "65": {
+      "name": "Two of Wands",
+      "description": "Planning, foresight, preparation"
+    },
+    "66": {
+      "name": "Three of Wands",
+      "description": "Expansion, growth, achievement"
+    },
+    "67": {
+      "name": "Four of Wands",
+      "description": "Community, celebration, harmony"
+    },
+    "68": {
+      "name": "Five of Wands",
+      "description": "Struggle, conflict, competition"
+    },
+    "69": {
+      "name": "Six of Wands",
+      "description": "Victory, success, recognition"
+    },
+    "70": {
+      "name": "Seven of Wands",
+      "description": "Defense, protection, vigilance"
+    },
+    "71": {
+      "name": "Eight of Wands",
+      "description": "Speed, efficiency, movement"
+    },
+    "72": {
+      "name": "Nine of Wands",
+      "description": "Resilience, endurance, recovery"
+    },
+    "73": {
+      "name": "Ten of Wands",
+      "description": "Burden, responsibility, overwork"
+    },
+    "74": {
+      "name": "Page of Wands",
+      "description": "Exploration, adventure, creativity"
+    },
+    "75": {
+      "name": "Knight of Wands",
+      "description": "Action, enthusiasm, impulsiveness"
+    },
+    "76": {
+      "name": "Queen of Wands",
+      "description": "Confidence, leadership, assertiveness"
+    },
+    "77": {
+      "name": "King of Wands",
+      "description": "Confidence, leadership, assertiveness"
+    }
+  }
 }
