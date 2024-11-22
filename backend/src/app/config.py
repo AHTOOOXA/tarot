@@ -154,6 +154,18 @@ class RabbitConfig:
         return RabbitConfig(url=url, queue_name=queue_name)
 
 
+@dataclass
+class YookassaConfig:
+    shop_id: str
+    secret_key: str
+
+    @staticmethod
+    def from_env(env: Env):
+        shop_id = env.str("YOOKASSA_SHOP_ID")
+        secret_key = env.str("YOOKASSA_SECRET_KEY")
+        return YookassaConfig(shop_id=shop_id, secret_key=secret_key)
+
+
 def _load_config(path: str = None):
     """
     This function takes an optional file path as input and returns a Config object.
@@ -167,7 +179,13 @@ def _load_config(path: str = None):
     env = Env()
     env.read_env(path)
 
-    return TgBot.from_env(env), DbConfig.from_env(env), RedisConfig.from_env(env), RabbitConfig.from_env(env)
+    return (
+        TgBot.from_env(env),
+        DbConfig.from_env(env),
+        RedisConfig.from_env(env),
+        RabbitConfig.from_env(env),
+        YookassaConfig.from_env(env),
+    )
 
 
-tgbot_config, db_config, redis_config, rabbit_config = _load_config(".env")
+tgbot_config, db_config, redis_config, rabbit_config, yookassa_config = _load_config(".env")

@@ -23,6 +23,7 @@ dependencies = [
     "betterlogging",
     "aio-pika",
     "g4f",
+    "yookassa",
 ]
 [project.optional-dependencies]
 bot = [
