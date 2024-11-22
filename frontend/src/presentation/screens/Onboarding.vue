@@ -8,59 +8,26 @@
   import RegisterStep from './onboarding/RegisterStep.vue';
   import TutorialStep from './onboarding/TutorialStep.vue';
 
+  const STEPS = [
+    { component: HelloStep, buttonText: 'Get Started' },
+    { component: RegisterStep, buttonText: 'Continue' },
+    { component: TutorialStep, buttonText: 'Complete Onboarding' },
+  ] as const;
+
   const router = useRouter();
   const userStore = useUserStore();
+  const currentStepIndex = ref(0);
 
-  type StepId = 'hello' | 'register' | 'tutorial';
-  const currentStep = ref<StepId>('hello');
-
-  const currentStepIndex = computed(() => {
-    const stepMap = {
-      hello: 1,
-      register: 2,
-      tutorial: 3,
-    };
-    return stepMap[currentStep.value];
-  });
-
-  const currentComponent = computed(() => {
-    switch (currentStep.value) {
-      case 'hello':
-        return HelloStep;
-      case 'register':
-        return RegisterStep;
-      case 'tutorial':
-        return TutorialStep;
-      default:
-        return HelloStep;
-    }
-  });
-
-  const buttonText = computed(() => {
-    switch (currentStep.value) {
-      case 'hello':
-        return 'Get Started';
-      case 'register':
-        return 'Continue';
-      case 'tutorial':
-        return 'Complete Onboarding';
-      default:
-        return 'Next';
-    }
-  });
+  const currentComponent = computed(() => STEPS[currentStepIndex.value].component);
+  const buttonText = computed(() => STEPS[currentStepIndex.value].buttonText);
+  const isLastStep = computed(() => currentStepIndex.value === STEPS.length - 1);
 
   const handleNext = async () => {
-    switch (currentStep.value) {
-      case 'hello':
-        currentStep.value = 'register';
-        break;
-      case 'register':
-        currentStep.value = 'tutorial';
-        break;
-      case 'tutorial':
-        await completeOnboarding();
-        break;
+    if (isLastStep.value) {
+      await completeOnboarding();
+      return;
     }
+    currentStepIndex.value++;
   };
 
   const completeOnboarding = async () => {
@@ -77,8 +44,8 @@
   <WithButton withPadding>
     <template #content>
       <Steps
-        :count="3"
-        :progress="currentStepIndex"
+        :count="STEPS.length"
+        :progress="currentStepIndex + 1"
         custom-class="steps"
       />
       <Sections class="sections-container">
