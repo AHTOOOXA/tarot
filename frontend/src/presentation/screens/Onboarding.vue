@@ -105,7 +105,7 @@
   .primary-button {
     width: 100%;
     padding: 16px;
-    background-color: #4caf50;
+    background-color: var(--color-primary);
     color: white;
     border: none;
     border-radius: var(--size-border-radius-medium);

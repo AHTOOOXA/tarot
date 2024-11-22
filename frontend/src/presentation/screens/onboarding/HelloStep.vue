@@ -2,9 +2,9 @@
   import { Placeholder, Section } from '@/presentation/components';
 
   const step = {
-    title: 'Welcome to Glow App!',
-    subtitle: "We're excited to have you here. Let's get you started!",
-    icon: '👋',
+    title: 'Welcome to Tarot App!',
+    subtitle: 'Discover insights and guidance through the ancient wisdom of Tarot.',
+    icon: '🔮',
   } as const;
 </script>
 

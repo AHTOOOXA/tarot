@@ -1,60 +1,33 @@
 :root {
-  --dark-theme {
-    --color-bg: var(--tg-theme-bg-color, #1c1c1d);
-    --color-bg-secondary: var(--tg-theme-secondary-bg-color, #000);
-    --color-bg-tertiary: rgba(118, 118, 128, 0.1);
-    --color-bg-quarternary: rgba(255, 255, 255, 0.16);
-    --color-bg-button: var(--tg-theme-button-color, #3e88f7);
-    --color-bg-overlay: rgba(0, 0, 0, 0.3);
+  /* Primary colors */
+  --color-primary: #7c4dff; /* Purple for mystical theme */
+  --color-primary-light: #b47cff;
+  --color-primary-dark: #3f1dcf;
 
-    --color-text: var(--tg-theme-text-color, #fff);
-    --color-text-button: var(--tg-theme-button-text-color, #fff);
-    --color-hint: var(--tg-theme-hint-color, #98989e);
-    --color-link: var(--tg-theme-link-color, #3e88f7);
+  /* Text colors */
+  --color-text: #000000;
+  --color-text-secondary: #666666;
+  --color-hint: #999999;
 
-    --separator-color: rgba(255, 255, 255, 0.1);
+  /* Background colors */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #eeeeee;
 
-    --skeleton-color: var(--color-bg-tertiary);
-
-    --color-overlay-floating: rgba(19, 19, 19, 0.82);
-  }
-
-  --light-theme {
-    --color-bg: var(--tg-theme-bg-color, #fff);
-    --color-bg-secondary: var(--tg-theme-secondary-bg-color, #efeff4);
-    --color-bg-tertiary: rgba(235, 235, 235, 0.75);
-    --color-bg-button: var(--tg-theme-button-color, #007aff);
-
-    --color-text: var(--tg-theme-text-color, #000);
-    --color-text-button: var(--tg-theme-button-text-color, #fff);
-    --color-hint: var(--tg-theme-hint-color, #8e8e93);
-    --color-link: var(--tg-theme-link-color, #007aff);
-
-    --separator-color: rgba(204, 204, 204, 0.36);
-    --color-overlay-floating: rgba(19, 19, 19, 0.79);
-  }
-
-  .is-material {
-    --color-island-shadow: rgba(0, 0, 0, 0.02);
-  }
+  /* Other colors */
+  --color-link: var(--color-primary);
+  --color-gray-200: #e5e7eb;
 }
 
-:root {
-  @apply --dark-theme;
+/* Dark theme colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ffffff;
+    --color-text-secondary: #cccccc;
+    --color-hint: #999999;
 
-  .dark {
-    @apply --dark-theme;
-  }
-
-  .light {
-    @apply --light-theme;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    @apply --dark-theme;
-  }
-
-  @media (prefers-color-scheme: light) {
-    @apply --light-theme;
+    --color-bg: #121212;
+    --color-bg-secondary: #1e1e1e;
+    --color-bg-tertiary: #2d2d2d;
   }
 }
