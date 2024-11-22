@@ -2,7 +2,7 @@
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { WithButton, Sections } from '@/presentation/components';
-  import ProgressBar from '@/presentation/components/ProgressBar/ProgressBar.vue';
+  import Steps from '@/presentation/components/Steps/Steps.vue';
   import { useUserStore } from '@/store/user';
   import HelloStep from './onboarding/HelloStep.vue';
   import RegisterStep from './onboarding/RegisterStep.vue';
@@ -76,12 +76,11 @@
 <template>
   <WithButton withPadding>
     <template #content>
-      <div class="progress-wrapper">
-        <ProgressBar
-          :current-step="currentStepIndex"
-          :total-steps="3"
-        />
-      </div>
+      <Steps
+        :count="3"
+        :progress="currentStepIndex"
+        custom-class="steps"
+      />
       <Sections class="sections-container">
         <component :is="currentComponent" />
       </Sections>
@@ -99,13 +98,6 @@
 </template>
 
 <style scoped>
-  .progress-wrapper {
-    padding: 24px 0 8px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
   .sections-container {
     margin-top: var(--spacing-8);
   }

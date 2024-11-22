@@ -47,14 +47,16 @@
 <template>
   <div class="app">
     <component :is="layoutComponent">
-      <RouterView v-slot="{ Component }">
-        <transition
-          name="default-segue"
-          @before-enter="onBeforeSegue"
-        >
-          <component :is="Component" />
-        </transition>
-      </RouterView>
+      <div class="container">
+        <RouterView v-slot="{ Component }">
+          <transition
+            name="default-segue"
+            @before-enter="onBeforeSegue"
+          >
+            <component :is="Component" />
+          </transition>
+        </RouterView>
+      </div>
     </component>
   </div>
 </template>
@@ -132,5 +134,12 @@
   .default-segue-enter-from,
   .default-segue-leave-to {
     opacity: 0;
+  }
+
+  .container {
+    padding: 16px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
 </style>

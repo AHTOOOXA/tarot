@@ -18,6 +18,7 @@ import Rating from './Rating/Rating.vue';
 import FixedFooter from './Page/FixedFooter.vue';
 import Lottie from './Lottie/Lottie.vue';
 import WithButton from './WithButton/WithButton.vue';
+import Steps from './Steps/Steps.vue';
 
 export {
   WithButton,
@@ -40,4 +41,5 @@ export {
   Rating,
   FixedFooter,
   Lottie,
+  Steps,
 };

@@ -2,7 +2,7 @@
 
 <template>
   <div class="base-layout">
-    <div class="app-content">
+    <div class="content">
       <slot></slot>
     </div>
   </div>
@@ -16,7 +16,7 @@
     position: relative;
   }
 
-  .app-content {
+  .content {
     flex: 1;
     overflow-y: auto;
   }

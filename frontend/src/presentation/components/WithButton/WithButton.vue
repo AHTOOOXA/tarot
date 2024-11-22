@@ -41,7 +41,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 35px 16px;
+    padding: 32px 16px;
     background-color: var(--color-bg-secondary);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
