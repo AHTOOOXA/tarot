@@ -32,12 +32,14 @@
       type="text"
       :placeholder="placeholder"
       :value="modelValue"
+      enterkeyhint="done"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      @keyup.enter="($event.target as HTMLInputElement).blur()"
     />
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
   @import '@/presentation/styles/theme/typescale.css';
   .input {
     color: var(--color-hint);
