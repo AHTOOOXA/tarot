@@ -19,6 +19,7 @@ import FixedFooter from './Page/FixedFooter.vue';
 import Lottie from './Lottie/Lottie.vue';
 import WithButton from './WithButton/WithButton.vue';
 import Steps from './Steps/Steps.vue';
+import Checkbox from './Checkbox/Checkbox.vue';
 
 export {
   WithButton,
@@ -42,4 +43,5 @@ export {
   FixedFooter,
   Lottie,
   Steps,
+  Checkbox,
 };

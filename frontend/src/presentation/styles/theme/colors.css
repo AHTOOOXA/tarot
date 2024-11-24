@@ -5,14 +5,14 @@
   --color-primary-dark: #3f1dcf;
 
   /* Text colors */
-  --color-text: #000000;
-  --color-text-secondary: #666666;
+  --color-text: #ffffff;
+  --color-text-secondary: #cccccc;
   --color-hint: #999999;
 
   /* Background colors */
-  --color-bg: #ffffff;
-  --color-bg-secondary: #f5f5f5;
-  --color-bg-tertiary: #eeeeee;
+  --color-bg: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-bg-tertiary: #2d2d2d;
 
   /* Other colors */
   --color-link: var(--color-primary);
@@ -20,14 +20,8 @@
 }
 
 /* Dark theme colors */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --color-text: #ffffff;
-    --color-text-secondary: #cccccc;
-    --color-hint: #999999;
-
-    --color-bg: #121212;
-    --color-bg-secondary: #1e1e1e;
-    --color-bg-tertiary: #2d2d2d;
   }
-}
+} */

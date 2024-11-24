@@ -1,11 +1,14 @@
 <script setup lang="ts">
-  import { Placeholder, Section } from '@/presentation/components';
+  import { ref } from 'vue';
+  import { Placeholder, Section, Checkbox } from '@/presentation/components';
 
   const step = {
     title: 'Welcome to Tarot App!',
     subtitle: 'Discover insights and guidance through the ancient wisdom of Tarot.',
     icon: '🔮',
   } as const;
+
+  const termsAccepted = ref(false);
 </script>
 
 <template>
@@ -18,6 +21,12 @@
         <div class="step-icon">{{ step.icon }}</div>
       </template>
     </Placeholder>
+    <div>
+      <Checkbox
+        v-model="termsAccepted"
+        label="I accept the Terms of Service and Privacy Policy"
+      />
+    </div>
   </Section>
 </template>
 
