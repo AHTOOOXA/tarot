@@ -22,6 +22,9 @@ class UserService(BaseService):
     async def get_user_by_id(self, user_id: int):
         return await self.repo.users.get_user_by_id(user_id)
 
+    async def get_user_by_username(self, username: str):
+        return await self.repo.users.get_user_by_username(username)
+
     async def get_profile(self, user_id: int):
         user = await self.repo.users.get_user_by_id(user_id)
         return {
