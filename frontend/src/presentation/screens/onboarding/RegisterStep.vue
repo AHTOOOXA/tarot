@@ -1,6 +1,10 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { Placeholder, Section } from '@/presentation/components';
+  import { ref, computed } from 'vue';
+  import { Placeholder, Section, WithButton, Input, List } from '@/presentation/components';
+
+  const emit = defineEmits<{
+    'step-complete': [];
+  }>();
 
   const step = {
     title: 'Complete Your Profile',
@@ -12,50 +16,52 @@
     name: '',
     email: '',
   });
+
+  const isButtonDisabled = computed(() => {
+    return !form.value.name.trim() || !form.value.email.trim();
+  });
+
+  const handleClick = () => {
+    emit('step-complete');
+  };
 </script>
 
 <template>
-  <Section>
-    <Placeholder
-      :title="step.title"
-      :caption="step.subtitle"
-    >
-      <template #picture>
-        <div class="step-icon">{{ step.icon }}</div>
-      </template>
-    </Placeholder>
-    <form
-      class="register-form"
-      @submit.prevent
-    >
-      <input
-        v-model="form.name"
-        type="text"
-        placeholder="Your name"
-        class="form-input"
-      />
-      <input
-        v-model="form.email"
-        type="email"
-        placeholder="Your email"
-        class="form-input"
-      />
-    </form>
-  </Section>
+  <WithButton
+    button-text="Continue"
+    :button-disabled="isButtonDisabled"
+    :button-click="handleClick"
+  >
+    <Section standalone>
+      <Placeholder
+        :title="step.title"
+        :caption="step.subtitle"
+      >
+        <template #picture>
+          <div class="step-icon">{{ step.icon }}</div>
+        </template>
+      </Placeholder>
+      <List gapped>
+        <Input
+          v-model="form.name"
+          placeholder="Your name"
+        />
+        <Input
+          v-model="form.email"
+          placeholder="Your email"
+        />
+      </List>
+    </Section>
+  </WithButton>
 </template>
 
-<style scoped>
-  .register-form {
+<style scoped lang="postcss">
+  .step-icon {
+    font-size: 48px;
+    width: var(--size-avatar-big);
+    height: var(--size-avatar-big);
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-10);
-    margin-top: var(--spacing-20);
-  }
-
-  .form-input {
-    padding: var(--spacing-10);
-    border: 1px solid var(--color-border);
-    border-radius: var(--size-border-radius-medium);
-    font-size: 16px;
+    align-items: center;
+    justify-content: center;
   }
 </style>

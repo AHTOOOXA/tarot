@@ -27,7 +27,7 @@
   const completeOnboarding = async () => {
     try {
       await userStore.onboardUser();
-      router.push({ name: 'questions' });
+      router.push({ name: 'profile' });
     } catch (error) {
       console.error('Failed to complete onboarding:', error);
     }

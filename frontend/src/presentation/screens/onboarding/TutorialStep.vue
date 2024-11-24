@@ -1,5 +1,9 @@
 <script setup lang="ts">
-  import { Placeholder, Section } from '@/presentation/components';
+  import { Placeholder, Section, WithButton, List } from '@/presentation/components';
+
+  const emit = defineEmits<{
+    'step-complete': [];
+  }>();
 
   const step = {
     title: 'Quick Tutorial',
@@ -8,37 +12,48 @@
   } as const;
 
   const tutorialPoints = ['Track your progress daily', 'Set and achieve goals', 'Connect with others'] as const;
+
+  const handleClick = () => {
+    emit('step-complete');
+  };
 </script>
 
 <template>
-  <Section>
-    <Placeholder
-      :title="step.title"
-      :caption="step.subtitle"
-    >
-      <template #picture>
-        <div class="step-icon">{{ step.icon }}</div>
-      </template>
-    </Placeholder>
-    <div class="tutorial-points">
-      <div
-        v-for="(point, index) in tutorialPoints"
-        :key="index"
-        class="tutorial-point"
+  <WithButton
+    button-text="Get Started"
+    :button-click="handleClick"
+  >
+    <Section standalone>
+      <Placeholder
+        :title="step.title"
+        :caption="step.subtitle"
       >
-        <span class="point-number">{{ index + 1 }}</span>
-        <span>{{ point }}</span>
-      </div>
-    </div>
-  </Section>
+        <template #picture>
+          <div class="step-icon">{{ step.icon }}</div>
+        </template>
+      </Placeholder>
+      <List gapped>
+        <div
+          v-for="(point, index) in tutorialPoints"
+          :key="index"
+          class="tutorial-point"
+        >
+          <span class="point-number">{{ index + 1 }}</span>
+          <span>{{ point }}</span>
+        </div>
+      </List>
+    </Section>
+  </WithButton>
 </template>
 
-<style scoped>
-  .tutorial-points {
-    margin-top: var(--spacing-20);
+<style scoped lang="postcss">
+  .step-icon {
+    font-size: 48px;
+    width: var(--size-avatar-big);
+    height: var(--size-avatar-big);
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-10);
+    align-items: center;
+    justify-content: center;
   }
 
   .tutorial-point {
@@ -48,17 +63,19 @@
     padding: var(--spacing-10);
     background-color: var(--color-bg-tertiary);
     border-radius: var(--size-border-radius-medium);
+
+    @apply --body;
   }
 
   .point-number {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--color-text-inverse);
     width: 24px;
     height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 600;
   }
 </style>
