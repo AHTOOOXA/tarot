@@ -1,6 +1,10 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { Placeholder, Section, Checkbox } from '@/presentation/components';
+  import { ref, computed } from 'vue';
+  import { Placeholder, Section, Checkbox, WithButton } from '@/presentation/components';
+
+  const emit = defineEmits<{
+    'step-complete': [];
+  }>();
 
   const step = {
     title: 'Welcome to Tarot App!',
@@ -9,25 +13,36 @@
   } as const;
 
   const termsAccepted = ref(false);
+  const isButtonDisabled = computed(() => !termsAccepted.value);
+
+  const handleClick = () => {
+    emit('step-complete');
+  };
 </script>
 
 <template>
-  <Section standalone>
-    <Placeholder
-      :title="step.title"
-      :caption="step.subtitle"
-    >
-      <template #picture>
-        <div class="step-icon">{{ step.icon }}</div>
-      </template>
-    </Placeholder>
-    <div>
-      <Checkbox
-        v-model="termsAccepted"
-        label="I accept the Terms of Service and Privacy Policy"
-      />
-    </div>
-  </Section>
+  <WithButton
+    button-text="Get Started"
+    :button-disabled="isButtonDisabled"
+    :button-click="handleClick"
+  >
+    <Section standalone>
+      <Placeholder
+        :title="step.title"
+        :caption="step.subtitle"
+      >
+        <template #picture>
+          <div class="step-icon">{{ step.icon }}</div>
+        </template>
+      </Placeholder>
+      <div>
+        <Checkbox
+          v-model="termsAccepted"
+          label="I accept the Terms of Service and Privacy Policy"
+        />
+      </div>
+    </Section>
+  </WithButton>
 </template>
 
 <style scoped>
