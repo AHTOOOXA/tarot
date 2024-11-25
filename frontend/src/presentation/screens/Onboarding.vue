@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { WithButton, Sections } from '@/presentation/components';
 import Steps from '@/presentation/components/Steps/Steps.vue';
 import { useUserStore } from '@/store/user';
 import HelloStep from './onboarding/HelloStep.vue';
-import RegisterStep from './onboarding/RegisterStep.vue';
-import TutorialStep from './onboarding/TutorialStep.vue';
+// import RegisterStep from './onboarding/RegisterStep.vue';
+// import TutorialStep from './onboarding/TutorialStep.vue';
 
-const STEPS = [{ component: HelloStep }, { component: RegisterStep }, { component: TutorialStep }] as const;
+const STEPS = [
+  { component: HelloStep },
+  // { component: RegisterStep },
+  // { component: TutorialStep },
+] as const;
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -35,19 +38,18 @@ const completeOnboarding = async () => {
 </script>
 
 <template>
-  <Steps
-    :count="STEPS.length"
-    :progress="currentStepIndex + 1"
-    custom-class="steps"
-  />
-  <component
-    :is="currentComponent"
-    @step-complete="handleStepComplete"
-  />
+  <div class="onboarding">
+    <Steps
+      v-show="STEPS.length > 1"
+      :count="STEPS.length"
+      :progress="currentStepIndex + 1"
+      custom-class="steps"
+    />
+    <component
+      :is="currentComponent"
+      @step-complete="handleStepComplete"
+    />
+  </div>
 </template>
 
-<style scoped>
-.sections-container {
-  margin-top: var(--spacing-8);
-}
-</style>
+<style scoped></style>

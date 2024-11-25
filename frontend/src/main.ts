@@ -6,6 +6,9 @@ import './presentation/styles/index.css';
 import { useTelegram } from '@/services';
 import { getCSSVariable } from './utils/dom';
 import { darkenColor } from './utils/color';
+import { useUserStore } from './store/user';
+import { processStart } from './composables/start';
+import LoadingScreen from './presentation/screens/Loading.vue';
 
 /**
  * @todo async lottie-player loading
@@ -78,8 +81,20 @@ function handleBrokenVariables(): void {
  * @todo load icons
  * @todo prepare image thumbs
  */
+// Create bootstrap app with loading screen while we initialize stores
+const bootstrapApp = createApp(LoadingScreen);
+bootstrapApp.mount('#app');
+
 const app = createApp(App);
 const pinia = createPinia();
+
+const userStore = useUserStore(pinia);
+try {
+  await userStore.init();
+  await processStart();
+} catch (error) {
+  console.error('Failed to initialize app:', error);
+}
 
 app.use(Router);
 app.use(pinia);

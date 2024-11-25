@@ -19,6 +19,10 @@ export const useUserStore = defineStore('user', {
   }),
 
   actions: {
+    async init() {
+      await this.fetchUser();
+    },
+
     async fetchUser() {
       this.error = null;
 
@@ -37,9 +41,15 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    async setTermsAccepted() {
+      this.user!.is_terms_accepted = true;
+      await this.updateUser({ is_terms_accepted: true });
+    },
+
     async onboardUser() {
       this.error = null;
       this.user!.is_onboarded = true;
+      await this.updateUser({ is_onboarded: true });
     },
 
     async updateUser(updatedUser: UpdateUserRequest) {

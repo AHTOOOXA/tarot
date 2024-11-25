@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onErrorCaptured, ref } from 'vue';
+import { computed, onBeforeMount, onErrorCaptured } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTelegram } from '@/services';
-import { processStart } from '@/composables/start';
 import BaseLayout from '@/presentation/layouts/BaseLayout.vue';
 import TabsLayout from '@/presentation/layouts/TabsLayout.vue';
-import { useUserStore } from '@/store/user';
-import LoadingScreen from '@/presentation/screens/Loading.vue';
 
 const { colorScheme, expand } = useTelegram();
 const route = useRoute();
-const userStore = useUserStore();
-const isLoading = ref(true);
 
 const layoutComponent = computed(() => {
   switch (route.meta.layout) {
@@ -37,24 +32,12 @@ onBeforeMount(async () => {
     document.body.classList.add(colorScheme);
   }
   expand();
-  try {
-    await userStore.fetchUser();
-    await processStart();
-  } catch (error) {
-    console.error('Error processing starting the app:', error);
-  } finally {
-    isLoading.value = false;
-  }
 });
 </script>
 
 <template>
   <div class="app">
-    <LoadingScreen v-if="isLoading" />
-    <component
-      v-else
-      :is="layoutComponent"
-    >
+    <component :is="layoutComponent">
       <div class="container">
         <RouterView v-slot="{ Component }">
           <transition
@@ -112,20 +95,13 @@ body {
   color: var(--color-text);
   position: relative;
   user-select: none;
-  padding-bottom: 60px; /* Add padding to accommodate the tab menu */
 }
 
-.app-content {
-  flex: 1;
-  overflow-y: auto; /* Allow scrolling within the content area */
-  padding-bottom: 70px; /* Increased padding to accommodate the tab menu */
-}
-
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+.container {
+  padding: 16px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .default-segue-leave-active {
@@ -142,12 +118,5 @@ body {
 .default-segue-enter-from,
 .default-segue-leave-to {
   opacity: 0;
-}
-
-.container {
-  padding: 16px;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
 }
 </style>

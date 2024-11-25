@@ -14,7 +14,7 @@ declare module 'vue-router' {
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/questions',
+    redirect: '/profile',
   },
   {
     path: '/onboarding',

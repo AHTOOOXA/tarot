@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Placeholder, Section, Checkbox, WithButton } from '@/presentation/components';
+import { useUserStore } from '@/store/user';
+
+const userStore = useUserStore();
 
 const emit = defineEmits<{
   'step-complete': [];
@@ -12,10 +15,11 @@ const step = {
   icon: '🔮',
 } as const;
 
-const termsAccepted = ref(false);
+const termsAccepted = ref(userStore.user?.is_terms_accepted ?? false);
 const isButtonDisabled = computed(() => !termsAccepted.value);
 
 const handleClick = () => {
+  userStore.setTermsAccepted();
   emit('step-complete');
 };
 </script>
@@ -35,7 +39,7 @@ const handleClick = () => {
           <div class="step-icon">{{ step.icon }}</div>
         </template>
       </Placeholder>
-      <div>
+      <div v-show="!userStore.user?.is_terms_accepted">
         <Checkbox
           v-model="termsAccepted"
           label="I accept the Terms of Service and Privacy Policy"

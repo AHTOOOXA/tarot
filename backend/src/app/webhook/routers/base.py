@@ -75,9 +75,8 @@ async def update_user(
     user_data: UpdateUserRequest,
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
-):
-    await services.users.update_user(user.user_id, user_data.dict())
-    return {"status": "success"}
+) -> UserSchema:
+    return await services.users.update_user(user.user_id, user_data)
 
 
 @router.get("/invite_token", response_model=InviteTokens)
