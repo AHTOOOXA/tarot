@@ -167,10 +167,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-24);
-  padding: var(--spacing-16);
+  gap: var(--spacing-32);
+  padding: var(--spacing-8);
   perspective: 1000px;
-  min-height: 300px;
+  min-height: 360px;
 }
 
 .cards-row {
@@ -186,7 +186,7 @@ onMounted(() => {
 }
 
 .middle-row {
-  width: 80%;
+  width: 85%;
   justify-content: space-evenly;
   max-width: 400px;
 }
@@ -194,7 +194,7 @@ onMounted(() => {
 .card-wrapper {
   width: 90px;
   max-width: 140px;
-  aspect-ratio: 1/1.4;
+  aspect-ratio: 550/966;
   cursor: pointer;
   opacity: 0;
   transform: translateY(100px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
@@ -217,8 +217,8 @@ onMounted(() => {
 .card-wrapper.flipped[data-selected='true'] {
   opacity: 1;
   z-index: 10;
-  transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
-    scale(1.25);
+  transform: translateY(-20px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
+    scale(1.15);
   animation:
     selectedCardShake 0.8s cubic-bezier(0.36, 0, 0.66, -0.56),
     selectedCardFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
@@ -258,6 +258,10 @@ onMounted(() => {
 @media (min-width: 768px) {
   .card-wrapper {
     width: 120px;
+  }
+
+  .cards-container {
+    min-height: 400px;
   }
 }
 
