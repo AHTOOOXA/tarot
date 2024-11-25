@@ -1,43 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Placeholder, Section, Sections, List, ListItem } from '@/presentation/components';
+import { ref, onMounted } from 'vue';
+import { Placeholder, Section, Sections } from '@/presentation/components';
+import { useTarot } from '@/services/useTarot';
 
-const cards = ref([
-  {
-    name: 'The Fool',
-    isDrawn: false,
-    position: 0,
-  },
-  {
-    name: 'The Magician',
-    isDrawn: false,
-    position: 1,
-  },
-  {
-    name: 'The High Priestess',
-    isDrawn: false,
-    position: 2,
-  },
-]);
+const { getCardBackUrl } = useTarot();
 
 const isDrawing = ref(false);
 const drawnCard = ref<string | null>(null);
+const isVisible = ref(false);
 
 const drawCard = () => {
   isDrawing.value = true;
-
   // Simulate card drawing animation
   setTimeout(() => {
-    const undrawnCards = cards.value.filter(card => !card.isDrawn);
-    if (undrawnCards.length) {
-      const randomIndex = Math.floor(Math.random() * undrawnCards.length);
-      const card = undrawnCards[randomIndex];
-      card.isDrawn = true;
-      drawnCard.value = card.name;
-    }
     isDrawing.value = false;
   }, 1000);
 };
+
+onMounted(() => {
+  // Trigger the appearance animation after mount
+  setTimeout(() => {
+    isVisible.value = true;
+  }, 100);
+});
 </script>
 
 <template>
@@ -49,36 +34,59 @@ const drawCard = () => {
           caption="Let the cards guide you"
           standalone
         >
-          <template #picture>
+          <!-- <template #picture>
             <div class="draw-icon">🎴</div>
-          </template>
+          </template> -->
         </Placeholder>
       </Section>
       <Section padded>
         <div class="draw-content">
-          <div
-            class="draw-area"
-            :class="{ drawing: isDrawing }"
-            @click="drawCard"
-          >
-            <span v-if="drawnCard">{{ drawnCard }}</span>
-            <span v-else>Tap to draw a card</span>
+          <div class="cards-container">
+            <div class="cards-row top-row">
+              <div
+                v-for="i in 3"
+                :key="i"
+                class="card-back"
+                :class="{
+                  drawing: isDrawing,
+                  visible: isVisible,
+                }"
+                :style="{
+                  '--appear-delay': `${(i - 1) * 150}ms`,
+                  '--initial-rotate': `${(i - 2) * 10}deg`,
+                  '--initial-translate': `${(i - 2) * 20}px`,
+                }"
+                @click="drawCard"
+              >
+                <img
+                  :src="getCardBackUrl()"
+                  alt="Card back"
+                />
+              </div>
+            </div>
+            <div class="cards-row middle-row">
+              <div
+                v-for="i in 2"
+                :key="i + 3"
+                class="card-back"
+                :class="{
+                  drawing: isDrawing,
+                  visible: isVisible,
+                }"
+                :style="{
+                  '--appear-delay': `${(i + 2) * 150}ms`,
+                  '--initial-rotate': `${(i - 1.5) * 10}deg`,
+                  '--initial-translate': `${(i - 1.5) * 20}px`,
+                }"
+                @click="drawCard"
+              >
+                <img
+                  :src="getCardBackUrl()"
+                  alt="Card back"
+                />
+              </div>
+            </div>
           </div>
-
-          <List
-            standalone
-            gapped
-          >
-            <ListItem
-              v-for="card in cards"
-              :key="card.position"
-              :title="card.name"
-              :subtitle="card.isDrawn ? 'Drawn' : 'Not drawn'"
-              icon="🎴"
-              :is-emoji="true"
-              :class="{ drawn: card.isDrawn }"
-            />
-          </List>
         </div>
       </Section>
     </Sections>
@@ -107,20 +115,74 @@ const drawCard = () => {
   gap: var(--spacing-10);
 }
 
-.draw-area {
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-24);
   padding: var(--spacing-16);
-  background-color: var(--color-bg-tertiary);
-  border-radius: var(--size-border-radius-medium);
-  text-align: center;
+  perspective: 1000px;
+  min-height: 300px;
+}
+
+.cards-row {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing-8);
+}
+
+.top-row {
+  width: 100%;
+  justify-content: space-evenly;
+  max-width: 500px;
+}
+
+.middle-row {
+  width: 80%;
+  justify-content: space-evenly;
+  max-width: 400px;
+}
+
+.card-back {
+  width: 90px;
+  max-width: 140px;
+  aspect-ratio: 1/1.4;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(100px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
+    rotateZ(45deg);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  transform-style: preserve-3d;
 }
 
-.draw-area.drawing {
-  transform: scale(0.95);
+.card-back.visible {
+  opacity: 1;
+  transform: translateY(0) translateX(var(--initial-translate)) rotateY(0) rotate(var(--initial-rotate)) rotateZ(0deg);
+  transition-delay: var(--appear-delay);
 }
 
-.drawn {
-  opacity: 0.5;
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--size-border-radius-small);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backface-visibility: hidden;
+}
+
+.card-back.drawing {
+  transform: scale(0.95) translateX(var(--initial-translate)) rotate(var(--initial-rotate));
+}
+
+.card-back:hover {
+  transform: translateY(-10px) translateX(var(--initial-translate)) rotate(var(--initial-rotate)) scale(1.05);
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .card-back {
+    width: 120px;
+  }
 }
 </style>
