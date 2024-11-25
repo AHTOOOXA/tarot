@@ -21,6 +21,7 @@ const cards = ref<Card[]>([
 const drawnCardIndex = ref<number | null>(null);
 const isVisible = ref(false);
 const hasDrawn = ref(false);
+const showCardInfo = ref(false);
 
 const flipCard = (element: Element, delay: number = 0) => {
   return new Promise<void>(resolve => {
@@ -42,14 +43,10 @@ const drawCard = async (index: number) => {
   const otherCards = Array.from(cardElements).filter((_, i) => i !== index);
   const selectedCard = cardElements[index];
 
-  // Always flip cards in the same order: top row left to right, then bottom row left to right
   const flipPromises = otherCards.map((_, i) => flipCard(otherCards[i], i * 100));
-
-  // Wait for all other cards to flip
   await Promise.all(flipPromises);
-
-  // Flip the selected card last with consistent timing
   await flipCard(selectedCard, otherCards.length * 100 - 50);
+  showCardInfo.value = true;
 };
 
 onMounted(() => {
@@ -60,13 +57,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="draw-page">
+  <div
+    class="draw-page"
+    :class="{ hasDrawn }"
+  >
     <Sections>
       <Section standalone>
         <Placeholder
-          title="Draw a Card"
-          caption="Let the cards guide you"
+          :title="showCardInfo && drawnCardIndex !== null ? cards[drawnCardIndex].name : 'Draw a Card'"
+          :caption="showCardInfo ? 'The cards have spoken...' : 'Let the cards guide you'"
           standalone
+          :class="{
+            'fade-out': hasDrawn && !showCardInfo,
+            'fade-in': showCardInfo,
+          }"
         />
       </Section>
       <Section padded>
@@ -303,5 +307,23 @@ onMounted(() => {
     transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
       scale(1.25);
   }
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Only apply initial hidden state when it's about to fade in */
+.hasDrawn .placeholder:not(.fade-in):not(.fade-out) {
+  transform: translateY(20px);
+  opacity: 0;
 }
 </style>
