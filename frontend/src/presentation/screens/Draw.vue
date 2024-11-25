@@ -49,6 +49,11 @@ const drawCard = async (index: number) => {
   const flipPromises = otherCards.map((_, i) => flipCard(otherCards[i], i * 100));
   await Promise.all(flipPromises);
   await flipCard(selectedCard, otherCards.length * 100 - 50);
+
+  setTimeout(() => {
+    otherCards.forEach(card => card.classList.add('escaping'));
+  }, 150);
+
   showCardInfo.value = true;
   showButton.value = true;
 };
@@ -388,9 +393,8 @@ const handleBackClick = () => {
   opacity: 0;
 }
 
-.card-wrapper.flipped:not([data-selected='true']) {
-  animation: cardEscape 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.3s forwards;
-  /* Give each card a different escape direction using custom properties */
+.card-wrapper.escaping {
+  animation: cardEscape 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   &:nth-child(1) {
     --escape-x: -200%;
     --escape-y: -300%;
@@ -421,7 +425,7 @@ const handleBackClick = () => {
 @keyframes cardEscape {
   to {
     opacity: 0;
-    transform: translateX(var(--escape-x)) translateY(var(--escape-y)) rotateY(180deg)
+    transform: translateX(var(--escape-x)) translateY(var(--escape-y)) rotateY(0deg)
       rotate(calc(var(--initial-rotate) + var(--escape-rotate))) scale(0.5);
   }
 }
