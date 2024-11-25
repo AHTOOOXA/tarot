@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onErrorCaptured, onMounted } from 'vue';
+import { computed, onBeforeMount, onErrorCaptured, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTelegram } from '@/services';
 import { processStart } from '@/composables/start';
 import BaseLayout from '@/presentation/layouts/BaseLayout.vue';
 import TabsLayout from '@/presentation/layouts/TabsLayout.vue';
+import { useUserStore } from '@/store/user';
+import LoadingScreen from '@/presentation/screens/Loading.vue';
 
 const { colorScheme, expand } = useTelegram();
 const route = useRoute();
+const userStore = useUserStore();
+const isLoading = ref(true);
 
 const layoutComponent = computed(() => {
   switch (route.meta.layout) {
@@ -28,25 +32,29 @@ onErrorCaptured((error: Error) => {
   console.error(error);
 });
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   if (colorScheme !== undefined) {
     document.body.classList.add(colorScheme);
   }
   expand();
-});
-
-onMounted(async () => {
   try {
+    await userStore.fetchUser();
     await processStart();
   } catch (error) {
-    console.error('Error processing start parameters:', error);
+    console.error('Error processing starting the app:', error);
+  } finally {
+    isLoading.value = false;
   }
 });
 </script>
 
 <template>
   <div class="app">
-    <component :is="layoutComponent">
+    <LoadingScreen v-if="isLoading" />
+    <component
+      v-else
+      :is="layoutComponent"
+    >
       <div class="container">
         <RouterView v-slot="{ Component }">
           <transition
