@@ -59,8 +59,10 @@ async def set_language(callback: types.CallbackQuery, user: UserSchema, services
     updated_user = await services.users.update_user(user.user_id, UpdateUserRequest(app_language_code=lang_code))
     i18n.update_locale(updated_user.app_language_code)
 
+    terms_url = f"{tgbot_config.api_domain}/static/oferta-tarot.pdf"
+
     await callback.message.edit_caption(
-        caption=i18n("welcome_with_terms").format(terms_url="https://google.com"),
+        caption=i18n("welcome_with_terms").format(terms_url=terms_url),
     )
     await callback.message.edit_reply_markup(reply_markup=terms_keyboard())
 
