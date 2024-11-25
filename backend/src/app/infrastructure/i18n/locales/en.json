@@ -26,6 +26,8 @@
   "buy_week": "📅 1 Week Unlimited - 249₽",
   "buy_month": "📆 1 Month Unlimited - 649₽",
   "back_to_menu": "⬅️ Back to Menu",
+  "draw_card_button": "🎴 Draw Your Card",
+  "tap_to_draw_card": "Tap the button below to draw your daily card:",
   "cards": {
     "00": {
       "name": "The Fool",

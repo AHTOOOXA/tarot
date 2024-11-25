@@ -1,6 +1,7 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from app.config import tgbot_config
 from app.infrastructure.i18n import i18n
 
 
@@ -40,5 +41,12 @@ def pay_keyboard():
     kb.button(text=i18n("buy_week"), callback_data="pay_week")
     kb.button(text=i18n("buy_month"), callback_data="pay_month")
     kb.button(text=i18n("back_to_menu"), callback_data="back_to_menu")
+    kb.adjust(1)
+    return kb.as_markup()
+
+
+def draw_card_keyboard():
+    kb = InlineKeyboardBuilder()
+    kb.button(text=i18n("draw_card_button"), web_app=WebAppInfo(url=f"{tgbot_config.web_app_domain}/draw"))
     kb.adjust(1)
     return kb.as_markup()

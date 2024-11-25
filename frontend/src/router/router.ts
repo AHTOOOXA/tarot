@@ -4,12 +4,13 @@ import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
 import History from '@/presentation/screens/History.vue';
 import Spread from '@/presentation/screens/Spread.vue';
+import Draw from '@/presentation/screens/Draw.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
 
 declare module 'vue-router' {
   interface RouteMeta {
-    layout: 'button' | 'tabs' | 'none';
+    layout: 'tabs' | 'none';
   }
 }
 
@@ -59,6 +60,11 @@ const routes: RouteRecordRaw[] = [
     meta: {
       layout: 'tabs',
     },
+  },
+  {
+    path: '/draw',
+    name: 'draw',
+    component: Draw,
   },
 ];
 

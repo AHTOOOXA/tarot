@@ -7,6 +7,7 @@ from app.infrastructure.i18n import i18n
 from app.schemas.tarot import DailyReadingMessage
 from app.schemas.users import UserSchema
 from app.services.requests import RequestsService
+from app.tgbot.keyboards.commands import draw_card_keyboard
 
 router = Router()
 
@@ -17,14 +18,8 @@ class TarotStates(StatesGroup):
 
 
 async def _send_daily_card(message: types.Message, user: UserSchema, services: RequestsService):
-    await message.answer(i18n("processing_daily_card"))
-    card = await services.tarot.get_random_card()
-    await message.answer_photo(
-        photo=card.image_url,
-        caption=card.name,
-    )  # TODO: localize
-    reading: DailyReadingMessage = await services.tarot.get_daily_reading(user=user, card=card)
-    await message.answer(reading.interpretation)
+    # await message.answer(i18n("processing_daily_card"))
+    await message.answer(text=i18n("tap_to_draw_card"), reply_markup=draw_card_keyboard())
 
 
 async def _handle_question(message: types.Message, state: FSMContext):

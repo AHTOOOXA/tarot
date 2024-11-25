@@ -1,10 +1,10 @@
-from app.schemas.start import StartData, StartParams
+from app.schemas.start import StartData, StartParamsRequest
 from app.schemas.users import UserSchema
 from app.services.base import BaseService
 
 
 class StartService(BaseService):
-    async def process_start(self, user: UserSchema, start_params: StartParams) -> StartData:
+    async def process_start(self, user: UserSchema, start_params: StartParamsRequest) -> StartData:
         current_user = user
 
         inviter = None
@@ -16,4 +16,5 @@ class StartService(BaseService):
         return StartData(
             current_user=current_user,
             inviter=inviter,
+            mode=start_params.mode,
         )

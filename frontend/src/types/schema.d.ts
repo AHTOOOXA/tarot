@@ -152,16 +152,24 @@ export interface components {
     /** StartData */
     StartData: {
       current_user: components['schemas']['UserSchema'];
-      inviter: components['schemas']['GroupSchema'] | null;
+      inviter?: components['schemas']['GroupSchema'] | null;
+      mode?: components['schemas']['StartMode'] | null;
     };
-    /** StartParams */
-    StartParams: {
+    /**
+     * StartMode
+     * @constant
+     * @enum {string}
+     */
+    StartMode: 'draw';
+    /** StartParamsRequest */
+    StartParamsRequest: {
       /** User Token */
-      user_token: string;
+      user_token?: string | null;
       /** Group Token */
-      group_token: string;
+      group_token?: string | null;
       /** Referal Id */
-      referal_id: string;
+      referal_id?: string | null;
+      mode?: components['schemas']['StartMode'] | null;
     };
     /** UpdateUserRequest */
     UpdateUserRequest: {
@@ -435,7 +443,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['StartParams'];
+        'application/json': components['schemas']['StartParamsRequest'];
       };
     };
     responses: {

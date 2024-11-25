@@ -6,7 +6,7 @@ from starlette.requests import Request
 
 from app.exceptions import FriendAlreadyExistsException, UserNotFoundException
 from app.schemas.invites import InviteTokens
-from app.schemas.start import StartData, StartParams
+from app.schemas.start import StartData, StartParamsRequest
 from app.schemas.users import UpdateUserRequest, UserSchema
 from app.services.requests import RequestsService
 from app.webhook.auth import get_twa_user
@@ -89,9 +89,9 @@ async def get_invite_token(
 
 @router.post("/process_start")
 async def process_start(
-    start_params: StartParams,
+    start_params: StartParamsRequest,
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
 ) -> StartData:
-    print(f"Processing start with params: {start_params}")
+    logger.info(f"Processing start with params: {start_params}")
     return await services.start.process_start(user, start_params)
