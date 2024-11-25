@@ -17,11 +17,11 @@ const navigateToRoute = (routeName: string) => {
 
 <template>
   <div class="tabs-layout">
-    <div class="app-content">
-      <slot></slot>
+    <div class="tabs-layout__content">
+      <slot />
     </div>
 
-    <nav class="tab-menu">
+    <nav class="tabs-layout__footer">
       <button
         v-for="tab in tabs"
         :key="tab.name"
@@ -29,69 +29,75 @@ const navigateToRoute = (routeName: string) => {
         class="tab-button"
         @click="navigateToRoute(tab.route)"
       >
-        <span class="tab-icon">{{ tab.icon }}</span>
-        <span class="tab-name">{{ tab.name }}</span>
+        <span class="tab-button__icon">{{ tab.icon }}</span>
+        <span class="tab-button__name">{{ tab.name }}</span>
       </button>
     </nav>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
+@import '@/presentation/styles/theme/typescale.css';
+
 .tabs-layout {
+  --footer-padding: 8px 16px 28px 16px;
+  --tabs-height: 56px;
+  --footer-height: calc(8px + 28px + var(--tabs-height));
+  --desktop-max-width: 390px;
+
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
   position: relative;
-}
 
-.app-content {
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: 70px;
-}
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: var(--footer-height);
+  }
 
-.tab-menu {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--color-bg-secondary);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-around;
-  padding: 16px;
+  &__footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: var(--tabs-height);
+    padding: var(--footer-padding);
+    background-color: var(--color-bg-secondary);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    box-sizing: border-box;
+
+    @media (min-width: 460px) {
+      max-width: var(--desktop-max-width);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 }
 
 .tab-button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
   transition: color 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+  color: var(--color-text-secondary);
 
-.tab-button.active {
-  color: #4caf50;
-}
+  @apply --footer;
 
-.tab-icon {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
+  &.active {
+    color: var(--color-primary);
+  }
 
-.tab-name {
-  font-size: 12px;
-}
+  &__icon {
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
 
-@media (min-width: 460px) {
-  .tab-menu {
-    max-width: 390px;
-    left: 50%;
-    transform: translateX(-50%);
+  &__name {
+    font-size: 12px;
   }
 }
 </style>
