@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { Placeholder, Section, Sections } from '@/presentation/components';
+import { Placeholder, Section, Sections, WithButton } from '@/presentation/components';
 import { useTarot } from '@/services/useTarot';
+import { useTelegram } from '@/services';
 
 const { getCardBackUrl, getCardUrl } = useTarot();
+const { closeApp } = useTelegram();
 
 interface Card {
   key: string;
@@ -22,6 +24,7 @@ const drawnCardIndex = ref<number | null>(null);
 const isVisible = ref(false);
 const hasDrawn = ref(false);
 const showCardInfo = ref(false);
+const showButton = ref(false);
 
 const flipCard = (element: Element, delay: number = 0) => {
   return new Promise<void>(resolve => {
@@ -47,6 +50,7 @@ const drawCard = async (index: number) => {
   await Promise.all(flipPromises);
   await flipCard(selectedCard, otherCards.length * 100 - 50);
   showCardInfo.value = true;
+  showButton.value = true;
 };
 
 onMounted(() => {
@@ -54,6 +58,10 @@ onMounted(() => {
     isVisible.value = true;
   }, 100);
 });
+
+const handleBackClick = () => {
+  closeApp();
+};
 </script>
 
 <template>
@@ -143,6 +151,11 @@ onMounted(() => {
       </Section>
     </Sections>
   </div>
+  <WithButton
+    v-if="showButton"
+    button-text="Go back to bot"
+    :button-click="handleBackClick"
+  />
 </template>
 
 <style scoped>

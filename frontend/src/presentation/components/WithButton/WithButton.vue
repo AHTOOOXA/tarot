@@ -49,6 +49,7 @@ defineProps<{
     left: 0;
     right: 0;
     padding: var(--footer-padding);
+    animation: button-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     @media (min-width: 460px) {
       max-width: var(--desktop-max-width);
@@ -79,6 +80,30 @@ defineProps<{
     &:disabled {
       opacity: 0.3;
       cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes button-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 460px) {
+  @keyframes button-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 100%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
   }
 }
