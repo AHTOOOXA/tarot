@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-  import { Amount } from '@/presentation/components';
+import { Amount } from '@/presentation/components';
 
-  defineProps<{
-    /**
-     * Rating value 0 — 5
-     */
-    value: number;
-  }>();
+defineProps<{
+  /**
+   * Rating value 0 — 5
+   */
+  value: number;
+}>();
 </script>
 <template>
   <div :class="$style.rating">
@@ -25,13 +25,13 @@
 </template>
 
 <style module>
-  .rating {
-    text-align: center;
-    color: var(--color-hint);
-  }
+.rating {
+  text-align: center;
+  color: var(--color-hint);
+}
 
-  .stars {
-    font-size: 8px;
-    margin-top: 4px;
-  }
+.stars {
+  font-size: 8px;
+  margin-top: 4px;
+}
 </style>

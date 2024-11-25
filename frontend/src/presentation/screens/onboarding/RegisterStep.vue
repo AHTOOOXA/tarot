@@ -1,29 +1,29 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
-  import { Placeholder, Section, WithButton, Input, List } from '@/presentation/components';
+import { ref, computed } from 'vue';
+import { Placeholder, Section, WithButton, Input, List } from '@/presentation/components';
 
-  const emit = defineEmits<{
-    'step-complete': [];
-  }>();
+const emit = defineEmits<{
+  'step-complete': [];
+}>();
 
-  const step = {
-    title: 'Complete Your Profile',
-    subtitle: 'Tell us a bit about yourself',
-    icon: '📝',
-  } as const;
+const step = {
+  title: 'Complete Your Profile',
+  subtitle: 'Tell us a bit about yourself',
+  icon: '📝',
+} as const;
 
-  const form = ref({
-    name: '',
-    email: '',
-  });
+const form = ref({
+  name: '',
+  email: '',
+});
 
-  const isButtonDisabled = computed(() => {
-    return !form.value.name.trim() || !form.value.email.trim();
-  });
+const isButtonDisabled = computed(() => {
+  return !form.value.name.trim() || !form.value.email.trim();
+});
 
-  const handleClick = () => {
-    emit('step-complete');
-  };
+const handleClick = () => {
+  emit('step-complete');
+};
 </script>
 
 <template>
@@ -56,12 +56,12 @@
 </template>
 
 <style scoped lang="postcss">
-  .step-icon {
-    font-size: 48px;
-    width: var(--size-avatar-big);
-    height: var(--size-avatar-big);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.step-icon {
+  font-size: 48px;
+  width: var(--size-avatar-big);
+  height: var(--size-avatar-big);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

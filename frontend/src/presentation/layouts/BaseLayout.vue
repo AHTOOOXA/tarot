@@ -9,15 +9,15 @@
 </template>
 
 <style scoped>
-  .base-layout {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-  }
+.base-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
 
-  .content {
-    flex: 1;
-    overflow-y: auto;
-  }
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
 </style>

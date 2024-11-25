@@ -1,19 +1,19 @@
 <script setup lang="ts">
-  const props = defineProps<{
-    modelValue: boolean;
-    label?: string;
-    disabled?: boolean;
-  }>();
+const props = defineProps<{
+  modelValue: boolean;
+  label?: string;
+  disabled?: boolean;
+}>();
 
-  const emit = defineEmits<{
-    'update:modelValue': [value: boolean];
-  }>();
+const emit = defineEmits<{
+  'update:modelValue': [value: boolean];
+}>();
 
-  const toggle = () => {
-    if (!props.disabled) {
-      emit('update:modelValue', !props.modelValue);
-    }
-  };
+const toggle = () => {
+  if (!props.disabled) {
+    emit('update:modelValue', !props.modelValue);
+  }
+};
 </script>
 
 <template>
@@ -48,49 +48,49 @@
 </template>
 
 <style scoped lang="postcss">
-  @import '@/presentation/styles/theme/typescale.css';
+@import '@/presentation/styles/theme/typescale.css';
 
-  .checkbox {
-    --check-size: 24px;
-    --icon-size: 16px;
+.checkbox {
+  --check-size: 24px;
+  --icon-size: 16px;
 
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-10);
+  cursor: pointer;
+  user-select: none;
+
+  @apply --body;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .checkbox-box {
+    width: var(--check-size);
+    height: var(--check-size);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--size-border-radius-small);
     display: flex;
     align-items: center;
-    gap: var(--spacing-10);
-    cursor: pointer;
-    user-select: none;
+    justify-content: center;
+    transition: background-color 200ms ease;
+    flex-shrink: 0;
 
-    @apply --body;
-
-    &.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .checkbox-box {
-      width: var(--check-size);
-      height: var(--check-size);
-      border: 2px solid var(--color-primary);
-      border-radius: var(--size-border-radius-small);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 200ms ease;
-      flex-shrink: 0;
-
-      &.checked {
-        background-color: var(--color-primary);
-      }
-    }
-
-    .check-icon {
-      width: var(--icon-size);
-      height: var(--icon-size);
-      color: var(--color-text);
-    }
-
-    .label {
-      color: var(--color-hint);
+    &.checked {
+      background-color: var(--color-primary);
     }
   }
+
+  .check-icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    color: var(--color-text);
+  }
+
+  .label {
+    color: var(--color-hint);
+  }
+}
 </style>

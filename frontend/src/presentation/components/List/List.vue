@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  defineProps<{
-    /**
-     * Whether to add a gap between each item
-     */
-    gapped?: boolean;
-    withBackground?: boolean;
-    // padded?: boolean;
-    standalone?: boolean;
-  }>();
+defineProps<{
+  /**
+   * Whether to add a gap between each item
+   */
+  gapped?: boolean;
+  withBackground?: boolean;
+  // padded?: boolean;
+  standalone?: boolean;
+}>();
 </script>
 
 <template>
@@ -24,31 +24,31 @@
 </template>
 
 <style scoped lang="postcss">
-  @import '@/presentation/styles/theme/typescale.css';
-  .list {
-    display: grid;
-    grid-auto-rows: min-content;
+@import '@/presentation/styles/theme/typescale.css';
+.list {
+  display: grid;
+  grid-auto-rows: min-content;
 
-    &--gapped {
-      grid-gap: 6px;
-    }
-
-    &--bg {
-      background-color: var(--color-bg);
-    }
-
-    &--standalone {
-      border-radius: var(--size-border-radius-big);
-    }
+  &--gapped {
+    grid-gap: 6px;
   }
 
-  .is-material .list {
-    &--gapped {
-      grid-gap: 4px;
-    }
-
-    &--bg {
-      box-shadow: 0 0 0 1px var(--color-island-shadow);
-    }
+  &--bg {
+    background-color: var(--color-bg);
   }
+
+  &--standalone {
+    border-radius: var(--size-border-radius-big);
+  }
+}
+
+.is-material .list {
+  &--gapped {
+    grid-gap: 4px;
+  }
+
+  &--bg {
+    box-shadow: 0 0 0 1px var(--color-island-shadow);
+  }
+}
 </style>

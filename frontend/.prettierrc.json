@@ -12,7 +12,7 @@
   "bracketSameLine": false,
   "htmlWhitespaceSensitivity": "css",
 
-  "vueIndentScriptAndStyle": true,
+  "vueIndentScriptAndStyle": false,
   "singleAttributePerLine": true,
   "embeddedLanguageFormatting": "auto",
   "proseWrap": "preserve"

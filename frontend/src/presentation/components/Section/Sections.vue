@@ -7,13 +7,13 @@
 </template>
 
 <style scoped lang="postcss">
-  .sections {
-    display: grid;
-    gap: 24px;
-    padding: var(--size-cell-v-margin) 0;
-  }
+.sections {
+  display: grid;
+  gap: 24px;
+  padding: var(--size-cell-v-margin) 0;
+}
 
-  .is-material .sections {
-    gap: 14px;
-  }
+.is-material .sections {
+  gap: 14px;
+}
 </style>
