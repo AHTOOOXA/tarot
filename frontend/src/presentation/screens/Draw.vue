@@ -234,11 +234,12 @@ const handleBackClick = () => {
 .card-wrapper.flipped[data-selected='true'] {
   opacity: 1;
   z-index: 10;
-  transform: translateY(-20px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
-    scale(1.15);
+  transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
+    scale(1.25);
   animation:
     selectedCardShake 0.8s cubic-bezier(0.36, 0, 0.66, -0.56),
-    selectedCardFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
+    selectedCardFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards,
+    selectedCardDance 8s ease-in-out 1.4s infinite;
 }
 
 .card-wrapper.can-draw:hover {
@@ -322,6 +323,53 @@ const handleBackClick = () => {
   }
 }
 
+@keyframes selectedCardDance {
+  0% {
+    transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
+      scale(1.25);
+  }
+  10% {
+    transform: translateY(-45px) translateX(calc(var(--initial-translate) + 8px)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) + 3deg)) scale(1.35);
+  }
+  20% {
+    transform: translateY(-35px) translateX(calc(var(--initial-translate) - 5px)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) - 2deg)) scale(1.25);
+  }
+  30% {
+    transform: translateY(-42px) translateX(calc(var(--initial-translate) - 3px)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) + 1deg)) scale(1.32);
+  }
+  40% {
+    transform: translateY(-38px) translateX(calc(var(--initial-translate) + 5px)) rotateY(540deg)
+      rotate(calc(var(--initial-rotate) - 1deg)) scale(1.28);
+  }
+  50% {
+    transform: translateY(-44px) translateX(calc(var(--initial-translate) + 3px)) rotateY(540deg)
+      rotate(calc(var(--initial-rotate) + 2deg)) scale(1.33);
+  }
+  60% {
+    transform: translateY(-36px) translateX(calc(var(--initial-translate) - 8px)) rotateY(540deg)
+      rotate(calc(var(--initial-rotate) - 3deg)) scale(1.27);
+  }
+  70% {
+    transform: translateY(-43px) translateX(calc(var(--initial-translate) + 6px)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) + 2deg)) scale(1.34);
+  }
+  80% {
+    transform: translateY(-37px) translateX(calc(var(--initial-translate) - 4px)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) - 1deg)) scale(1.29);
+  }
+  90% {
+    transform: translateY(-41px) translateX(calc(var(--initial-translate) + 7px)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) + 3deg)) scale(1.31);
+  }
+  100% {
+    transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
+      scale(1.25);
+  }
+}
+
 .fade-out {
   opacity: 0;
   transform: translateY(-20px);
@@ -338,5 +386,43 @@ const handleBackClick = () => {
 .hasDrawn .placeholder:not(.fade-in):not(.fade-out) {
   transform: translateY(20px);
   opacity: 0;
+}
+
+.card-wrapper.flipped:not([data-selected='true']) {
+  animation: cardEscape 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.3s forwards;
+  /* Give each card a different escape direction using custom properties */
+  &:nth-child(1) {
+    --escape-x: -200%;
+    --escape-y: -300%;
+    --escape-rotate: -45deg;
+  }
+  &:nth-child(2) {
+    --escape-x: 0%;
+    --escape-y: -400%;
+    --escape-rotate: 0deg;
+  }
+  &:nth-child(3) {
+    --escape-x: 200%;
+    --escape-y: -300%;
+    --escape-rotate: 45deg;
+  }
+  &:nth-child(4) {
+    --escape-x: -250%;
+    --escape-y: -200%;
+    --escape-rotate: -30deg;
+  }
+  &:nth-child(5) {
+    --escape-x: 250%;
+    --escape-y: -200%;
+    --escape-rotate: 30deg;
+  }
+}
+
+@keyframes cardEscape {
+  to {
+    opacity: 0;
+    transform: translateX(var(--escape-x)) translateY(var(--escape-y)) rotateY(180deg)
+      rotate(calc(var(--initial-rotate) + var(--escape-rotate))) scale(0.5);
+  }
 }
 </style>
