@@ -32,7 +32,7 @@ repos:
 
     -   id: prettier
         name: Frontend Prettier
-        entry: bash -c 'cd frontend && yarn format && cd .. && git add frontend/src/'
+        entry: bash -c 'cd frontend && yarn format && git add src/types/schema.d.ts'
         language: system
         files: ^frontend/.*\.(ts|vue|js|css|scss|json)$
         pass_filenames: false
