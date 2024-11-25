@@ -2,6 +2,8 @@ import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import Friends from '@/presentation/screens/Friends.vue';
 import Profile from '@/presentation/screens/Profile.vue';
 import Onboarding from '@/presentation/screens/Onboarding.vue';
+import History from '@/presentation/screens/History.vue';
+import Spread from '@/presentation/screens/Spread.vue';
 import { useUserStore } from '@/store/user';
 import { useInviterStore } from '@/store/inviter';
 
@@ -14,7 +16,7 @@ declare module 'vue-router' {
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/profile',
+    redirect: '/spread',
   },
   {
     path: '/onboarding',
@@ -38,6 +40,22 @@ const routes: RouteRecordRaw[] = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: {
+      layout: 'tabs',
+    },
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: History,
+    meta: {
+      layout: 'tabs',
+    },
+  },
+  {
+    path: '/spread',
+    name: 'spread',
+    component: Spread,
     meta: {
       layout: 'tabs',
     },

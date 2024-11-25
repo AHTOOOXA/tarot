@@ -4,9 +4,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const tabs = [
-  { name: 'Inbox', icon: '📥', route: 'inbox' },
-  { name: 'Questions', icon: '❓', route: 'questions' },
-  { name: 'Friends', icon: '👥', route: 'friends' },
+  { name: 'History', icon: '📜', route: 'history' },
+  { name: 'Spread', icon: '🔮', route: 'spread' },
   { name: 'Profile', icon: '👤', route: 'profile' },
 ];
 
@@ -25,8 +24,10 @@ const navigateToRoute = (routeName: string) => {
       <button
         v-for="tab in tabs"
         :key="tab.name"
-        :class="{ active: $route.name === tab.route }"
-        class="tab-button"
+        :class="{
+          'tab-button': true,
+          active: $route.name === tab.route,
+        }"
         @click="navigateToRoute(tab.route)"
       >
         <span class="tab-button__icon">{{ tab.icon }}</span>

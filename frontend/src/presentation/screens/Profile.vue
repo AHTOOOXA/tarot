@@ -60,7 +60,10 @@ onMounted(async () => {
           </template>
         </Placeholder>
       </Section>
-      <Section padded>
+      <Section
+        padded
+        standalone
+      >
         <div class="profile-details">
           <p><strong>User ID:</strong> {{ user.user_id }}</p>
           <p v-if="user.username"><strong>Username:</strong> @{{ user.username }}</p>
@@ -97,7 +100,7 @@ onMounted(async () => {
 
 .profile-details {
   padding: var(--spacing-10);
-  background-color: var(--color-bg-tertiary);
+  background-color: var(--color-bg);
   border-radius: var(--size-border-radius-medium);
 }
 

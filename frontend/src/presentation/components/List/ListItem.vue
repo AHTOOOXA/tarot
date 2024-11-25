@@ -15,9 +15,14 @@ const props = defineProps<{
   transactionIcon?: string;
 
   /**
-   * Name of the icon that will be shown instead of avatar
+   * Name of the icon or emoji that will be shown instead of avatar
    */
   icon?: string;
+
+  /**
+   * Whether the icon is an emoji (if true, renders emoji directly instead of using icon component)
+   */
+  isEmoji?: boolean;
 
   /**
    * Title of the list item (used along with subtitle)
@@ -153,10 +158,16 @@ const pictureStyle = computed(() => {
         type="circle"
       />
       <ListItemIcon
-        v-else-if="icon"
+        v-else-if="icon && !isEmoji"
         :icon="icon"
         type="square"
       />
+      <div
+        v-else-if="icon && isEmoji"
+        class="emoji-icon"
+      >
+        {{ icon }}
+      </div>
     </div>
     <div class="right-row">
       <div class="body">
@@ -331,5 +342,14 @@ const pictureStyle = computed(() => {
   margin-right: 6px;
   color: var(--color-hint);
   @apply --headline;
+}
+
+.emoji-icon {
+  font-size: 24px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
