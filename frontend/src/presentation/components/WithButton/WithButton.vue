@@ -28,9 +28,10 @@ defineProps<{
 @import '@/presentation/styles/theme/typescale.css';
 
 .with-button {
-  --footer-padding: 8px 16px 32px 16px;
-  --button-padding: 16px;
+  --footer-padding: 4px 16px 32px 16px;
+  --button-height: 56px;
   --desktop-max-width: 390px;
+  --footer-height: calc(4px + 32px + var(--button-height));
 
   display: flex;
   flex-direction: column;
@@ -48,7 +49,6 @@ defineProps<{
     left: 0;
     right: 0;
     padding: var(--footer-padding);
-    background: var(--color-bg-tertiary);
 
     @media (min-width: 460px) {
       max-width: var(--desktop-max-width);
@@ -60,12 +60,15 @@ defineProps<{
 
 .button {
   width: 100%;
-  padding: var(--button-padding);
+  height: var(--button-height);
   border: none;
   border-radius: var(--size-border-radius-medium);
   transition: all 0.2s ease;
   cursor: pointer;
   touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @apply --body-semibold;
 

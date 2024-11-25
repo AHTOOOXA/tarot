@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
   modelValue: boolean;
-  label?: string;
   disabled?: boolean;
 }>();
 
@@ -39,11 +38,9 @@ const toggle = () => {
         />
       </svg>
     </div>
-    <span
-      v-if="label"
-      class="label"
-      >{{ label }}</span
-    >
+    <span class="label">
+      <slot />
+    </span>
   </div>
 </template>
 
@@ -91,6 +88,7 @@ const toggle = () => {
 
   .label {
     color: var(--color-hint);
+    font-size: 14px;
   }
 }
 </style>
