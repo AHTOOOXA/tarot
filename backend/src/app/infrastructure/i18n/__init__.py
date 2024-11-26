@@ -3,6 +3,8 @@ from contextvars import ContextVar
 from pathlib import Path
 from typing import Callable, Dict, Optional
 
+from app.schemas.users import UserSchema
+
 # Locales are now in backend/src/app/infrastructure/i18n/locales
 LOCALES_DIR = Path(__file__).parent / "locales"
 
@@ -33,6 +35,12 @@ class I18nManager:
         if self._t is None:
             raise RuntimeError("Translation function not set")
         return self._t(key, *args, **kwargs)
+
+    def set_user_locale(self, user: Optional["UserSchema"]):
+        lang = "en"
+        if user:
+            lang = user.app_language_code or user.language_code or "en"
+        self.update_locale(lang)
 
 
 i18n = I18nManager()

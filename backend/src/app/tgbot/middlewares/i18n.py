@@ -14,20 +14,8 @@ class I18nMiddleware(BaseMiddleware):
         event: Message,
         data: Dict[str, Any],
     ) -> Any:
-        user: UserSchema = data.get("user")
-
-        lang = "en"
-        if user:
-            if user.app_language_code:
-                lang = user.app_language_code
-            elif user.language_code:
-                lang = user.language_code
-
-        # Set translation for this request
-        i18n.set_translation(lambda key: t(key, lang))
-
+        i18n.set_user_locale(data.get("user"))
         try:
             return await handler(event, data)
         finally:
-            # Clean up after request
             i18n.reset_translation()
