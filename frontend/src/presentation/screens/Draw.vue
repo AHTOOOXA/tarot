@@ -224,6 +224,11 @@ const handleBackClick = () => {
   transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   transform-style: preserve-3d;
+  --card-direction: 1; /* Default direction for top row */
+}
+
+.middle-row .card-wrapper {
+  --card-direction: -1;
 }
 
 .card-wrapper.visible {
@@ -293,85 +298,87 @@ const handleBackClick = () => {
     transform: translateY(0) translateX(var(--initial-translate)) rotateY(0) rotate(var(--initial-rotate)) scale(1);
   }
   15% {
-    transform: translateY(-30px) translateX(calc(var(--initial-translate) - 25px))
+    transform: translateY(calc(var(--card-direction) * 45px)) translateX(calc(var(--initial-translate) - 35px))
       rotate(calc(var(--initial-rotate) - 5deg)) scale(1.15);
   }
   30% {
-    transform: translateY(-40px) translateX(calc(var(--initial-translate) + 25px))
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(calc(var(--initial-translate) + 35px))
       rotate(calc(var(--initial-rotate) + 5deg)) scale(1.25);
   }
   45% {
-    transform: translateY(-35px) translateX(calc(var(--initial-translate) - 20px))
+    transform: translateY(calc(var(--card-direction) * 55px)) translateX(calc(var(--initial-translate) - 30px))
       rotate(calc(var(--initial-rotate) - 4deg)) scale(1.25);
   }
   60% {
-    transform: translateY(-40px) translateX(calc(var(--initial-translate) + 20px))
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(calc(var(--initial-translate) + 30px))
       rotate(calc(var(--initial-rotate) + 4deg)) scale(1.25);
   }
   75% {
-    transform: translateY(-35px) translateX(calc(var(--initial-translate) - 15px))
+    transform: translateY(calc(var(--card-direction) * 55px)) translateX(calc(var(--initial-translate) - 25px))
       rotate(calc(var(--initial-rotate) - 3deg)) scale(1.25);
   }
   90%,
   100% {
-    transform: translateY(-40px) translateX(var(--initial-translate)) rotate(var(--initial-rotate)) scale(1.25);
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(var(--initial-translate))
+      rotate(var(--initial-rotate)) scale(1.25);
   }
 }
 
 @keyframes selectedCardFlip {
   0% {
-    transform: translateY(-40px) translateX(var(--initial-translate)) rotate(var(--initial-rotate)) scale(1.25);
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(var(--initial-translate))
+      rotate(var(--initial-rotate)) scale(1.25);
   }
   100% {
-    transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
-      scale(1.25);
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(var(--initial-translate)) rotateY(180deg)
+      rotate(var(--initial-rotate)) scale(1.25);
   }
 }
 
 @keyframes selectedCardDance {
   0% {
-    transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
-      scale(1.25);
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(var(--initial-translate)) rotateY(180deg)
+      rotate(var(--initial-rotate)) scale(1.25);
   }
   10% {
-    transform: translateY(-45px) translateX(calc(var(--initial-translate) + 8px)) rotateY(180deg)
-      rotate(calc(var(--initial-rotate) + 3deg)) scale(1.35);
+    transform: translateY(calc(var(--card-direction) * 70px)) translateX(calc(var(--initial-translate) + 12px))
+      rotateY(180deg) rotate(calc(var(--initial-rotate) + 3deg)) scale(1.35);
   }
   20% {
-    transform: translateY(-35px) translateX(calc(var(--initial-translate) - 5px)) rotateY(180deg)
-      rotate(calc(var(--initial-rotate) - 2deg)) scale(1.25);
+    transform: translateY(calc(var(--card-direction) * 55px)) translateX(calc(var(--initial-translate) - 8px))
+      rotateY(180deg) rotate(calc(var(--initial-rotate) - 2deg)) scale(1.25);
   }
   30% {
-    transform: translateY(-42px) translateX(calc(var(--initial-translate) - 3px)) rotateY(180deg)
-      rotate(calc(var(--initial-rotate) + 1deg)) scale(1.32);
+    transform: translateY(calc(var(--card-direction) * 65px)) translateX(calc(var(--initial-translate) - 5px))
+      rotateY(180deg) rotate(calc(var(--initial-rotate) + 1deg)) scale(1.32);
   }
   40% {
-    transform: translateY(-38px) translateX(calc(var(--initial-translate) + 5px)) rotateY(540deg)
-      rotate(calc(var(--initial-rotate) - 1deg)) scale(1.28);
+    transform: translateY(calc(var(--card-direction) * 58px)) translateX(calc(var(--initial-translate) + 8px))
+      rotateY(540deg) rotate(calc(var(--initial-rotate) - 1deg)) scale(1.28);
   }
   50% {
-    transform: translateY(-44px) translateX(calc(var(--initial-translate) + 3px)) rotateY(540deg)
-      rotate(calc(var(--initial-rotate) + 2deg)) scale(1.33);
+    transform: translateY(calc(var(--card-direction) * 68px)) translateX(calc(var(--initial-translate) + 5px))
+      rotateY(540deg) rotate(calc(var(--initial-rotate) + 2deg)) scale(1.33);
   }
   60% {
-    transform: translateY(-36px) translateX(calc(var(--initial-translate) - 8px)) rotateY(540deg)
-      rotate(calc(var(--initial-rotate) - 3deg)) scale(1.27);
+    transform: translateY(calc(var(--card-direction) * 56px)) translateX(calc(var(--initial-translate) - 12px))
+      rotateY(540deg) rotate(calc(var(--initial-rotate) - 3deg)) scale(1.27);
   }
   70% {
-    transform: translateY(-43px) translateX(calc(var(--initial-translate) + 6px)) rotateY(180deg)
-      rotate(calc(var(--initial-rotate) + 2deg)) scale(1.34);
+    transform: translateY(calc(var(--card-direction) * 66px)) translateX(calc(var(--initial-translate) + 9px))
+      rotateY(180deg) rotate(calc(var(--initial-rotate) + 2deg)) scale(1.34);
   }
   80% {
-    transform: translateY(-37px) translateX(calc(var(--initial-translate) - 4px)) rotateY(180deg)
-      rotate(calc(var(--initial-rotate) - 1deg)) scale(1.29);
+    transform: translateY(calc(var(--card-direction) * 57px)) translateX(calc(var(--initial-translate) - 6px))
+      rotateY(180deg) rotate(calc(var(--initial-rotate) - 1deg)) scale(1.29);
   }
   90% {
-    transform: translateY(-41px) translateX(calc(var(--initial-translate) + 7px)) rotateY(180deg)
-      rotate(calc(var(--initial-rotate) + 3deg)) scale(1.31);
+    transform: translateY(calc(var(--card-direction) * 64px)) translateX(calc(var(--initial-translate) + 10px))
+      rotateY(180deg) rotate(calc(var(--initial-rotate) + 3deg)) scale(1.31);
   }
   100% {
-    transform: translateY(-40px) translateX(var(--initial-translate)) rotateY(180deg) rotate(var(--initial-rotate))
-      scale(1.25);
+    transform: translateY(calc(var(--card-direction) * 60px)) translateX(var(--initial-translate)) rotateY(180deg)
+      rotate(var(--initial-rotate)) scale(1.25);
   }
 }
 
@@ -425,7 +432,7 @@ const handleBackClick = () => {
 @keyframes cardEscape {
   to {
     opacity: 0;
-    transform: translateX(var(--escape-x)) translateY(var(--escape-y)) rotateY(0deg)
+    transform: translateX(var(--escape-x)) translateY(var(--escape-y)) rotateY(180deg)
       rotate(calc(var(--initial-rotate) + var(--escape-rotate))) scale(0.5);
   }
 }
