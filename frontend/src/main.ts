@@ -98,6 +98,8 @@ try {
 
 app.use(Router);
 app.use(pinia);
+
+bootstrapApp.unmount();
 app.mount('#app');
 
 requestAnimationFrame(() => {
