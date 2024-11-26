@@ -10,6 +10,7 @@ from urllib.parse import parse_qsl, unquote
 from fastapi import Depends, Request
 
 from app.config import tgbot_config
+from app.infrastructure.i18n import i18n
 from app.schemas.users import UserSchema
 from app.services.requests import RequestsService
 from app.webhook.dependencies.service import get_services
@@ -154,19 +155,25 @@ def get_telegram_authenticator() -> TelegramAuthenticator:
     return TelegramAuthenticator(secret_key)
 
 
+async def _get_debug_user(services: RequestsService) -> UserSchema:
+    """Get debug user when running in debug mode."""
+    user_db = await services.users.get_user_by_username(tgbot_config.debug_username)
+    i18n.set_user_locale(user_db)
+    return UserSchema.model_validate(user_db)
+
+
 async def get_twa_user(
     request: Request,
     telegram_authenticator: TelegramAuthenticator = Depends(get_telegram_authenticator),
     services: RequestsService = Depends(get_services),
 ) -> UserSchema:
+    """Get user from Telegram Web App (also sets i18n locale)"""
     init_data = request.headers.get("initData")
 
-    # DEBUG ONLY
     if not init_data:
         logger.error("Init data is missing")
         if tgbot_config.debug:
-            user_db = await services.users.get_user_by_username(tgbot_config.debug_username)
-            return UserSchema.model_validate(user_db)
+            return await _get_debug_user(services)
         raise NoInitDataError("Init data is missing")
 
     user = telegram_authenticator.verify_token(init_data)
@@ -186,6 +193,8 @@ async def get_twa_user(
         )
     )
     logger.info(f"User {db_user.user_id} ({db_user.username or 'No username'}) logged in/registered")
+
+    i18n.set_user_locale(db_user)
 
     # TODO: catch WebAppChat
     # Extract WebAppChat info from init data
