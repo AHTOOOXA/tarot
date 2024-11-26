@@ -1,30 +1,25 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { Placeholder, Section, Sections, WithButton } from '@/presentation/components';
-import { useTarot } from '@/services/useTarot';
 import { useTelegram } from '@/services';
+import { storeToRefs } from 'pinia';
+import { useTarotStore } from '@/store/tarot';
+import { useStatic } from '@/services';
 
-const { getCardBackUrl, getCardUrl } = useTarot();
 const { closeApp } = useTelegram();
+const { getStaticUrl, preloadImage } = useStatic();
 
-interface Card {
-  key: string;
-  name: string;
-}
-
-const cards = ref<Card[]>([
-  { key: '0', name: 'The Fool' },
-  { key: '1', name: 'The Magician' },
-  { key: '2', name: 'The High Priestess' },
-  { key: '3', name: 'The Empress' },
-  { key: '4', name: 'The Emperor' },
-]);
+const tarotStore = useTarotStore();
+const { cards } = storeToRefs(tarotStore);
 
 const drawnCardIndex = ref<number | null>(null);
 const isVisible = ref(false);
 const hasDrawn = ref(false);
 const showCardInfo = ref(false);
 const showButton = ref(false);
+const isLoading = ref(true);
+const imageUrls = ref<Record<string, string>>({});
+const cardBackUrl = 'images/moon_magic_tarot/back.jpg';
 
 const flipCard = (element: Element, delay: number = 0) => {
   return new Promise<void>(resolve => {
@@ -58,10 +53,27 @@ const drawCard = async (index: number) => {
   showButton.value = true;
 };
 
-onMounted(() => {
-  setTimeout(() => {
+onMounted(async () => {
+  try {
+    // Preload all images
+    const [cardsData] = await Promise.all([
+      tarotStore.fetchDailyCards(),
+      preloadImage(cardBackUrl),
+      // Preload all card images
+      ...cards.value.map(card => preloadImage(card.image_url)),
+    ]);
+
+    // Cache URLs
+    imageUrls.value = {
+      back: getStaticUrl(cardBackUrl),
+      ...Object.fromEntries(cards.value.map(card => [card.key, getStaticUrl(card.image_url)])),
+    };
+
     isVisible.value = true;
-  }, 100);
+    isLoading.value = false;
+  } catch (error) {
+    console.error('Failed to initialize:', error);
+  }
 });
 
 const handleBackClick = () => {
@@ -71,6 +83,7 @@ const handleBackClick = () => {
 
 <template>
   <div
+    v-if="!isLoading"
     class="draw-page"
     :class="{ hasDrawn }"
   >
@@ -108,13 +121,13 @@ const handleBackClick = () => {
               >
                 <div class="card-back">
                   <img
-                    :src="getCardBackUrl()"
+                    :src="imageUrls.back"
                     alt="Card back"
                   />
                 </div>
                 <div class="card-front">
                   <img
-                    :src="getCardUrl(card.key)"
+                    :src="imageUrls[card.key]"
                     :alt="card.name"
                   />
                 </div>
@@ -139,13 +152,13 @@ const handleBackClick = () => {
               >
                 <div class="card-back">
                   <img
-                    :src="getCardBackUrl()"
+                    :src="imageUrls.back"
                     alt="Card back"
                   />
                 </div>
                 <div class="card-front">
                   <img
-                    :src="getCardUrl(card.key)"
+                    :src="imageUrls[card.key]"
                     :alt="card.name"
                   />
                 </div>
@@ -155,6 +168,16 @@ const handleBackClick = () => {
         </div>
       </Section>
     </Sections>
+  </div>
+  <div
+    v-else
+    class="loading-container"
+  >
+    <Placeholder
+      title="Loading..."
+      caption="Preparing your cards..."
+      standalone
+    />
   </div>
   <WithButton
     v-if="showButton"
@@ -470,5 +493,12 @@ const handleBackClick = () => {
     transform: translateX(var(--escape-x)) translateY(var(--escape-y)) rotateY(180deg)
       rotate(calc(var(--initial-rotate) + var(--escape-rotate))) scale(0.5);
   }
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 </style>

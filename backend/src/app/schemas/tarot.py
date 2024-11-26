@@ -21,7 +21,7 @@ class TarotCard(BaseModel):
     @computed_field
     @property
     def image_url(self) -> str:
-        return f"{tgbot_config.api_domain}/static/images/moon_magic_tarot/{self.key}.jpg"
+        return f"images/moon_magic_tarot/{self.key}.jpg"
 
 
 class DailyReadingMessage(BaseModel):
