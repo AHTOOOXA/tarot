@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 from app.schemas.tarot import TarotCard
 
@@ -8,3 +9,6 @@ class CardsRepo:
 
     async def get_random_card(self) -> TarotCard:
         return random.choice(self._cards)
+
+    async def get_random_cards(self, count: int) -> List[TarotCard]:
+        return random.sample(self._cards, count)

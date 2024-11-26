@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 import g4f
 
@@ -13,6 +14,9 @@ logger = logging.getLogger(__name__)
 class TarotService(BaseService):
     async def get_random_card(self) -> TarotCard:
         return await self.repo.cards.get_random_card()
+
+    async def get_random_cards(self, count: int) -> List[TarotCard]:
+        return await self.repo.cards.get_random_cards(count)
 
     async def get_daily_reading(self, user: UserSchema, card: TarotCard) -> DailyReadingMessage:
         system_prompt = i18n("gpt_prompts.system")

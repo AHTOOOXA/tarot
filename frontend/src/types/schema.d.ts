@@ -124,6 +124,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/tarot/draw_daily_card': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Draw Daily Card */
+    get: operations['draw_daily_card_tarot_draw_daily_card_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/tarot/select_daily_card': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Select Daily Card */
+    post: operations['select_daily_card_tarot_select_daily_card_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -170,6 +204,26 @@ export interface components {
       /** Referal Id */
       referal_id?: string | null;
       mode?: components['schemas']['StartMode'] | null;
+    };
+    /** TarotCard */
+    'TarotCard-Input': {
+      /** Id */
+      id: number;
+      /** Key */
+      key: string;
+    };
+    /** TarotCard */
+    'TarotCard-Output': {
+      /** Id */
+      id: number;
+      /** Key */
+      key: string;
+      /** Name */
+      readonly name: string;
+      /** Description */
+      readonly description: string;
+      /** Image Url */
+      readonly image_url: string;
     };
     /** UpdateUserRequest */
     UpdateUserRequest: {
@@ -454,6 +508,59 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['StartData'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  draw_daily_card_tarot_draw_daily_card_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TarotCard-Output'][];
+        };
+      };
+    };
+  };
+  select_daily_card_tarot_select_daily_card_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TarotCard-Input'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
         };
       };
       /** @description Validation Error */

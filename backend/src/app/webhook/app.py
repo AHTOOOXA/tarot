@@ -32,6 +32,7 @@ logging.basicConfig(
 
 for router in [
     routers.base.router,
+    routers.tarot.router,
 ]:
     app.include_router(router)
 
