@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { Placeholder, Section, Sections, WithButton } from '@/presentation/components';
 import { useTelegram } from '@/services';
 import { storeToRefs } from 'pinia';
@@ -36,7 +36,15 @@ const flipCard = (element: Element, delay: number = 0) => {
 const drawCard = async (index: number) => {
   if (hasDrawn.value) return;
 
-  tarotStore.selectDailyCard(cards.value[index]);
+  // TODO: FAKE CHOICE may be handy later
+  // if (index !== 0) {
+  //   const cardsArray = [...cards.value];
+  //   [cardsArray[0], cardsArray[index]] = [cardsArray[index], cardsArray[0]];
+  //   cards.value = cardsArray;
+  // }
+  // tarotStore.selectDailyCard(cards.value[index]); // Delete later
+  // // Wait for next tick to ensure DOM is updated
+  // await nextTick();
 
   drawnCardIndex.value = index;
   hasDrawn.value = true;
