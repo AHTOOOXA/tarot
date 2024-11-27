@@ -37,7 +37,7 @@ def settings_change_language_keyboard():
 
 def command_keyboard():
     kb = InlineKeyboardBuilder()
-    kb.button(text=i18n("daily_card"), callback_data="cmd_daily")
+    kb.button(text=i18n("daily_card"), web_app=WebAppInfo(url=f"{tgbot_config.web_app_domain}/draw"))
     kb.button(text=i18n("ask_question"), callback_data="cmd_question")
     # kb.button(text=i18n("start_reading"), callback_data="cmd_reading")
     kb.button(text=i18n("pay"), callback_data="cmd_pay")
@@ -77,8 +77,11 @@ def pay_keyboard():
     return kb.as_markup()
 
 
-def draw_card_keyboard():
+# webhook
+def share_keyboard(share_message: str):
     kb = InlineKeyboardBuilder()
-    kb.button(text=i18n("draw_card_button"), web_app=WebAppInfo(url=f"{tgbot_config.web_app_domain}/draw"))
+    kb.button(text=i18n("share"), switch_inline_query=share_message)
+    # TODO: USE NEW SHARE MEDIA API LATER
+    # kb.button(text=i18n("share"), callback_data="cmd_share_message")
     kb.adjust(1)
     return kb.as_markup()

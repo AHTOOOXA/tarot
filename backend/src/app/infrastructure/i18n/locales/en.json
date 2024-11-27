@@ -1,10 +1,11 @@
 {
   "welcome": "🔮 Welcome to the Tarot Bot!",
+  "share": "🔮 Share with your friend",
   "ask_question": "🔮 Ask a Question",
   "daily_card": "🔮 Daily Card",
   "start_reading": "🔮 Start Some Reading",
-  "processing_daily_card": "Processing your daily card...",
-  "daily_card_result": "Your daily card is: {card_name}\n\n{interpretation}",
+  "daily_card_result": "Your daily card is: {card_name}",
+  "daily_card_share_message": "Check out my Tarot reading!\n\nMy card is {card_name}\n\n{reading}",
   "ask_question_prompt": "What question would you like to ask the cards?",
   "gpt_prompts": {
     "system": "You are a wise and insightful tarot reader. Keep your interpretations concise yet meaningful. Respond in English.",

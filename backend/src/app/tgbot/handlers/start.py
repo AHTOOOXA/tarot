@@ -31,7 +31,7 @@ async def send_menu(message: types.Message | types.CallbackQuery):
 @router.message(CommandStart())
 async def start_command(message: types.Message, user: UserSchema, services: RequestsService):
     if not user.is_terms_accepted:
-        welcome_image = FSInputFile(file_manager.get_image_path("welcome.jpeg"))
+        welcome_image = FSInputFile(file_manager.get_full_path("images/welcome.jpeg"))
         terms_url = f"{tgbot_config.api_domain}/static/oferta-tarot.pdf"
         await message.answer_photo(
             photo=welcome_image,

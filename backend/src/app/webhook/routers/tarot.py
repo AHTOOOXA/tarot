@@ -5,9 +5,12 @@ from aiogram import Bot
 from fastapi import APIRouter, Depends
 from starlette.requests import Request
 
+from app.infrastructure.files import file_manager
+from app.infrastructure.i18n import i18n
 from app.schemas.tarot import TarotCard
 from app.schemas.users import UserSchema
 from app.services.requests import RequestsService
+from app.tgbot.keyboards.keyboards import share_keyboard
 from app.tgbot.services import broadcaster
 from app.webhook.auth import get_twa_user
 from app.webhook.dependencies.bot import get_bot
@@ -35,6 +38,20 @@ async def select_daily_card(
     user: UserSchema = Depends(get_twa_user),
     bot: Bot = Depends(get_bot),
 ):
+    logger.info(f"Sending photo to user {user.user_id}, image path: {file_manager.get_full_path(card.image_url)}")
+    await broadcaster.send_photo(
+        bot,
+        user.user_id,
+        file_manager.get_full_path(card.image_url),
+        i18n("daily_card_result").format(card_name=card.name),
+    )
     reading = await services.tarot.get_daily_reading(user, card)
-    await broadcaster.send_message(bot, user.user_id, reading.interpretation)
+    await broadcaster.send_message(
+        bot,
+        user.user_id,
+        reading.interpretation,
+        reply_markup=share_keyboard(
+            i18n("daily_card_share_message").format(card_name=card.name, reading=reading.interpretation)
+        ),
+    )
     return reading

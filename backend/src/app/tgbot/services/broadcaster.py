@@ -3,7 +3,7 @@ import logging
 from typing import Union
 
 from aiogram import Bot, exceptions
-from aiogram.types import InlineKeyboardMarkup
+from aiogram.types import FSInputFile, InlineKeyboardMarkup
 
 
 async def send_message(
@@ -38,6 +38,38 @@ async def send_message(
         logging.error(f"Target [ID:{user_id}]: Flood limit is exceeded. Sleep {e.retry_after} seconds.")
         await asyncio.sleep(e.retry_after)
         return await send_message(bot, user_id, text, disable_notification, reply_markup)  # Recursive call
+    except exceptions.TelegramAPIError:
+        logging.exception(f"Target [ID:{user_id}]: failed")
+    else:
+        logging.info(f"Target [ID:{user_id}]: success")
+        return True
+    return False
+
+
+async def send_photo(
+    bot: Bot,
+    user_id: Union[int, str],
+    photo_path: str,
+    caption: str = None,
+    disable_notification: bool = False,
+    reply_markup: InlineKeyboardMarkup = None,
+) -> bool:
+    try:
+        await bot.send_photo(
+            chat_id=user_id,
+            photo=FSInputFile(photo_path),
+            caption=caption,
+            disable_notification=disable_notification,
+            reply_markup=reply_markup,
+        )
+    except exceptions.TelegramBadRequest:
+        logging.error("Telegram server says - Bad Request", exc_info=True)
+    except exceptions.TelegramForbiddenError:
+        logging.error(f"Target [ID:{user_id}]: got TelegramForbiddenError")
+    except exceptions.TelegramRetryAfter as e:
+        logging.error(f"Target [ID:{user_id}]: Flood limit is exceeded. Sleep {e.retry_after} seconds.")
+        await asyncio.sleep(e.retry_after)
+        return await send_photo(bot, user_id, photo_path, caption, disable_notification, reply_markup)
     except exceptions.TelegramAPIError:
         logging.exception(f"Target [ID:{user_id}]: failed")
     else:
