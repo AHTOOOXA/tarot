@@ -84,8 +84,13 @@ async def accept_terms(callback: types.CallbackQuery, user: UserSchema, services
     await callback.answer()
     await services.users.update_user(user.user_id, UpdateUserRequest(is_terms_accepted=True))
     # TODO: later finish this menu keyboard
-    # await callback.message.answer(text=i18n("welcome_after_terms"), reply_markup=menu_keyboard())
+    await callback.message.answer(text=i18n("welcome_after_terms"), reply_markup=menu_keyboard())
     await send_menu(callback)
+
+
+@router.message(lambda m: m.text == i18n("open_menu"))
+async def open_menu(message: types.Message):
+    await send_menu(message)
 
 
 @router.callback_query(lambda c: c.data == "cmd_change_language")

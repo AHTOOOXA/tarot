@@ -8,11 +8,9 @@ from app.infrastructure.i18n import i18n
 # TODO: later finish this menu keyboard
 def menu_keyboard():
     kb = ReplyKeyboardBuilder()
-    kb.button(text=i18n("open_app"), web_app=WebAppInfo(url=f"{tgbot_config.web_app_domain}"))
-    kb.button(text=i18n("open_menu"), callback_data="cmd_menu")
-    kb.button(text=i18n("open_pay"), callback_data="cmd_pay")
-    kb.button(text=i18n("open_settings"), callback_data="cmd_settings")
-    kb.adjust(1, 1, 1, 1, 1)
+    # kb.button(text=i18n("open_app"), web_app=WebAppInfo(url=f"{tgbot_config.web_app_domain}"))
+    kb.button(text=i18n("open_menu"))
+    kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
 
 
