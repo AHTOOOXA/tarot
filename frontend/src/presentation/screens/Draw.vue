@@ -42,7 +42,7 @@ const drawCard = async (index: number) => {
   //   [cardsArray[0], cardsArray[index]] = [cardsArray[index], cardsArray[0]];
   //   cards.value = cardsArray;
   // }
-  // tarotStore.selectDailyCard(cards.value[index]); // Delete later
+  tarotStore.selectDailyCard(cards.value[index]); // Delete later
   // // Wait for next tick to ensure DOM is updated
   // await nextTick();
 
