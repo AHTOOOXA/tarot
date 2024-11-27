@@ -7,22 +7,32 @@ from app.infrastructure.files import file_manager
 from app.infrastructure.i18n import i18n
 from app.schemas.users import UpdateUserRequest, UserSchema
 from app.services.requests import RequestsService
-from app.tgbot.keyboards.commands import (
+from app.tgbot.keyboards.keyboards import (
     command_keyboard,
     language_selection_keyboard,
+    menu_keyboard,
     pay_keyboard,
+    settings_change_language_keyboard,
+    settings_keyboard,
     terms_keyboard,
 )
 
 router = Router()
 
 
+async def send_menu(message: types.Message | types.CallbackQuery):
+    text = i18n("menu")
+    if isinstance(message, types.CallbackQuery):
+        await message.message.answer(text=text, reply_markup=command_keyboard())
+    else:
+        await message.answer(text=text, reply_markup=command_keyboard())
+
+
 @router.message(CommandStart())
 async def start_command(message: types.Message, user: UserSchema, services: RequestsService):
-    welcome_image = FSInputFile(file_manager.get_image_path("welcome.jpeg"))
-    terms_url = f"{tgbot_config.api_domain}/static/oferta-tarot.pdf"
-
     if not user.is_terms_accepted:
+        welcome_image = FSInputFile(file_manager.get_image_path("welcome.jpeg"))
+        terms_url = f"{tgbot_config.api_domain}/static/oferta-tarot.pdf"
         await message.answer_photo(
             photo=welcome_image,
             caption=i18n("welcome_with_terms").format(terms_url=terms_url),
@@ -30,23 +40,55 @@ async def start_command(message: types.Message, user: UserSchema, services: Requ
             parse_mode="HTML",
         )
     else:
-        await message.answer(
-            i18n("welcome_after_terms"),
-            reply_markup=command_keyboard(),
-        )
+        await send_menu(message)
+
+
+@router.callback_query(lambda c: c.data == "cmd_menu")
+async def menu_command(callback: types.CallbackQuery):
+    await callback.answer()
+    await send_menu(callback)
+
+
+@router.callback_query(lambda c: c.data == "cmd_back_to_menu")
+async def back_to_menu(callback: types.CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(text=i18n("menu"))
+    await callback.message.edit_reply_markup(reply_markup=command_keyboard())
+
+
+@router.callback_query(lambda c: c.data == "cmd_settings")
+async def settings_command(callback: types.CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(text=i18n("settings"))
+    await callback.message.edit_reply_markup(reply_markup=settings_keyboard())
+
+
+@router.callback_query(lambda c: c.data == "cmd_settings_change_language")
+async def settings_change_language(callback: types.CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_reply_markup(reply_markup=settings_change_language_keyboard())
+
+
+@router.callback_query(lambda c: c.data.startswith("settings_set_lang_"))
+async def settings_set_language(callback: types.CallbackQuery, user: UserSchema, services: RequestsService):
+    lang_code = callback.data.split("_")[-1]
+
+    updated_user = await services.users.update_user(user.user_id, UpdateUserRequest(app_language_code=lang_code))
+    i18n.update_locale(updated_user.app_language_code)
+
+    await callback.message.edit_reply_markup(reply_markup=settings_keyboard())
 
 
 @router.callback_query(lambda c: c.data == "accept_terms")
 async def accept_terms(callback: types.CallbackQuery, user: UserSchema, services: RequestsService):
     await callback.answer()
     await services.users.update_user(user.user_id, UpdateUserRequest(is_terms_accepted=True))
-    await callback.message.answer(
-        i18n("welcome_after_terms"),
-        reply_markup=command_keyboard(),
-    )
+    # TODO: later finish this menu keyboard
+    # await callback.message.answer(text=i18n("welcome_after_terms"), reply_markup=menu_keyboard())
+    await send_menu(callback)
 
 
-@router.callback_query(lambda c: c.data == "change_language")
+@router.callback_query(lambda c: c.data == "cmd_change_language")
 async def change_language(callback: types.CallbackQuery):
     await callback.answer()
     await callback.message.edit_reply_markup(reply_markup=language_selection_keyboard())
@@ -54,7 +96,7 @@ async def change_language(callback: types.CallbackQuery):
 
 @router.callback_query(lambda c: c.data.startswith("set_lang_"))
 async def set_language(callback: types.CallbackQuery, user: UserSchema, services: RequestsService):
-    lang_code = callback.data.split("_")[2]
+    lang_code = callback.data.split("_")[-1]
 
     updated_user = await services.users.update_user(user.user_id, UpdateUserRequest(app_language_code=lang_code))
     i18n.update_locale(updated_user.app_language_code)
@@ -73,7 +115,7 @@ async def pay_command(callback: types.CallbackQuery):
     await callback.message.edit_reply_markup(reply_markup=pay_keyboard())
 
 
-@router.callback_query(lambda c: c.data == "back_to_menu")
+@router.callback_query(lambda c: c.data == "cmd_back_to_menu")
 async def back_to_menu(callback: types.CallbackQuery):
     await callback.answer()
-    await callback.message.edit_text(text=i18n("welcome_after_terms"), reply_markup=command_keyboard())
+    await send_menu(callback)

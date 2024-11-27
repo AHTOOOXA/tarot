@@ -13,8 +13,8 @@
   },
   "welcome_with_terms": "Welcome to our Tarot Bot! 🔮\n\nBefore we begin, please read our <a href=\"{terms_url}\">Terms and Conditions</a>",
   "accept_terms": "✅ I Accept Terms & Conditions",
-  "welcome_after_terms": "Thank you! You can now use the bot. Choose an option below:",
-  "your_language": "Your language",
+  "menu": "Meow! 🐈‍⬛✨\n\nPick your fortune, and I'll purr your destiny",
+  "settings": "🛠️ Settings",
   "language_button": "🌐 Language: {lang} (change 🔄)",
   "languages": {
     "current_language": "English",

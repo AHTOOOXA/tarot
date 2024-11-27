@@ -7,7 +7,7 @@ from app.infrastructure.i18n import i18n
 from app.schemas.tarot import DailyReadingMessage
 from app.schemas.users import UserSchema
 from app.services.requests import RequestsService
-from app.tgbot.keyboards.commands import draw_card_keyboard
+from app.tgbot.keyboards.keyboards import draw_card_keyboard
 
 router = Router()
 
