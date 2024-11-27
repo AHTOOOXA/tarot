@@ -5,11 +5,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
 from app.infrastructure.i18n import i18n
+from app.infrastructure.rabbit.producer import RabbitMQProducer
 from app.schemas.tarot import TarotCard
 from app.schemas.users import UserSchema
 from app.services.requests import RequestsService
 from app.tgbot.services import broadcaster
 from app.webhook.auth import get_twa_user
+from app.webhook.dependencies.rabbit import get_rabbit_producer
 from app.webhook.dependencies.service import get_services
 
 router = APIRouter(prefix="/tarot")
@@ -32,12 +34,15 @@ async def select_daily_card(
     request: Request,
     services: RequestsService = Depends(get_services),
     user: UserSchema = Depends(get_twa_user),
+    producer: RabbitMQProducer = Depends(get_rabbit_producer),
 ):
     reading = await services.tarot.get_daily_reading(user, card)
-    # TODO: fix it doesn't work, do it with a rabbit queue
-    logger.info(f"Sending message to {user.user_id}")
-    # await broadcaster.send_message(
-    #     user.user_id,
-    #     i18n("daily_card_result").format(card_name=reading.card.name, interpretation=reading.interpretation),
-    # )
+    await producer.publish(
+        {
+            "user_id": user.user_id,
+            "text": i18n("daily_card_result").format(
+                card_name=reading.card.name, interpretation=reading.interpretation
+            ),
+        }
+    )
     return reading
