@@ -36,6 +36,8 @@ const flipCard = (element: Element, delay: number = 0) => {
 const drawCard = async (index: number) => {
   if (hasDrawn.value) return;
 
+  tarotStore.selectDailyCard(cards.value[index]);
+
   drawnCardIndex.value = index;
   hasDrawn.value = true;
 

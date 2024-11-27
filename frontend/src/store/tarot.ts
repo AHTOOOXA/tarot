@@ -28,5 +28,21 @@ export const useTarotStore = defineStore('tarot', {
         this.cards = data;
       }
     },
+
+    async selectDailyCard(card: TarotCard) {
+      this.error = null;
+
+      const { error } = await apiClient.POST('/tarot/select_daily_card', {
+        body: {
+          id: card.id,
+          key: card.key,
+        },
+      });
+
+      if (error) {
+        this.error = 'Failed to select card';
+        console.error('Failed to select card:', error);
+      }
+    },
   },
 });

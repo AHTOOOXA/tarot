@@ -34,8 +34,10 @@ async def select_daily_card(
     user: UserSchema = Depends(get_twa_user),
 ):
     reading = await services.tarot.get_daily_reading(user, card)
-    await broadcaster.send_message(
-        user.user_id,
-        i18n("daily_card_result").format(card_name=reading.card.name, interpretation=reading.interpretation),
-    )
+    # TODO: fix it doesn't work, do it with a rabbit queue
+    logger.info(f"Sending message to {user.user_id}")
+    # await broadcaster.send_message(
+    #     user.user_id,
+    #     i18n("daily_card_result").format(card_name=reading.card.name, interpretation=reading.interpretation),
+    # )
     return reading
