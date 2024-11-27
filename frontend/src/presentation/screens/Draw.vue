@@ -5,9 +5,11 @@ import { useTelegram } from '@/services';
 import { storeToRefs } from 'pinia';
 import { useTarotStore } from '@/store/tarot';
 import { useStatic } from '@/services';
+import { useI18n } from 'vue-i18n';
 
 const { closeApp } = useTelegram();
 const { getStaticUrl, preloadImage } = useStatic();
+const { t } = useI18n();
 
 const tarotStore = useTarotStore();
 const { cards } = storeToRefs(tarotStore);
@@ -90,8 +92,12 @@ const handleBackClick = () => {
     <Sections>
       <Section standalone>
         <Placeholder
-          :title="showCardInfo && drawnCardIndex !== null ? cards[drawnCardIndex].name : 'Draw a Card'"
-          :caption="showCardInfo ? 'The cards have spoken...' : 'Let the cards guide you'"
+          :title="
+            showCardInfo && drawnCardIndex !== null
+              ? t('draw.placeholder.titleDrawn', { cardName: cards[drawnCardIndex].name })
+              : t('draw.placeholder.title')
+          "
+          :caption="showCardInfo ? t('draw.placeholder.captionDrawn') : t('draw.placeholder.caption')"
           standalone
           :class="{
             'fade-out': hasDrawn && !showCardInfo,
@@ -122,7 +128,7 @@ const handleBackClick = () => {
                 <div class="card-back">
                   <img
                     :src="imageUrls.back"
-                    alt="Card back"
+                    :alt="t('draw.cardBack')"
                   />
                 </div>
                 <div class="card-front">
@@ -153,7 +159,7 @@ const handleBackClick = () => {
                 <div class="card-back">
                   <img
                     :src="imageUrls.back"
-                    alt="Card back"
+                    :alt="t('draw.cardBack')"
                   />
                 </div>
                 <div class="card-front">
@@ -174,14 +180,14 @@ const handleBackClick = () => {
     class="loading-container"
   >
     <Placeholder
-      title="Loading..."
-      caption="Preparing your cards..."
+      :title="t('draw.loading.title')"
+      :caption="t('draw.loading.caption')"
       standalone
     />
   </div>
   <WithButton
     v-if="showButton"
-    button-text="Go back to bot"
+    :button-text="t('draw.button')"
     :button-click="handleBackClick"
   />
 </template>

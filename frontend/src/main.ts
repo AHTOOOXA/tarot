@@ -9,6 +9,8 @@ import { darkenColor } from './utils/color';
 import { useUserStore } from './store/user';
 import { processStart } from './composables/start';
 import LoadingScreen from './presentation/screens/Loading.vue';
+import { useLanguage } from '@/services/useLanguage';
+import { i18n } from './i18n';
 
 /**
  * @todo async lottie-player loading
@@ -98,6 +100,9 @@ try {
 
 app.use(Router);
 app.use(pinia);
+
+app.use(i18n);
+useLanguage();
 
 bootstrapApp.unmount();
 app.mount('#app');
